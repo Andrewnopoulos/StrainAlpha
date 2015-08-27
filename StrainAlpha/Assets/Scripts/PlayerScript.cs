@@ -14,6 +14,17 @@ public class PlayerScript : MonoBehaviour {
 
     private float fireCooldown = 0.0f;
 
+    //time left in current dash
+    private float currentDash = 0.0f;
+    private float dashTime = 0.2f;
+
+    //direction of dash
+    private Vector3 dashDir;
+
+    //time until next dash
+    private float dashCooldown = 2.0f;
+    private float currentDashCooldown = 0.0f;
+
 	// Use this for initialization
 	void Start () {
 
@@ -25,21 +36,48 @@ public class PlayerScript : MonoBehaviour {
 	void Update () {
 	
         if (fireCooldown > 0)
-        {
             fireCooldown -= Time.deltaTime;
-        }
+
+        if (currentDash > 0)
+            currentDash -= Time.deltaTime;
+
+        if (currentDashCooldown > 0)
+            currentDashCooldown -= Time.deltaTime;
 
         Vector3 movementVector = Vector3.zero;
         Vector3 lookVector = Vector3.zero;
 
-        movementVector.x = Input.GetAxis("LeftStickX");
-        movementVector.z = -Input.GetAxis("LeftStickY");
+        if (currentDash > 0)
+        {
+            movementVector = dashDir;
+        }
+        else
+        {
+
+            movementVector.x = Input.GetAxis("LeftStickX");
+            movementVector.z = -Input.GetAxis("LeftStickY");
+
+            movementVector = movementVector * speed;
+
+            if (Input.GetButton("LeftBumper"))
+            {
+                if (currentDashCooldown <= 0)
+                {
+                    currentDashCooldown = dashCooldown;
+
+                    currentDash = dashTime;
+                    dashDir = movementVector * 3.0f;
+                    movementVector = dashDir;
+
+                    //apply screen shake
+                }
+            }
+        }
+        characterController.Move(movementVector * Time.deltaTime);
 
         lookVector.z = -Input.GetAxis("RightStickY");
         lookVector.x = Input.GetAxis("RightStickX");
         lookVector.y = 0;
-
-        characterController.Move(movementVector * speed * Time.deltaTime);
 
         if (lookVector.sqrMagnitude > 0.2)
         {
