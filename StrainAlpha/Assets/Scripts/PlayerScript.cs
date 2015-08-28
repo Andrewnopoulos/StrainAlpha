@@ -44,6 +44,8 @@ public class PlayerScript : MonoBehaviour {
     private float dashCooldown = 2.0f;
     private float currentDashCooldown = 0.0f;
 
+    Chromosome playerGenes;
+
 	void Start () {
 
         characterController = GetComponent<CharacterController>();
@@ -59,6 +61,8 @@ public class PlayerScript : MonoBehaviour {
         damage = maxDamage;
         speed = maxSpeed;
         fireRate = maxFireRate;
+
+        playerGenes = new Chromosome(0);
 	}
 	
 	void Update () {
@@ -159,9 +163,20 @@ public class PlayerScript : MonoBehaviour {
     {
         if (other.tag == "Player")
             return;
+
+        if (other.tag == "Nucleus")
+        {
+            playerGenes.AddChromosome(other.GetComponent<NucleusScript>().GetChromosome());
+            Destroy(other);
+            return;
+        }
+
         Vector3 normal = Vector3.Normalize(other.transform.position - gameObject.transform.position);
         Vector3 collisionVector = normal * (Vector3.Dot((other.transform.position - gameObject.transform.position) / 2, normal));
         Vector3 forceVector = collisionVector * (1.0f / ((1.0f / mass) + (1.0f / other.attachedRigidbody.mass))) * 1.2f;
         AddForce(-forceVector);
+
+        
+
     }
 }
