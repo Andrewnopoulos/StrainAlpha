@@ -16,7 +16,7 @@ public class CellScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	
+        myGenes = new Chromosome(0.1f);
 	}
 	
 	// Update is called once per frame
