@@ -6,12 +6,18 @@ public class PlayerScript : MonoBehaviour {
     public GameObject bulletPrefab;
     private CharacterController characterController;
 
-    private float health;
-    private float damage;
-    private float speed = 8;
-    private float fireRate = 0.5f;
-    private float range;
+    private float mass = 1.0f;
 
+    private Vector3 velocity;
+
+    //personal variables
+    private float health = 0.0f;
+    private float damage = 0.0f;
+    private float speed = 8.0f;
+    private float fireRate = 0.5f;
+    private float range = 0.0f;
+
+    //time until next shot
     private float fireCooldown = 0.0f;
 
     //time left in current dash
@@ -19,20 +25,18 @@ public class PlayerScript : MonoBehaviour {
     private float dashTime = 0.2f;
 
     //direction of dash
-    private Vector3 dashDir;
+    private Vector3 dashDir = Vector3.zero;
 
     //time until next dash
     private float dashCooldown = 2.0f;
     private float currentDashCooldown = 0.0f;
 
-	// Use this for initialization
 	void Start () {
 
         characterController = GetComponent<CharacterController>();
 
 	}
 	
-	// Update is called once per frame
 	void Update () {
 	
         if (fireCooldown > 0)
@@ -44,42 +48,44 @@ public class PlayerScript : MonoBehaviour {
         if (currentDashCooldown > 0)
             currentDashCooldown -= Time.deltaTime;
 
-        Vector3 movementVector = Vector3.zero;
+        Vector3 movementVector = velocity;
         Vector3 lookVector = Vector3.zero;
+
+        velocity *= 0.9f;
 
         if (currentDash > 0)
         {
-            movementVector = dashDir;
+            movementVector += dashDir;
         }
         else
         {
 
-            movementVector.x = Input.GetAxis("LeftStickX");
-            movementVector.z = -Input.GetAxis("LeftStickY");
+            movementVector.x += Input.GetAxis("LeftStickX");
+            movementVector.z += -Input.GetAxis("LeftStickY");
 
-            movementVector = movementVector * speed;
-
-            if (Input.GetButton("LeftBumper"))
+            if (Input.GetAxis("LeftTrigger") > 0.1f)
             {
                 if (currentDashCooldown <= 0)
                 {
                     currentDashCooldown = dashCooldown;
 
                     currentDash = dashTime;
-                    dashDir = movementVector * 3.0f;
-                    movementVector = dashDir;
+                    dashDir = Vector3.Normalize(movementVector) * 3.0f;
+                    movementVector += dashDir;
 
                     //apply screen shake
                 }
             }
         }
-        characterController.Move(movementVector * Time.deltaTime);
+        movementVector.y = 0.0f;
+        characterController.Move(movementVector * speed * Time.deltaTime);
+        characterController.transform.position = new Vector3(characterController.transform.position.x, 0, characterController.transform.position.z);
 
         lookVector.z = -Input.GetAxis("RightStickY");
         lookVector.x = Input.GetAxis("RightStickX");
         lookVector.y = 0;
 
-        if (lookVector.sqrMagnitude > 0.2)
+        if (lookVector.sqrMagnitude > 0.2f)
         {
             transform.rotation = Quaternion.LookRotation(lookVector);
         }
@@ -89,11 +95,29 @@ public class PlayerScript : MonoBehaviour {
             if (fireCooldown <= 0)
             {
                 GameObject newBullet = (GameObject)Instantiate(bulletPrefab, transform.position, transform.rotation);
-                newBullet.GetComponent<BulletScript>().damage = damage;
-                newBullet.GetComponent<BulletScript>().speed = 20;
+                BulletScript script = newBullet.GetComponent<BulletScript>();
+                script.damage = damage;
+                script.speed = 15.0f;
                 fireCooldown = fireRate;
             }
         }
 
 	}
+
+    void AddForce(Vector3 force)
+    {
+        Vector3 accel;
+		accel = force / mass;
+		velocity += accel;
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Player")
+            return;
+        Vector3 normal = Vector3.Normalize(other.transform.position - gameObject.transform.position);
+        Vector3 collisionVector = normal * (Vector3.Dot((other.transform.position - gameObject.transform.position) / 2, normal));
+        Vector3 forceVector = collisionVector * (1.0f / ((1.0f / mass) + (1.0f / other.attachedRigidbody.mass))) * 1.2f;
+        AddForce(-forceVector);
+    }
 }
