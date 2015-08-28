@@ -1,9 +1,13 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class PlayerScript : MonoBehaviour {
 
     public GameObject bulletPrefab;
+    public GameObject canvas;
+    private Text weaponText;
+
     private CharacterController characterController;
 
     private float mass = 1.0f;
@@ -43,6 +47,8 @@ public class PlayerScript : MonoBehaviour {
 	void Start () {
 
         characterController = GetComponent<CharacterController>();
+        canvas = GameObject.Find("Canvas");
+        weaponText = canvas.GetComponent<Text>();
 
         maxHealth = baseHealth;
         maxDamage = baseDamage;
@@ -117,6 +123,27 @@ public class PlayerScript : MonoBehaviour {
                 script.speed = 15.0f;
                 fireCooldown = fireRate;
             }
+        }
+
+        if (Input.GetButton("A"))
+        {
+            //charge
+            weaponText.text = "Charge";
+        }
+        if (Input.GetButton("B"))
+        {
+            //spirit bomb
+            weaponText.text = "Bomb";
+        }
+        if (Input.GetButton("X"))
+        {
+            //shield
+            weaponText.text = "Shield";
+        }
+        if (Input.GetButton("Y"))
+        {
+            //laser
+            weaponText.text = "Laser";
         }
 
 	}
