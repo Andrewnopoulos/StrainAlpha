@@ -115,10 +115,7 @@ public class PlayerScript : MonoBehaviour {
         if (lookVector.sqrMagnitude > 0.2f)
         {
             transform.rotation = Quaternion.LookRotation(lookVector);
-        }
 
-        if (Input.GetAxis("RightTrigger") > 0.1f)
-        {
             if (fireCooldown <= 0)
             {
                 GameObject newBullet = (GameObject)Instantiate(bulletPrefab, transform.position, transform.rotation);
@@ -128,6 +125,18 @@ public class PlayerScript : MonoBehaviour {
                 fireCooldown = fireRate;
             }
         }
+
+        //if (Input.GetAxis("RightTrigger") > 0.1f)
+        //{
+        //    if (fireCooldown <= 0)
+        //    {
+        //        GameObject newBullet = (GameObject)Instantiate(bulletPrefab, transform.position, transform.rotation);
+        //        BulletScript script = newBullet.GetComponent<BulletScript>();
+        //        script.damage = damage;
+        //        script.speed = 15.0f;
+        //        fireCooldown = fireRate;
+        //    }
+        //}
 
         if (Input.GetButton("A"))
         {
