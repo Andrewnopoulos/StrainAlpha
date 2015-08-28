@@ -40,6 +40,7 @@ public class NPCManager : MonoBehaviour {
 
         for (int i = killList.Count - 1; i >= 0; --i)
         {
+            SpawnNucleus(killList[i].GetComponent<CellScript>());
             Destroy(killList[i]);
             killList.Remove(killList[i]);
         }
