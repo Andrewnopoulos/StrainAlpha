@@ -12,6 +12,8 @@ public class CellScript : MonoBehaviour {
     //fire rate is synonymous with range; values over 0.5 make the enemy melee
     private float fireRate = 1.0f;
 
+    private Chromosome myGenes;
+
 	// Use this for initialization
 	void Start () {
 	
@@ -31,5 +33,10 @@ public class CellScript : MonoBehaviour {
     public void TakeDamage(float _damage)
     {
         health -= _damage;
+    }
+
+    public Chromosome GetChromosome()
+    {
+        return myGenes;
     }
 }

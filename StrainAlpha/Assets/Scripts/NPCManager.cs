@@ -6,6 +6,8 @@ public class NPCManager : MonoBehaviour {
 
     public GameObject cell;
 
+    public GameObject nucleus;
+
     private List<GameObject> npcList;
     private List<GameObject> killList;
 
@@ -43,6 +45,12 @@ public class NPCManager : MonoBehaviour {
         }
 
 	}
+
+    void SpawnNucleus(CellScript inputCell)
+    {
+        GameObject newNucleus = (GameObject)Instantiate(nucleus, inputCell.transform.position, inputCell.transform.rotation);
+        newNucleus.GetComponent<NucleusScript>().SetChromosome(inputCell.GetChromosome());
+    }
 
     void CreateNPC()
     {

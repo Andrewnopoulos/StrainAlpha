@@ -38,10 +38,9 @@ public class NucleusScript : MonoBehaviour {
 
 	}
 
-    public NucleusScript(Chromosome initialGenes, Vector3 spawnPosition)
+    public void SetChromosome(Chromosome input)
     {
-        myGenes = initialGenes;
-        transform.position = spawnPosition;
+        myGenes = input;
     }
 
     public Chromosome GetChromosome()
