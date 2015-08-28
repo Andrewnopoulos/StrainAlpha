@@ -9,6 +9,8 @@ public class BulletScript : MonoBehaviour {
 
     private float lifeTime = 2.0f;
 
+    private bool alive = true;
+
 	// Use this for initialization
 	void Start () {
 
@@ -22,12 +24,22 @@ public class BulletScript : MonoBehaviour {
         lifeTime -= Time.deltaTime;
 
         if (lifeTime < 0)
-            Destroy(gameObject);
+            alive = false;
+
+        if (!alive)
+            Kill();
 
 	}
 
+    void Kill()
+    {
+        Destroy(gameObject);
+    }
+
     void OnTriggerEnter(Collider other)
     {
+        if (!alive)
+            return;
         if (other.tag == "Player")
             return;
         if (other.tag == "Enemy")
@@ -35,6 +47,6 @@ public class BulletScript : MonoBehaviour {
             //deal damage to the enemy
             other.GetComponent<EnemyScript>().TakeDamage(damage);
         }
-        Destroy(gameObject);
+        alive = false;
     }
 }

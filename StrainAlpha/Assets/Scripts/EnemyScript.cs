@@ -26,8 +26,8 @@ public class EnemyScript : MonoBehaviour {
 
 	}
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(float _damage)
     {
-        health -= damage;
+        health -= _damage;
     }
 }
