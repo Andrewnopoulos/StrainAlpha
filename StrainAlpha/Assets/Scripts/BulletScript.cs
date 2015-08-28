@@ -40,7 +40,7 @@ public class BulletScript : MonoBehaviour {
     {
         if (!alive)
             return;
-        if (other.tag == "Player")
+        if (other.tag == "Player" || other.tag == "Nucleus")
             return;
         if (other.tag == "Enemy")
         {

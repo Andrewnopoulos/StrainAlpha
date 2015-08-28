@@ -49,8 +49,8 @@ public class PlayerScript : MonoBehaviour {
 	void Start () {
 
         characterController = GetComponent<CharacterController>();
-        canvas = GameObject.Find("Canvas");
-        weaponText = canvas.GetComponent<Text>();
+        canvas = GameObject.Find("CanvasObject");
+        weaponText = canvas.GetComponentInChildren<Text>();
 
         maxHealth = baseHealth;
         maxDamage = baseDamage;
