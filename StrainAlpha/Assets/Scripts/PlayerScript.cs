@@ -11,11 +11,20 @@ public class PlayerScript : MonoBehaviour {
     private Vector3 velocity;
 
     //personal variables
-    private float health = 0.0f;
-    private float damage = 0.0f;
-    private float speed = 8.0f;
-    private float fireRate = 0.5f;
-    private float range = 0.0f;
+    private float baseHealth = 10.0f;
+    private float baseDamage = 1.0f;
+    private float baseSpeed = 8.0f;
+    private float baseFireRate = 0.2f;
+
+    private float maxHealth;
+    private float maxDamage;
+    private float maxSpeed;
+    private float maxFireRate;
+
+    private float health;
+    private float damage;
+    private float speed;
+    private float fireRate;
 
     //time until next shot
     private float fireCooldown = 0.0f;
@@ -35,6 +44,15 @@ public class PlayerScript : MonoBehaviour {
 
         characterController = GetComponent<CharacterController>();
 
+        maxHealth = baseHealth;
+        maxDamage = baseDamage;
+        maxSpeed = baseSpeed;
+        maxFireRate = baseFireRate;
+
+        health = maxHealth;
+        damage = maxDamage;
+        speed = maxSpeed;
+        fireRate = maxFireRate;
 	}
 	
 	void Update () {
@@ -59,7 +77,6 @@ public class PlayerScript : MonoBehaviour {
         }
         else
         {
-
             movementVector.x += Input.GetAxis("LeftStickX");
             movementVector.z += -Input.GetAxis("LeftStickY");
 

@@ -3,14 +3,15 @@ using System.Collections;
 
 public class BulletScript : MonoBehaviour {
 
-    public float damage;
-    public float speed;
+    public float damage = 0.0f;
+    public float speed = 0.0f;
+    public float size = 0.2f;
 
     private float lifeTime = 2.0f;
 
 	// Use this for initialization
 	void Start () {
-	
+
 	}
 	
 	// Update is called once per frame
@@ -24,4 +25,16 @@ public class BulletScript : MonoBehaviour {
             Destroy(gameObject);
 
 	}
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Player")
+            return;
+        if (other.tag == "Enemy")
+        {
+            //deal damage to the enemy
+            other.GetComponent<EnemyScript>().TakeDamage(damage);
+        }
+        Destroy(gameObject);
+    }
 }
