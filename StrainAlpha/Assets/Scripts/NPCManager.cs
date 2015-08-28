@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class NPCManager : MonoBehaviour {
 
-    public GameObject basicEnemy;
+    public GameObject cell;
 
     private List<GameObject> npcList;
     private List<GameObject> killList;
@@ -31,9 +31,9 @@ public class NPCManager : MonoBehaviour {
 
             Vector3 randomPos = new Vector3(Random.Range(-5, 5), 0, Random.Range(-5, 5));
 
-            GameObject newEnemy = (GameObject)Instantiate(basicEnemy, randomPos, transform.rotation);
-            newEnemy.GetComponent<EnemyScript>().manager = this;
-            AddNPC(newEnemy);
+            GameObject newCell = (GameObject)Instantiate(cell, randomPos, transform.rotation);
+            newCell.GetComponent<CellScript>().manager = this;
+            AddNPC(newCell);
         }
 
         for (int i = killList.Count - 1; i >= 0; --i)

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EnemyScript : MonoBehaviour {
+public class CellScript : MonoBehaviour {
 
     public NPCManager manager;
 
@@ -19,7 +19,7 @@ public class EnemyScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+
         if (health <= 0)
         {
             //add this object to the destroy list
