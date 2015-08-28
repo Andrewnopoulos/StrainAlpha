@@ -11,13 +11,11 @@ public class NucleusScript : MonoBehaviour {
     
     private Chromosome myGenes;
 
-    public PlayerScript player;
-
     private Transform playerLocation;
 
 	// Use this for initialization
 	void Start () {
-        playerLocation = player.GetComponent<Transform>();
+        playerLocation = GameObject.Find("Player").GetComponent<Transform>();
 	}
 	
 	// Update is called once per frame
