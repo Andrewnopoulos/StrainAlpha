@@ -3,6 +3,8 @@ using System.Collections;
 
 public class EnemyScript : MonoBehaviour {
 
+    public NPCManager manager;
+
     private float health = 5.0f;
     private float damage = 2.0f;
     private float speed = 8.5f;
@@ -21,7 +23,7 @@ public class EnemyScript : MonoBehaviour {
         if (health <= 0)
         {
             //add this object to the destroy list
-            Destroy(gameObject);
+            manager.AddToKillList(gameObject);
         }
 
 	}
