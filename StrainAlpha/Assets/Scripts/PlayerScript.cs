@@ -40,6 +40,8 @@ public class PlayerScript : MonoBehaviour {
     private float dashCooldown = 2.0f;
     private float currentDashCooldown = 0.0f;
 
+    Chromosome playerGenes;
+
 	void Start () {
 
         characterController = GetComponent<CharacterController>();
@@ -53,6 +55,8 @@ public class PlayerScript : MonoBehaviour {
         damage = maxDamage;
         speed = maxSpeed;
         fireRate = maxFireRate;
+
+        playerGenes = new Chromosome(0);
 	}
 	
 	void Update () {

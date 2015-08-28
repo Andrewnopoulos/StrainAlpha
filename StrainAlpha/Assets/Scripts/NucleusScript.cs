@@ -43,4 +43,9 @@ public class NucleusScript : MonoBehaviour {
         myGenes = initialGenes;
         transform.position = spawnPosition;
     }
+
+    public Chromosome GetChromosome()
+    {
+        return myGenes;
+    }
 }

@@ -63,13 +63,9 @@ public class Chromosome : MonoBehaviour {
         }
     }
 
-    public float Get(int index)
+    public float this[int i]
     {
-        if (index >= length || index < 0)
-        {
-            return 0;
-        }
-        return genes[index];
+        get { return genes[i]; }
     }
 
     public static int ChromosomeLength()
@@ -84,13 +80,13 @@ public class Chromosome : MonoBehaviour {
         float[] output2 = new float[length];
         for (int i = 0; i < crossoverPoint; i++)
         {
-            output1[i] = mum.Get(i);
-            output2[i] = dad.Get(i);
+            output1[i] = mum[i];
+            output2[i] = dad[i];
         }
         for (int i = 0; i < crossoverPoint; i++)
         {
-            output2[i] = mum.Get(i);
-            output1[i] = dad.Get(i);
+            output2[i] = mum[i];
+            output1[i] = dad[i];
         }
 
         Chromosome out1 = new Chromosome(output1);
@@ -132,6 +128,14 @@ public class Chromosome : MonoBehaviour {
         return output;
     }
 
+    public void AddChromosome(Chromosome inputChromosome)
+    {
+        for (int i = 0; i < length; i++)
+        {
+            genes[i] += inputChromosome[i];
+        }
+    }
+
     public float[] GetGenes()
     {
         return genes;
@@ -141,4 +145,5 @@ public class Chromosome : MonoBehaviour {
 	void Update () {
 
 	}
+
 }
