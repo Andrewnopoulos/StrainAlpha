@@ -13,17 +13,19 @@ public class NucleusScript : MonoBehaviour {
 
     public PlayerScript player;
 
+    private Transform playerLocation;
+
 	// Use this for initialization
 	void Start () {
-
+        playerLocation = player.GetComponent<Transform>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
-	    if (Vector3.Distance(player.transform.position, transform.position) < magnetismRadius)
+	    if (Vector3.Distance(playerLocation.position, transform.position) < magnetismRadius)
         {
-            Vector3 vectorToPlayer = player.transform.position - transform.position;
+            Vector3 vectorToPlayer = playerLocation.position - transform.position;
 
             velocity += (vectorToPlayer / vectorToPlayer.magnitude) * Time.deltaTime * acceleration;
         }
