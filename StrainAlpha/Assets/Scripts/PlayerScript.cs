@@ -167,7 +167,7 @@ public class PlayerScript : MonoBehaviour {
         if (other.tag == "Nucleus")
         {
             playerGenes.AddChromosome(other.GetComponent<NucleusScript>().GetChromosome());
-            Destroy(other);
+            Destroy(other.gameObject);
             return;
         }
 
