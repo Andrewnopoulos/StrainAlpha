@@ -193,27 +193,52 @@ public class PlayerScript : MonoBehaviour {
         //    }
         //}
 
-        if (Input.GetButton("A"))
+        if (isControllerConnected)
         {
-            //charge
-            weaponText.text = "Charge";
+            if (Input.GetButton("A"))
+            {
+                //charge
+                weaponText.text = "Charge";
+            }
+            if (Input.GetButton("B"))
+            {
+                //spirit bomb
+                weaponText.text = "Bomb";
+            }
+            if (Input.GetButton("X"))
+            {
+                //shield
+                weaponText.text = "Shield";
+            }
+            if (Input.GetButton("Y"))
+            {
+                //laser
+                weaponText.text = "Laser";
+            }
         }
-        if (Input.GetButton("B"))
+        else
         {
-            //spirit bomb
-            weaponText.text = "Bomb";
+            if (Input.GetKey(KeyCode.Alpha1))
+            {
+                //charge
+                weaponText.text = "Charge";
+            }
+            if (Input.GetKey(KeyCode.Alpha2))
+            {
+                //spirit bomb
+                weaponText.text = "Bomb";
+            }
+            if (Input.GetKey(KeyCode.Alpha3))
+            {
+                //shield
+                weaponText.text = "Shield";
+            }
+            if (Input.GetKey(KeyCode.Alpha4))
+            {
+                //laser
+                weaponText.text = "Laser";
+            }
         }
-        if (Input.GetButton("X"))
-        {
-            //shield
-            weaponText.text = "Shield";
-        }
-        if (Input.GetButton("Y"))
-        {
-            //laser
-            weaponText.text = "Laser";
-        }
-
 	}
 
     void AddForce(Vector3 force)
