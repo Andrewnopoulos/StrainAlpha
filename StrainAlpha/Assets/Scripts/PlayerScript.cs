@@ -4,6 +4,8 @@ using System.Collections;
 
 public class PlayerScript : MonoBehaviour {
 
+    private bool isControllerConnected = false;
+
     public GameObject bulletPrefab;
     public GameObject canvas;
     private Text weaponText;
@@ -63,6 +65,11 @@ public class PlayerScript : MonoBehaviour {
         fireRate = maxFireRate;
 
         playerGenes = new Chromosome(0);
+
+        if (Input.GetJoystickNames().Length > 0)
+        {
+            isControllerConnected = true;
+        }
 	}
 	
 	void Update () {
@@ -87,10 +94,36 @@ public class PlayerScript : MonoBehaviour {
         }
         else
         {
-            movementVector.x += Input.GetAxis("LeftStickX");
-            movementVector.z += -Input.GetAxis("LeftStickY");
+            if (isControllerConnected)
+            {
+                movementVector.x += Input.GetAxis("LeftStickX");
+                movementVector.z += -Input.GetAxis("LeftStickY");
+            }
+            else
+            {
+                Vector3 newVelocity = Vector3.zero;
 
-            if (Input.GetAxis("LeftTrigger") > 0.1f)
+                if (Input.GetKey(KeyCode.A))
+                {
+                    newVelocity.x -= 1;
+                }
+                if (Input.GetKey(KeyCode.D))
+                {
+                    newVelocity.x += 1;
+                }
+                if (Input.GetKey(KeyCode.W))
+                {
+                    newVelocity.z += 1;
+                }
+                if (Input.GetKey(KeyCode.S))
+                {
+                    newVelocity.z -= 1;
+                }
+
+                movementVector += Vector3.Normalize(newVelocity);
+            }
+
+            if (Input.GetAxis("LeftTrigger") > 0.1f || Input.GetKeyDown(KeyCode.Space))
             {
                 if (currentDashCooldown <= 0)
                 {
@@ -108,21 +141,43 @@ public class PlayerScript : MonoBehaviour {
         characterController.Move(movementVector * speed * Time.deltaTime);
         characterController.transform.position = new Vector3(characterController.transform.position.x, 0, characterController.transform.position.z);
 
-        lookVector.z = -Input.GetAxis("RightStickY");
-        lookVector.x = Input.GetAxis("RightStickX");
-        lookVector.y = 0;
-
-        if (lookVector.sqrMagnitude > 0.2f)
+        if (isControllerConnected)
         {
-            transform.rotation = Quaternion.LookRotation(lookVector);
+            lookVector.z = -Input.GetAxis("RightStickY");
+            lookVector.x = Input.GetAxis("RightStickX");
+            lookVector.y = 0;
 
-            if (fireCooldown <= 0)
+            if (lookVector.sqrMagnitude > 0.2f)
             {
-                GameObject newBullet = (GameObject)Instantiate(bulletPrefab, transform.position, transform.rotation);
-                BulletScript script = newBullet.GetComponent<BulletScript>();
-                script.damage = damage;
-                script.speed = 15.0f;
-                fireCooldown = fireRate;
+                transform.rotation = Quaternion.LookRotation(lookVector);
+
+                if (fireCooldown <= 0)
+                {
+                    GameObject newBullet = (GameObject)Instantiate(bulletPrefab, transform.position, transform.rotation);
+                    BulletScript script = newBullet.GetComponent<BulletScript>();
+                    script.damage = damage;
+                    script.speed = 15.0f;
+                    fireCooldown = fireRate;
+                }
+            }
+        }
+        else
+        {
+            Vector3 mousePos = Input.mousePosition;
+            mousePos.z = Mathf.Abs(Camera.main.transform.position.y - transform.position.y);
+            mousePos = Camera.main.ScreenToWorldPoint(mousePos);
+            transform.LookAt(mousePos);
+
+            if (Input.GetMouseButton(0))
+            {
+                if (fireCooldown <= 0)
+                {
+                    GameObject newBullet = (GameObject)Instantiate(bulletPrefab, transform.position, transform.rotation);
+                    BulletScript script = newBullet.GetComponent<BulletScript>();
+                    script.damage = damage;
+                    script.speed = 15.0f;
+                    fireCooldown = fireRate;
+                }
             }
         }
 
