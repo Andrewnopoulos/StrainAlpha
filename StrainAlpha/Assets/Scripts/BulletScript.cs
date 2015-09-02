@@ -42,8 +42,6 @@ public class BulletScript : MonoBehaviour {
             return;
         if (other.tag == "Player" || other.tag == "Nucleus")
             return;
-        if (other.tag == "Nucleus")
-            return;
         if (other.tag == "Enemy")
         {
             //deal damage to the enemy
