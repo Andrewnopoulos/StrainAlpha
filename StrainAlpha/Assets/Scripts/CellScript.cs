@@ -14,13 +14,23 @@ public class CellScript : MonoBehaviour {
     //fire rate is synonymous with range; values over 0.5 make the enemy melee
     private float fireRate = 1.0f;
 
+    private Vector3 velocity;
+
     private Chromosome myGenes;
+
+    private Transform playerLocation;
 
 	// Use this for initialization
 	void Start () {
         myGenes = new Chromosome(0.1f);
         infected = false;
+        velocity = new Vector3(0, 0, 0);
 	}
+
+    void Awake()
+    {
+        playerLocation = GameObject.FindGameObjectWithTag("Player").transform;
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -31,6 +41,12 @@ public class CellScript : MonoBehaviour {
             manager.AddToKillList(gameObject);
         }
 
+        if (infected)
+        {
+            InfectedUpdate();
+        }
+
+        transform.position += velocity;
 	}
 
     void InfectedUpdate()
