@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class CellScript : MonoBehaviour {
 
@@ -11,10 +12,12 @@ public class CellScript : MonoBehaviour {
 
     private bool infected = false;
 
+    public float detectionRange = 100.0f;
+
     //fire rate is synonymous with range; values over 0.5 make the enemy melee
     private float fireRate = 1.0f;
 
-    private Vector3 velocity;
+    public Vector3 velocity;
 
     private Chromosome myGenes;
 
@@ -31,6 +34,11 @@ public class CellScript : MonoBehaviour {
     {
         playerLocation = GameObject.FindGameObjectWithTag("Player").transform;
     }
+
+    float distanceFrom(GameObject otherObject)
+    {
+        return (gameObject.transform.position - otherObject.transform.position).magnitude;
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -40,6 +48,17 @@ public class CellScript : MonoBehaviour {
             //add this object to the destroy list
             manager.AddToKillList(gameObject);
         }
+
+        int neighbourCount = 0;
+
+        //foreach(GameObject cell in neutralCells)
+        //{
+        //    if (distanceFrom(cell) < detectionRange)
+        //    {
+
+        //        neighbourCount++;
+        //    }
+        //}
 
         if (infected)
         {
