@@ -32,6 +32,8 @@ public class PlayerScript : MonoBehaviour {
     private float speed;
     private float fireRate;
 
+    private float moveDelay = 0.0f;
+
     //time until next shot
     private float fireCooldown = 0.0f;
 
@@ -83,6 +85,9 @@ public class PlayerScript : MonoBehaviour {
         if (currentDashCooldown > 0)
             currentDashCooldown -= Time.deltaTime;
 
+        if (moveDelay > 0)
+            moveDelay -= Time.deltaTime;
+
         Vector3 movementVector = velocity;
         Vector3 lookVector = Vector3.zero;
 
@@ -123,6 +128,7 @@ public class PlayerScript : MonoBehaviour {
                 movementVector += Vector3.Normalize(newVelocity);
             }
 
+
             if (Input.GetAxis("LeftTrigger") > 0.1f || Input.GetKeyDown(KeyCode.Space))
             {
                 if (currentDashCooldown <= 0)
@@ -136,6 +142,7 @@ public class PlayerScript : MonoBehaviour {
                     //apply screen shake
                 }
             }
+        
         }
         movementVector.y = 0.0f;
         characterController.Move(movementVector * speed * Time.deltaTime);
@@ -260,12 +267,11 @@ public class PlayerScript : MonoBehaviour {
             return;
         }
 
-        Vector3 normal = Vector3.Normalize(other.transform.position - gameObject.transform.position);
-        Vector3 collisionVector = normal * (Vector3.Dot((other.transform.position - gameObject.transform.position) / 2, normal));
-        Vector3 forceVector = collisionVector * (1.0f / ((1.0f / mass) + (1.0f / other.attachedRigidbody.mass))) * 1.2f;
-        AddForce(-forceVector);
-
-        
+        //obsolete bounce code
+        //Vector3 normal = Vector3.Normalize(other.transform.position - gameObject.transform.position);
+        //Vector3 collisionVector = normal * (Vector3.Dot((other.transform.position - gameObject.transform.position) / 2, normal));
+        //Vector3 forceVector = collisionVector * (1.0f / ((1.0f / mass) + (1.0f / other.attachedRigidbody.mass))) * 0.5f;
+        //AddForce(-forceVector);
 
     }
 }
