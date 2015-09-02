@@ -1,27 +1,26 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class LaserScript : MonoBehaviour {
-
-    public float damage = 5.0f;
+public class ShieldScript : MonoBehaviour {
 
     private bool active = false;
 
     private Renderer renderer;
     private Collider collider;
 
-    private float laserTime = 3.0f;
+    private float shieldTime = 3.0f;
 
 	// Use this for initialization
 	void Start () {
 
         renderer = gameObject.GetComponent<Renderer>();
         collider = gameObject.GetComponent<Collider>();
+
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	
+
         if (active && !renderer.enabled)
         {
             renderer.enabled = true;
@@ -29,27 +28,22 @@ public class LaserScript : MonoBehaviour {
         }
         if (active && renderer.enabled)
         {
-            laserTime -= Time.deltaTime;
+            shieldTime -= Time.deltaTime;
         }
 
-        if (laserTime < 0)
+        if (shieldTime < 0)
         {
             renderer.enabled = false;
             collider.enabled = false;
             active = false;
-            laserTime = 3.0f;
+            shieldTime = 3.0f;
         }
+
 	}
 
-    void OnTriggerStay(Collider other)
+    void OnTriggerEnter(Collider other)
     {
-        if (!active)
-            return;
-        if (other.tag == "Enemy")
-        {
-            //deal damage to the enemy
-            other.GetComponent<CellScript>().TakeDamage(damage * Time.deltaTime);
-        }
+
     }
 
     public void SetActive(bool _active)
