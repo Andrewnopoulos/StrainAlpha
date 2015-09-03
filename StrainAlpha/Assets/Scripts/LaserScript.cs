@@ -10,8 +10,6 @@ public class LaserScript : MonoBehaviour {
     private Renderer renderer;
     private Collider collider;
 
-    public float laserTime = 3.0f;
-
     private int enemyLayer = 9;
 
 	// Use this for initialization
@@ -29,17 +27,11 @@ public class LaserScript : MonoBehaviour {
             renderer.enabled = true;
             collider.enabled = true;
         }
-        if (active && renderer.enabled)
-        {
-            laserTime -= Time.deltaTime;
-        }
 
-        if (laserTime < 0)
+        if (!active && renderer.enabled)
         {
             renderer.enabled = false;
             collider.enabled = false;
-            active = false;
-            laserTime = 3.0f;
         }
 	}
 
@@ -47,7 +39,7 @@ public class LaserScript : MonoBehaviour {
     {
         if (!active)
             return;
-        if (other.gameObject.layer == enemyLayer)
+        if (other.gameObject.layer == enemyLayer && other.tag == "Enemy")
         {
             //deal damage to the enemy
             other.GetComponent<CellScript>().TakeDamage(damage * Time.deltaTime);
