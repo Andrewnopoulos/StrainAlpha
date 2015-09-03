@@ -23,6 +23,12 @@ public class CellScript : MonoBehaviour {
 
     private Transform playerLocation;
 
+    private SkinnedMeshRenderer skinMeshRenderer;
+
+    private float blend0 = 0;
+    private float blend1 = 0;
+    private float blend2 = 0;
+
 	// Use this for initialization
 	void Start () {
         myGenes = new Chromosome(0.1f);
@@ -33,6 +39,7 @@ public class CellScript : MonoBehaviour {
     void Awake()
     {
         playerLocation = GameObject.FindGameObjectWithTag("Player").transform;
+        skinMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
     }
 
     float distanceFrom(GameObject otherObject)
@@ -66,7 +73,14 @@ public class CellScript : MonoBehaviour {
         }
 
         transform.position += velocity;
+
+        UpdateAnimation();
 	}
+
+    void UpdateAnimation()
+    {
+        skinMeshRenderer.SetBlendShapeWeight(1, 100 * Mathf.Sin(Time.time));
+    }
 
     void InfectedUpdate()
     {
