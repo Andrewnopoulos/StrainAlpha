@@ -94,6 +94,11 @@ public class PlayerScript : MonoBehaviour {
         if (currentDashCooldown > 0)
             currentDashCooldown -= Time.deltaTime;
 
+        if (moveDamp < 1.0f && !laser.GetActive())
+        {
+            moveDamp = 1.0f;
+        }
+
         Vector3 movementVector = velocity;
         Vector3 lookVector = Vector3.zero;
 
@@ -234,6 +239,7 @@ public class PlayerScript : MonoBehaviour {
                     case "Laser":
                         laser.SetActive(true);
                         fireCooldown = laser.laserTime;
+                        moveDamp = 0.4f;
                         break;
 
                     default:
