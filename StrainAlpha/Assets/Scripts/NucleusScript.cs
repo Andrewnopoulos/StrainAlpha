@@ -7,6 +7,8 @@ public class NucleusScript : MonoBehaviour {
     public float acceleration = 10.0f;
     public float maxVelocity = 10.0f;
 
+    private bool attracted;
+
     private Vector3 velocity;
     
     private Chromosome myGenes;
@@ -21,11 +23,13 @@ public class NucleusScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-	    if (Vector3.Distance(playerLocation.position, transform.position) < magnetismRadius)
+	    if (Vector3.Distance(playerLocation.position, transform.position) < magnetismRadius || attracted)
         {
             Vector3 vectorToPlayer = playerLocation.position - transform.position;
 
             velocity += (vectorToPlayer / vectorToPlayer.magnitude) * Time.deltaTime * acceleration;
+
+            attracted = true;
         }
 
         if (velocity.magnitude > maxVelocity)

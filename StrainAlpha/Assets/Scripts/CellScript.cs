@@ -29,6 +29,12 @@ public class CellScript : MonoBehaviour {
     private float blend1 = 0;
     private float blend2 = 0;
 
+    public float animationOffset;
+    public float animationSpeed;
+
+    // animates to twice of maxAnimationAmplitude's value
+    public float maxAnimationAmplitude = 30;
+
 	// Use this for initialization
 	void Start () {
         myGenes = new Chromosome(0.1f);
@@ -40,6 +46,9 @@ public class CellScript : MonoBehaviour {
     {
         playerLocation = GameObject.FindGameObjectWithTag("Player").transform;
         skinMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
+
+        animationOffset = Random.Range(0.0f, 10.0f);
+        animationSpeed = Random.Range(0.7f, 1.3f);
     }
 
     float distanceFrom(GameObject otherObject)
@@ -79,7 +88,7 @@ public class CellScript : MonoBehaviour {
 
     void UpdateAnimation()
     {
-        skinMeshRenderer.SetBlendShapeWeight(1, 100 * Mathf.Sin(Time.time));
+        skinMeshRenderer.SetBlendShapeWeight(1, (Mathf.Sin(animationSpeed * Time.time + animationOffset) * maxAnimationAmplitude) + maxAnimationAmplitude);
     }
 
     void InfectedUpdate()
