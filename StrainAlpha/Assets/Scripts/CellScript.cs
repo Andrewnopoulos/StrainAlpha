@@ -13,8 +13,9 @@ public class CellScript : MonoBehaviour {
     private float MaxSpeed = 5.0f;
 
     private bool infected = false;
+    private bool playerDetected = false;
 
-    public float detectionRange = 100.0f;
+    public float detectionRange = 5.0f;
 
     //fire rate is synonymous with range; values over 0.5 make the enemy melee
     private float fireRate = 1.0f;
@@ -34,6 +35,11 @@ public class CellScript : MonoBehaviour {
     public float animationOffset;
     public float animationSpeed;
 
+    private Vector3 rotationAxis;
+    private float rotationSpeed;
+
+    public float MaxAngularVelocity = 30;
+
     // animates to twice of maxAnimationAmplitude's value
     public float maxAnimationAmplitude = 30;
 
@@ -41,6 +47,7 @@ public class CellScript : MonoBehaviour {
 	void Start () {
         myGenes = new Chromosome(0.1f);
         infected = false;
+        playerDetected = false;
         velocity = new Vector3(0, 0, 0);
 	}
 
@@ -51,6 +58,11 @@ public class CellScript : MonoBehaviour {
 
         animationOffset = Random.Range(0.0f, 10.0f);
         animationSpeed = Random.Range(0.7f, 1.3f);
+
+        rotationAxis = new Vector3(Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f));
+        rotationAxis.Normalize();
+
+        rotationSpeed = Random.Range(-MaxAngularVelocity, MaxAngularVelocity);
     }
 
     float distanceFrom(GameObject otherObject)
@@ -86,6 +98,8 @@ public class CellScript : MonoBehaviour {
 
         transform.position += velocity * Time.deltaTime;
 
+        transform.Rotate(rotationAxis, rotationSpeed * Time.deltaTime);
+
         UpdateAnimation();
 	}
 
@@ -96,7 +110,12 @@ public class CellScript : MonoBehaviour {
 
     void InfectedUpdate()
     {
-        velocity += (playerLocation.position - transform.position) * speed * Time.deltaTime;
+        if( playerDetected || (playerLocation.position - transform.position).magnitude < detectionRange)
+        {
+            velocity += (playerLocation.position - transform.position) * speed * Time.deltaTime;
+            playerDetected = true;
+        }
+        
     }
 
     public void TakeDamage(float _damage)
