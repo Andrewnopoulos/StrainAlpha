@@ -30,6 +30,7 @@ public class CellScript : MonoBehaviour {
     private float blend2 = 0;
 
     public float animationOffset;
+    public float animationSpeed;
 
     // animates to twice of maxAnimationAmplitude's value
     public float maxAnimationAmplitude = 30;
@@ -47,6 +48,7 @@ public class CellScript : MonoBehaviour {
         skinMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
 
         animationOffset = Random.Range(0.0f, 10.0f);
+        animationSpeed = Random.Range(0.7f, 1.3f);
     }
 
     float distanceFrom(GameObject otherObject)
@@ -86,7 +88,7 @@ public class CellScript : MonoBehaviour {
 
     void UpdateAnimation()
     {
-        skinMeshRenderer.SetBlendShapeWeight(1, (Mathf.Sin(Time.time + animationOffset) * maxAnimationAmplitude) + maxAnimationAmplitude);
+        skinMeshRenderer.SetBlendShapeWeight(1, (Mathf.Sin(animationSpeed * Time.time + animationOffset) * maxAnimationAmplitude) + maxAnimationAmplitude);
     }
 
     void InfectedUpdate()
