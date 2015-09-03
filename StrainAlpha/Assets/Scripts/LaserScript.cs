@@ -58,4 +58,9 @@ public class LaserScript : MonoBehaviour {
     {
         active = _active;
     }
+
+    public bool GetActive()
+    {
+        return active;
+    }
 }

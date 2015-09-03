@@ -36,7 +36,7 @@ public class PlayerScript : MonoBehaviour {
     private float fireRate;
 
     private float moveDamp = 1.0f;
-    private float turnDamp = 1.0f;
+    private float turnDamp = 0.0f;
 
     //time until next shot
     private float fireCooldown = 0.0f;
@@ -93,6 +93,12 @@ public class PlayerScript : MonoBehaviour {
 
         if (currentDashCooldown > 0)
             currentDashCooldown -= Time.deltaTime;
+
+        if (moveDamp < 1.0f && !laser.GetActive())
+        {
+            moveDamp = 1.0f;
+            turnDamp = 0.0f;
+        }
 
         Vector3 movementVector = velocity;
         Vector3 lookVector = Vector3.zero;
@@ -162,7 +168,9 @@ public class PlayerScript : MonoBehaviour {
 
             if (lookVector.sqrMagnitude > 0.2f)
             {
-                transform.rotation = Quaternion.LookRotation(lookVector);
+                Vector3 buttstuff = Vector3.zero;
+                transform.rotation = Quaternion.LookRotation(Vector3.SmoothDamp(transform.forward, lookVector, ref buttstuff, turnDamp));
+                //transform.rotation = Quaternion.LookRotation(lookVector);
                 if (fireCooldown <= 0)
                 {
                     GameObject newBullet = (GameObject)Instantiate(bulletPrefab, transform.position, transform.rotation);
@@ -234,6 +242,8 @@ public class PlayerScript : MonoBehaviour {
                     case "Laser":
                         laser.SetActive(true);
                         fireCooldown = laser.laserTime;
+                        moveDamp = 0.4f;
+                        turnDamp = 0.15f;
                         break;
 
                     default:
