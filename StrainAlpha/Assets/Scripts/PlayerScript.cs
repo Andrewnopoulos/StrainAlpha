@@ -267,6 +267,26 @@ public class PlayerScript : MonoBehaviour {
             if (Input.GetMouseButton(1))
             {
                 //activate special power
+                switch (weaponText.text)
+                {
+                    case "Charge":
+                        break;
+
+                    case "Bomb":
+                        break;
+
+                    case "Shield":
+                        shield.SetActive(true);
+                        break;
+
+                    case "Laser":
+                        laser.SetActive(true);
+                        fireCooldown = laser.laserTime;
+                        break;
+
+                    default:
+                        break;
+                }
             }
         }
 	}
