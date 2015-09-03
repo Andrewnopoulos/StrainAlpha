@@ -50,7 +50,9 @@ public class NPCManager : MonoBehaviour {
     void SpawnNucleus(CellScript inputCell)
     {
         GameObject newNucleus = (GameObject)Instantiate(nucleus, inputCell.transform.position, inputCell.transform.rotation);
-        newNucleus.GetComponent<NucleusScript>().SetChromosome(inputCell.GetChromosome());
+        NucleusScript script = newNucleus.GetComponent<NucleusScript>();
+        script.SetChromosome(inputCell.GetChromosome());
+        script.SetVelocity(inputCell.velocity);
     }
 
     void CreateNPC()

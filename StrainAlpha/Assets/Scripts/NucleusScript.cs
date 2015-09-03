@@ -20,6 +20,11 @@ public class NucleusScript : MonoBehaviour {
         playerLocation = GameObject.Find("Player").GetComponent<Transform>();
 	}
 	
+    public void SetVelocity(Vector3 _inputVel)
+    {
+        velocity = _inputVel;
+    }
+
 	// Update is called once per frame
 	void Update () {
 
@@ -30,6 +35,10 @@ public class NucleusScript : MonoBehaviour {
             velocity += (vectorToPlayer / vectorToPlayer.magnitude) * Time.deltaTime * acceleration;
 
             attracted = true;
+        }
+        else
+        {
+            velocity -= Time.deltaTime * velocity;
         }
 
         if (velocity.magnitude > maxVelocity)
