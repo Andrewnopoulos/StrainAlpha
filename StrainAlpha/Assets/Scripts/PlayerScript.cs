@@ -10,6 +10,9 @@ public class PlayerScript : MonoBehaviour {
     public GameObject canvas;
     private Text weaponText;
 
+    private ShieldScript shield;
+    private LaserScript laser;
+
     private CharacterController characterController;
 
     private float mass = 1.0f;
@@ -32,7 +35,8 @@ public class PlayerScript : MonoBehaviour {
     private float speed;
     private float fireRate;
 
-    private float moveDelay = 0.0f;
+    private float moveDamp = 1.0f;
+    private float turnDamp = 1.0f;
 
     //time until next shot
     private float fireCooldown = 0.0f;
@@ -57,6 +61,9 @@ public class PlayerScript : MonoBehaviour {
         characterController = GetComponent<CharacterController>();
         canvas = GameObject.Find("CanvasObject");
         weaponText = canvas.GetComponentInChildren<Text>();
+
+        shield = gameObject.GetComponentInChildren<ShieldScript>();
+        laser = gameObject.GetComponentInChildren<LaserScript>();
 
         maxHealth = baseHealth;
         maxDamage = baseDamage;
@@ -86,9 +93,6 @@ public class PlayerScript : MonoBehaviour {
 
         if (currentDashCooldown > 0)
             currentDashCooldown -= Time.deltaTime;
-
-        if (moveDelay > 0)
-            moveDelay -= Time.deltaTime;
 
         Vector3 movementVector = velocity;
         Vector3 lookVector = Vector3.zero;
@@ -147,7 +151,7 @@ public class PlayerScript : MonoBehaviour {
         
         }
         movementVector.y = 0.0f;
-        characterController.Move(movementVector * speed * Time.deltaTime);
+        characterController.Move(movementVector * speed * moveDamp * Time.deltaTime);
         characterController.transform.position = new Vector3(characterController.transform.position.x, 0, characterController.transform.position.z);
 
         if (isControllerConnected)
@@ -159,7 +163,6 @@ public class PlayerScript : MonoBehaviour {
             if (lookVector.sqrMagnitude > 0.2f)
             {
                 transform.rotation = Quaternion.LookRotation(lookVector);
-
                 if (fireCooldown <= 0)
                 {
                     GameObject newBullet = (GameObject)Instantiate(bulletPrefab, transform.position, transform.rotation);
@@ -190,18 +193,6 @@ public class PlayerScript : MonoBehaviour {
             }
         }
 
-        //if (Input.GetAxis("RightTrigger") > 0.1f)
-        //{
-        //    if (fireCooldown <= 0)
-        //    {
-        //        GameObject newBullet = (GameObject)Instantiate(bulletPrefab, transform.position, transform.rotation);
-        //        BulletScript script = newBullet.GetComponent<BulletScript>();
-        //        script.damage = damage;
-        //        script.speed = 15.0f;
-        //        fireCooldown = fireRate;
-        //    }
-        //}
-
         if (isControllerConnected)
         {
             if (Input.GetButton("A"))
@@ -223,6 +214,31 @@ public class PlayerScript : MonoBehaviour {
             {
                 //laser
                 weaponText.text = "Laser";
+            }
+
+            if (Input.GetAxis("RightTrigger") > 0.1f)
+            {
+                //activate special power
+                switch (weaponText.text)
+                {
+                    case "Charge":
+                        break;
+
+                    case "Bomb":
+                        break;
+
+                    case "Shield":
+                        shield.SetActive(true);
+                        break;
+
+                    case "Laser":
+                        laser.SetActive(true);
+                        fireCooldown = laser.laserTime;
+                        break;
+
+                    default:
+                        break;
+                }
             }
         }
         else
@@ -246,6 +262,11 @@ public class PlayerScript : MonoBehaviour {
             {
                 //laser
                 weaponText.text = "Laser";
+            }
+
+            if (Input.GetMouseButton(1))
+            {
+                //activate special power
             }
         }
 	}

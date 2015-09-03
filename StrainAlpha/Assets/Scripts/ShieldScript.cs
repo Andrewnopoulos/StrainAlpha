@@ -8,7 +8,7 @@ public class ShieldScript : MonoBehaviour {
     private Renderer renderer;
     private Collider collider;
 
-    private float shieldTime = 3.0f;
+    private float shieldTime = 6.0f;
 
     private int enemyLayer = 9;
     private int enemyBulletLayer = 10;

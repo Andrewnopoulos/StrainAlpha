@@ -10,7 +10,7 @@ public class LaserScript : MonoBehaviour {
     private Renderer renderer;
     private Collider collider;
 
-    private float laserTime = 3.0f;
+    public float laserTime = 3.0f;
 
     private int enemyLayer = 9;
 
