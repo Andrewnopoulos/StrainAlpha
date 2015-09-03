@@ -8,7 +8,9 @@ public class CellScript : MonoBehaviour {
 
     private float health = 5.0f;
     private float damage = 2.0f;
-    private float speed = 8.5f;
+    private float speed = 3.5f;
+
+    private float MaxSpeed = 5.0f;
 
     private bool infected = false;
 
@@ -55,9 +57,16 @@ public class CellScript : MonoBehaviour {
     {
         return (gameObject.transform.position - otherObject.transform.position).magnitude;
     }
+
+    public void SetVelocityDelta(Vector3 _inputVelocityChange)
+    {
+        velocity += _inputVelocityChange;
+    }
 	
 	// Update is called once per frame
 	void Update () {
+
+        infected = true;
 
         if (health <= 0)
         {
@@ -65,23 +74,17 @@ public class CellScript : MonoBehaviour {
             manager.AddToKillList(gameObject);
         }
 
-        int neighbourCount = 0;
-
-        //foreach(GameObject cell in neutralCells)
-        //{
-        //    if (distanceFrom(cell) < detectionRange)
-        //    {
-
-        //        neighbourCount++;
-        //    }
-        //}
-
         if (infected)
         {
             InfectedUpdate();
+
+            if (velocity.magnitude >= MaxSpeed)
+            {
+                velocity = velocity / velocity.magnitude * MaxSpeed;
+            }
         }
 
-        transform.position += velocity;
+        transform.position += velocity * Time.deltaTime;
 
         UpdateAnimation();
 	}
@@ -93,7 +96,7 @@ public class CellScript : MonoBehaviour {
 
     void InfectedUpdate()
     {
-
+        velocity += (playerLocation.position - transform.position) * speed * Time.deltaTime;
     }
 
     public void TakeDamage(float _damage)
