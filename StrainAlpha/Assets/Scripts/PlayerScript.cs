@@ -52,6 +52,8 @@ public class PlayerScript : MonoBehaviour {
     private float dashCooldown = 2.0f;
     private float currentDashCooldown = 0.0f;
 
+    private float weaponSelectCooldown = 0.0f;
+
     private int nucleusLayer = 14;
 
     Chromosome playerGenes;
@@ -98,6 +100,11 @@ public class PlayerScript : MonoBehaviour {
         {
             moveDamp = 1.0f;
             turnDamp = 0.0f;
+        }
+
+        if (weaponSelectCooldown > 0.0f)
+        {
+            weaponSelectCooldown -= Time.deltaTime;
         }
 
         Vector3 movementVector = velocity;
@@ -224,6 +231,15 @@ public class PlayerScript : MonoBehaviour {
                 weaponText.text = "Laser";
             }
 
+            if (Input.GetButton("RightBumper") && weaponSelectCooldown <= 0.0f)
+            {
+                ForwardCyclePower();
+            }
+            else if (Input.GetButton("LeftBumper") && weaponSelectCooldown <= 0.0f)
+            {
+                BackCyclePower();
+            }
+
             if (Input.GetAxis("RightTrigger") > 0.1f)
             {
                 //activate special power
@@ -300,6 +316,59 @@ public class PlayerScript : MonoBehaviour {
             }
         }
 	}
+
+    private void ForwardCyclePower()
+    {
+        switch (weaponText.text)
+        {
+            case "Charge":
+                weaponText.text = "Bomb";
+                break;
+
+            case "Bomb":
+                weaponText.text = "Shield";
+                break;
+
+            case "Shield":
+                weaponText.text = "Laser";
+                break;
+
+            case "Laser":
+                weaponText.text = "Charge";
+                break;
+
+            default:
+                break;
+        }
+        weaponSelectCooldown = 0.5f;
+    }
+
+    private void BackCyclePower()
+    {
+        switch (weaponText.text)
+        {
+            case "Charge":
+                weaponText.text = "Laser";
+                break;
+
+            case "Bomb":
+                weaponText.text = "Charge";
+                break;
+
+            case "Shield":
+                weaponText.text = "Bomb";
+                break;
+
+            case "Laser":
+                weaponText.text = "Shield";
+                break;
+
+            default:
+                break;
+        }
+        weaponSelectCooldown = 0.5f;
+    }
+
 
     void AddForce(Vector3 force)
     {
