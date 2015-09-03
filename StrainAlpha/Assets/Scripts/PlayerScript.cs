@@ -96,12 +96,6 @@ public class PlayerScript : MonoBehaviour {
         if (currentDashCooldown > 0)
             currentDashCooldown -= Time.deltaTime;
 
-        if (moveDamp < 1.0f && !laser.GetActive())
-        {
-            moveDamp = 1.0f;
-            turnDamp = 0.0f;
-        }
-
         if (weaponSelectCooldown > 0.0f)
         {
             weaponSelectCooldown -= Time.deltaTime;
@@ -210,27 +204,6 @@ public class PlayerScript : MonoBehaviour {
 
         if (isControllerConnected)
         {
-            if (Input.GetButton("A"))
-            {
-                //charge
-                weaponText.text = "Charge";
-            }
-            if (Input.GetButton("B"))
-            {
-                //spirit bomb
-                weaponText.text = "Bomb";
-            }
-            if (Input.GetButton("X"))
-            {
-                //shield
-                weaponText.text = "Shield";
-            }
-            if (Input.GetButton("Y"))
-            {
-                //laser
-                weaponText.text = "Laser";
-            }
-
             if (Input.GetButton("RightBumper") && weaponSelectCooldown <= 0.0f)
             {
                 ForwardCyclePower();
@@ -249,6 +222,7 @@ public class PlayerScript : MonoBehaviour {
                         break;
 
                     case "Bomb":
+
                         break;
 
                     case "Shield":
@@ -256,8 +230,10 @@ public class PlayerScript : MonoBehaviour {
                         break;
 
                     case "Laser":
+                        if (laser.GetActive())
+                            break;
                         laser.SetActive(true);
-                        fireCooldown = laser.laserTime;
+                        fireCooldown = 100.0f;
                         moveDamp = 0.4f;
                         turnDamp = 0.15f;
                         break;
@@ -266,52 +242,14 @@ public class PlayerScript : MonoBehaviour {
                         break;
                 }
             }
-        }
-        else
-        {
-            if (Input.GetKey(KeyCode.Alpha1))
+            else
             {
-                //charge
-                weaponText.text = "Charge";
-            }
-            if (Input.GetKey(KeyCode.Alpha2))
-            {
-                //spirit bomb
-                weaponText.text = "Bomb";
-            }
-            if (Input.GetKey(KeyCode.Alpha3))
-            {
-                //shield
-                weaponText.text = "Shield";
-            }
-            if (Input.GetKey(KeyCode.Alpha4))
-            {
-                //laser
-                weaponText.text = "Laser";
-            }
-
-            if (Input.GetMouseButton(1))
-            {
-                //activate special power
-                switch (weaponText.text)
+                if (laser.GetActive())
                 {
-                    case "Charge":
-                        break;
-
-                    case "Bomb":
-                        break;
-
-                    case "Shield":
-                        shield.SetActive(true);
-                        break;
-
-                    case "Laser":
-                        laser.SetActive(true);
-                        fireCooldown = laser.laserTime;
-                        break;
-
-                    default:
-                        break;
+                    laser.SetActive(false);
+                    fireCooldown = 0.05f;
+                    moveDamp = 1.0f;
+                    turnDamp = 0.0f;
                 }
             }
         }
@@ -340,7 +278,7 @@ public class PlayerScript : MonoBehaviour {
             default:
                 break;
         }
-        weaponSelectCooldown = 0.5f;
+        weaponSelectCooldown = 0.3f;
     }
 
     private void BackCyclePower()
@@ -366,7 +304,7 @@ public class PlayerScript : MonoBehaviour {
             default:
                 break;
         }
-        weaponSelectCooldown = 0.5f;
+        weaponSelectCooldown = 0.3f;
     }
 
 

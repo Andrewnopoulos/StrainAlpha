@@ -3,13 +3,16 @@ using System.Collections;
 
 public class BombScript : MonoBehaviour {
 
-    public float damage = 10.0f;
+    public float damage = 100.0f;
 
-    public float speed = 1.0f;
-    public float size;
+    public float speed = 4.0f;
+    public Vector3 size;
 
-    private float lifeTime = 2.0f;
+    public float explosionRadius;
 
+    private float lifeTime = 0.8f;
+
+    private bool active = false;
     private bool alive = true;
 
     private int enemyLayer = 9;
@@ -17,38 +20,50 @@ public class BombScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
     {
-
+        size = transform.localScale;
+        explosionRadius = gameObject.GetComponent<SphereCollider>().radius;
 	}
 
     // Update is called once per frame
     void Update()
     {
-        transform.position += transform.forward * speed * Time.deltaTime;
+        if (!active && lifeTime > 0.0f)
+        {
+            size += new Vector3(0.5f, 0.5f, 0.5f) * Time.deltaTime;
+            lifeTime = 0.8f;
+        }
+        else if (active && lifeTime > 0.0f)
+        {
+            transform.position += transform.forward * speed * Time.deltaTime;
+        }
 
         lifeTime -= Time.deltaTime;
 
-        if (lifeTime < 0)
+        if (lifeTime <= -0.1f)
+        {
             alive = false;
+        }
 
-        if (!alive)
-            Kill();
     }
 
-    void Kill()
+    public void Launch()
     {
-        Destroy(gameObject);
+        gameObject.transform.parent = null;
+        active = true;
     }
 
-    void OnTriggerEnter(Collider other)
+    void OnTriggerStay(Collider other)
     {
         if (!alive)
             return;
+        if (!active)
+            return;
+        if (lifeTime > 0)
+            return;
         if (other.gameObject.layer == enemyLayer)
         {
-            //deal damage to the enemy
-            other.GetComponent<CellScript>().TakeDamage(damage);
+            other.GetComponent<CellScript>().TakeDamage(damage * Time.deltaTime);
         }
-        alive = false;
     }
 
 }

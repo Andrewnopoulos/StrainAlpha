@@ -5,7 +5,6 @@ public class BulletScript : MonoBehaviour {
 
     public float damage = 0.0f;
     public float speed = 0.0f;
-    public float size = 0.2f;
 
     private float lifeTime = 2.0f;
 
@@ -42,7 +41,7 @@ public class BulletScript : MonoBehaviour {
     {
         if (!alive)
             return;
-        if (other.gameObject.layer == enemyLayer)
+        if (other.gameObject.layer == enemyLayer && other.tag == "Enemy")
         {
             //deal damage to the enemy
             other.GetComponent<CellScript>().TakeDamage(damage);
