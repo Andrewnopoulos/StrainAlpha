@@ -48,6 +48,8 @@ public class PlayerScript : MonoBehaviour {
     private float dashCooldown = 2.0f;
     private float currentDashCooldown = 0.0f;
 
+    private int nucleusLayer = 14;
+
     Chromosome playerGenes;
 
 	void Start () {
@@ -257,10 +259,7 @@ public class PlayerScript : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player")
-            return;
-
-        if (other.tag == "Nucleus")
+        if (other.gameObject.layer == nucleusLayer)
         {
             playerGenes.AddChromosome(other.GetComponent<NucleusScript>().GetChromosome());
             Destroy(other.gameObject);

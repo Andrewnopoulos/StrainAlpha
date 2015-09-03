@@ -12,6 +12,8 @@ public class LaserScript : MonoBehaviour {
 
     private float laserTime = 3.0f;
 
+    private int enemyLayer = 9;
+
 	// Use this for initialization
 	void Start () {
 
@@ -45,7 +47,7 @@ public class LaserScript : MonoBehaviour {
     {
         if (!active)
             return;
-        if (other.tag == "Enemy")
+        if (other.gameObject.layer == enemyLayer)
         {
             //deal damage to the enemy
             other.GetComponent<CellScript>().TakeDamage(damage * Time.deltaTime);
