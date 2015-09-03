@@ -11,6 +11,8 @@ public class BulletScript : MonoBehaviour {
 
     private bool alive = true;
 
+    private int enemyLayer = 9;
+
 	// Use this for initialization
 	void Start () {
 
@@ -40,9 +42,7 @@ public class BulletScript : MonoBehaviour {
     {
         if (!alive)
             return;
-        if (other.tag == "Player" || other.tag == "Nucleus")
-            return;
-        if (other.tag == "Enemy")
+        if (other.gameObject.layer == enemyLayer)
         {
             //deal damage to the enemy
             other.GetComponent<CellScript>().TakeDamage(damage);

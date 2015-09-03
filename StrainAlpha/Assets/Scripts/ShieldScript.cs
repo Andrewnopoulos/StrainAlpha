@@ -10,6 +10,9 @@ public class ShieldScript : MonoBehaviour {
 
     private float shieldTime = 3.0f;
 
+    private int enemyLayer = 9;
+    private int enemyBulletLayer = 10;
+
 	// Use this for initialization
 	void Start () {
 
@@ -43,7 +46,10 @@ public class ShieldScript : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
-
+        if (other.gameObject.layer == enemyBulletLayer)
+        {
+            Destroy(other);
+        }
     }
 
     public void SetActive(bool _active)
