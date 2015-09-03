@@ -4,7 +4,7 @@ using System.Collections;
 public class NucleusScript : MonoBehaviour {
 
     public float magnetismRadius = 100.0f;
-    public float acceleration = 10.0f;
+    public float acceleration = 7.0f;
     public float maxVelocity = 10.0f;
 
     private bool attracted;
@@ -30,9 +30,12 @@ public class NucleusScript : MonoBehaviour {
 
 	    if (Vector3.Distance(playerLocation.position, transform.position) < magnetismRadius || attracted)
         {
-            Vector3 vectorToPlayer = playerLocation.position - transform.position;
+            //Vector3 vectorToPlayer = playerLocation.position - transform.position;
 
-            velocity += (vectorToPlayer / vectorToPlayer.magnitude) * Time.deltaTime * acceleration;
+            //velocity += (vectorToPlayer / vectorToPlayer.magnitude) * Time.deltaTime * acceleration;
+
+            Vector3 toPlayer = playerLocation.position - transform.position;
+            transform.position = transform.position + (Time.deltaTime * acceleration * (toPlayer) / toPlayer.sqrMagnitude);
 
             attracted = true;
         }
@@ -47,7 +50,10 @@ public class NucleusScript : MonoBehaviour {
             velocity *= maxVelocity;
         }
 
-        transform.position += velocity * Time.deltaTime;
+        if (!attracted)
+        {
+            transform.position += velocity * Time.deltaTime;
+        }
 
 	}
 
