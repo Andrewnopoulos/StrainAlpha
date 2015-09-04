@@ -208,11 +208,7 @@ public class PlayerScript : MonoBehaviour {
                 //transform.rotation = Quaternion.LookRotation(lookVector);
                 if (fireCooldown <= 0)
                 {
-                    GameObject newBullet = (GameObject)Instantiate(bulletPrefab, transform.position, transform.rotation);
-                    BulletScript script = newBullet.GetComponent<BulletScript>();
-                    script.damage = damage;
-                    script.speed = 15.0f;
-                    fireCooldown = fireRate;
+                    ShootBullet();
                 }
             }
         }
@@ -227,11 +223,7 @@ public class PlayerScript : MonoBehaviour {
             {
                 if (fireCooldown <= 0)
                 {
-                    GameObject newBullet = (GameObject)Instantiate(bulletPrefab, transform.position, transform.rotation);
-                    BulletScript script = newBullet.GetComponent<BulletScript>();
-                    script.damage = damage;
-                    script.speed = 15.0f;
-                    fireCooldown = fireRate;
+                    ShootBullet();
                 }
             }
         }
@@ -305,6 +297,15 @@ public class PlayerScript : MonoBehaviour {
             }
         }
 	}
+
+    private void ShootBullet()
+    {
+        GameObject newBullet = (GameObject)Instantiate(bulletPrefab, transform.position, transform.rotation);
+        BulletScript script = newBullet.GetComponent<BulletScript>();
+        script.damage = damage;
+        script.speed = 15.0f;
+        fireCooldown = fireRate;
+    }
 
     private void ForwardCyclePower()
     {
