@@ -8,6 +8,8 @@ public class NPCManager : MonoBehaviour {
 
     public GameObject nucleus;
 
+    private PlayerScript playerScript;
+
     private List<CellScript> friendlyList;
     private List<CellScript> infectedList;
     private List<CellScript> killList;
@@ -29,6 +31,8 @@ public class NPCManager : MonoBehaviour {
         {
            CreateInfectedCell(new Chromosome(0.1f), new Vector3(10, 0, 10));
         }
+
+        playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>();
     }
 
     void SpawnNeutral()
@@ -37,6 +41,7 @@ public class NPCManager : MonoBehaviour {
 
         GameObject newCell = (GameObject)Instantiate(cell, randomPos, transform.rotation);
         CellScript script = newCell.GetComponent<CellScript>();
+
         script.manager = this;
 
         friendlyList.Add(script);
@@ -51,28 +56,13 @@ public class NPCManager : MonoBehaviour {
 
     void Update()
     {
-        UpdateInfectedTargets();
 
         UpdateDeadInfected();
     }
 
-    void UpdateInfectedTargets()
+    public List<CellScript> GetNeutralCells()
     {
-        foreach (CellScript enemy in infectedList)
-        {
-            Transform closest = enemy.GetTargetLocation();
-            Vector3 enemyPos = enemy.GetPosition();
-
-            foreach(CellScript neutral in friendlyList)
-            {
-                // if the distance you're looking at is closer than the previously looked at position
-                if ((neutral.GetTargetLocation().position - enemyPos).magnitude < (closest.position - enemyPos).magnitude)
-                {
-                    closest = neutral.GetTargetLocation();
-                }
-            }
-            enemy.SetTargetLocation(closest.position);
-        }
+        return friendlyList;
     }
 
     void SpawnNucleus(CellScript inputCell)
@@ -85,8 +75,8 @@ public class NPCManager : MonoBehaviour {
 
     public void AddToKillList(CellScript npc)
     {
-        killList.Add(npc);
         infectedList.Remove(npc);
+        killList.Add(npc);
     }
 
     private void UpdateDeadInfected()
@@ -109,10 +99,8 @@ public class NPCManager : MonoBehaviour {
         infectedList.Add(script);
     }
 
-    private void InfectNeutralCell(CellScript _neutralCell, Chromosome _inputChromosome)
+    public void InfectNeutralCell(CellScript _neutralCell)
     {
-        _neutralCell.BecomeInfected(_inputChromosome);
-
         friendlyList.Remove(_neutralCell);
         infectedList.Add(_neutralCell);
     }

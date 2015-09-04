@@ -14,6 +14,7 @@ public class CellScript : MonoBehaviour {
 
     public bool infected = false;
     private bool playerDetected = false;
+    private bool roaming = true;
 
     public float detectionRange = 5.0f;
 
@@ -25,6 +26,9 @@ public class CellScript : MonoBehaviour {
     private Chromosome myGenes;
 
     public Transform targetLocation;
+    public Transform position;
+
+    private Transform playerLocation;
 
     private SkinnedMeshRenderer skinMeshRenderer;
 
@@ -45,13 +49,16 @@ public class CellScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        targetLocation = GameObject.FindGameObjectWithTag("Player").transform;
+        playerLocation = GameObject.FindGameObjectWithTag("Player").transform;
+        targetLocation = playerLocation;
+        
         skinMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
+        position = gameObject.transform;
 	}
 
-    public Vector3 GetPosition()
+    public Transform GetPosition()
     {
-        return transform.position;
+        return position;
     }
 
     public Transform GetTargetLocation()
@@ -59,9 +66,9 @@ public class CellScript : MonoBehaviour {
         return targetLocation;
     }
 
-    public void SetTargetLocation(Vector3 _inputLocation)
+    public void SetTargetLocation(Transform _inputLocation)
     {
-        targetLocation.position = _inputLocation;
+        targetLocation = _inputLocation;
     }
 
     void Awake()
@@ -69,6 +76,7 @@ public class CellScript : MonoBehaviour {
         myGenes = new Chromosome(0.04f);
         playerDetected = false;
         infected = false;
+        roaming = true;
         velocity = new Vector3(0, 0, 0);
 
         animationOffset = Random.Range(0.0f, 10.0f);
@@ -125,11 +133,47 @@ public class CellScript : MonoBehaviour {
 
     void InfectedUpdate()
     {
-        if( playerDetected || (targetLocation.position - transform.position).magnitude < detectionRange)
+        List<CellScript> neutralCells = manager.GetNeutralCells();
+
+        Transform closest = targetLocation;
+        Vector3 myPos = position.position;
+
+        foreach (CellScript neutral in neutralCells)
+        {
+            if (closest != null)
+            {
+                float newDistance = (neutral.GetPosition().position - myPos).magnitude;
+                float oldDistance = (closest.position - myPos).magnitude;
+
+                // if the distance you're looking at is closer than the previously looked at position
+                if (newDistance < oldDistance)
+                {
+                    closest = neutral.GetPosition();
+                }
+            }
+            
+        }
+
+        if (playerLocation != null && closest != null)
+        {
+            if ((playerLocation.position - myPos).magnitude < (closest.position - myPos).magnitude)
+            {
+                closest = playerLocation;
+                playerDetected = true;
+            }
+            targetLocation = closest;
+        }
+        
+        if (targetLocation != null)
         {
             velocity += (targetLocation.position - transform.position) * speed * Time.deltaTime;
-            playerDetected = true;
         }
+        
+        //if( playerDetected || (targetLocation.position - transform.position).magnitude < detectionRange)
+        //{
+        //    velocity += (targetLocation.position - transform.position) * speed * Time.deltaTime;
+        //    playerDetected = true;
+        //}
     }
 
     public void TakeDamage(float _damage)
@@ -165,6 +209,7 @@ public class CellScript : MonoBehaviour {
         if (other.tag == "Enemy" && tag == "Neutral")
         {
             BecomeInfected(other.GetComponent<CellScript>().GetChromosome());
+            manager.InfectNeutralCell(this);
         }
     }
 }
