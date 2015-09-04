@@ -56,6 +56,11 @@ public class PlayerScript : MonoBehaviour {
 
     private int nucleusLayer = 14;
 
+    private bool laserActive = false;
+    private bool shieldActive = false;
+    private bool chargeActive = false;
+    private bool bombActive = false;
+
     Chromosome playerGenes;
 
 	void Start () {
@@ -97,9 +102,16 @@ public class PlayerScript : MonoBehaviour {
             currentDashCooldown -= Time.deltaTime;
 
         if (weaponSelectCooldown > 0.0f)
-        {
             weaponSelectCooldown -= Time.deltaTime;
-        }
+
+        if (laserActive)
+            
+        if (shieldActive)
+
+        if (chargeActive)
+
+        if (bombActive)
+
 
         Vector3 movementVector = velocity;
         Vector3 lookVector = Vector3.zero;
@@ -219,14 +231,16 @@ public class PlayerScript : MonoBehaviour {
                 switch (weaponText.text)
                 {
                     case "Charge":
+                        chargeActive = true;
                         break;
 
                     case "Bomb":
-
+                        bombActive = true;
                         break;
 
                     case "Shield":
                         shield.SetActive(true);
+                        shieldActive = true;
                         break;
 
                     case "Laser":
@@ -236,6 +250,7 @@ public class PlayerScript : MonoBehaviour {
                         fireCooldown = 100.0f;
                         moveDamp = 0.4f;
                         turnDamp = 0.15f;
+                        laserActive = true;
                         break;
 
                     default:
