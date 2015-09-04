@@ -5,10 +5,10 @@ public class LaserScript : MonoBehaviour {
 
     public float damage = 5.0f;
 
-    private bool active = false;
-
     private Renderer renderer;
     private Collider collider;
+
+    private bool active = false;
 
     private int enemyLayer = 9;
 
@@ -22,23 +22,10 @@ public class LaserScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 	
-        if (active && !renderer.enabled)
-        {
-            renderer.enabled = true;
-            collider.enabled = true;
-        }
-
-        if (!active && renderer.enabled)
-        {
-            renderer.enabled = false;
-            collider.enabled = false;
-        }
 	}
 
     void OnTriggerStay(Collider other)
     {
-        if (!active)
-            return;
         if (other.gameObject.layer == enemyLayer && other.tag == "Enemy")
         {
             //deal damage to the enemy
@@ -49,6 +36,8 @@ public class LaserScript : MonoBehaviour {
     public void SetActive(bool _active)
     {
         active = _active;
+        renderer.enabled = _active;
+        collider.enabled = _active;
     }
 
     public bool GetActive()
