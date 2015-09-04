@@ -68,6 +68,7 @@ public class Chromosome {
     public float this[int i]
     {
         get { return genes[i]; }
+        set { genes[i] = value; }
     }
 
     public static int ChromosomeLength()
