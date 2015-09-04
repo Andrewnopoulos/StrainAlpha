@@ -98,7 +98,7 @@ public class CellScript : MonoBehaviour {
         if (health <= 0)
         {
             //add this object to the destroy list
-            manager.AddToKillList(gameObject);
+            manager.AddToKillList(gameObject.GetComponent<CellScript>());
         }
 
         if (infected)
@@ -140,6 +140,14 @@ public class CellScript : MonoBehaviour {
     public Chromosome GetChromosome()
     {
         return myGenes;
+    }
+
+    public void CreateInfected(Chromosome _input)
+    {
+        myGenes = _input;
+        infected = true;
+
+        gameObject.tag = "Enemy";
     }
 
     public void BecomeInfected(Chromosome _input)
