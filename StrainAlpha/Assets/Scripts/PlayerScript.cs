@@ -307,6 +307,10 @@ public class PlayerScript : MonoBehaviour {
         weaponSelectCooldown = 0.3f;
     }
 
+    public float GetGene(int i)
+    {
+        return playerGenes.GetGenes()[i];
+    }
 
     void AddForce(Vector3 force)
     {
