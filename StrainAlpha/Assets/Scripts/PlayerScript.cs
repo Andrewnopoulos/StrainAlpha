@@ -21,7 +21,7 @@ public class PlayerScript : MonoBehaviour {
 
     //personal variables
     private float baseHealth = 10.0f;
-    private float baseDamage = 1.0f;
+    private float baseDamage = 2.0f;
     private float baseSpeed = 8.0f;
     private float baseFireRate = 0.2f;
 
