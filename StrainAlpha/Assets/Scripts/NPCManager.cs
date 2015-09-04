@@ -25,7 +25,7 @@ public class NPCManager : MonoBehaviour {
 
         for (int i = 0; i < InitialInfectedCells; i++)
         {
-           CreateInfectedCell(new Chromosome(0.05f), new Vector3(10, 0, 10));
+           CreateInfectedCell(new Chromosome(0.1f), new Vector3(10, 0, 10));
         }
     }
 

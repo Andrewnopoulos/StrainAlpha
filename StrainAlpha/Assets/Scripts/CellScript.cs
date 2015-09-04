@@ -142,6 +142,14 @@ public class CellScript : MonoBehaviour {
         return myGenes;
     }
 
+    public void CreateInfected(Chromosome _input)
+    {
+        myGenes = _input;
+        infected = true;
+
+        gameObject.tag = "Enemy";
+    }
+
     public void BecomeInfected(Chromosome _input)
     {
         myGenes = Chromosome.Crossover(myGenes, _input);
