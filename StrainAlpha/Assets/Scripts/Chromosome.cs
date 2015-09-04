@@ -9,7 +9,7 @@ public enum GENE
     SPEED = 3
 }
 
-public class Chromosome : MonoBehaviour {
+public class Chromosome {
 
     private static int length = 4;
     public static float mutationRate = 0.2f;
