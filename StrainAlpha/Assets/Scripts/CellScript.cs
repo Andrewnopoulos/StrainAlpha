@@ -24,7 +24,7 @@ public class CellScript : MonoBehaviour {
 
     private Chromosome myGenes;
 
-    private Transform targetLocation;
+    public Transform targetLocation;
 
     private SkinnedMeshRenderer skinMeshRenderer;
 
@@ -158,5 +158,13 @@ public class CellScript : MonoBehaviour {
         gameObject.tag = "Enemy";
 
         // other stuff for infecting the cell
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Enemy" && tag == "Neutral")
+        {
+            BecomeInfected(other.GetComponent<CellScript>().GetChromosome());
+        }
     }
 }
