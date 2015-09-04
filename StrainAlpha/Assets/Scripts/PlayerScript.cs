@@ -312,13 +312,6 @@ public class PlayerScript : MonoBehaviour {
         return playerGenes.GetGenes()[i];
     }
 
-    void AddForce(Vector3 force)
-    {
-        Vector3 accel;
-		accel = force / mass;
-		velocity += accel;
-    }
-
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.layer == nucleusLayer)
@@ -327,12 +320,5 @@ public class PlayerScript : MonoBehaviour {
             Destroy(other.gameObject);
             return;
         }
-
-        //obsolete bounce code
-        //Vector3 normal = Vector3.Normalize(other.transform.position - gameObject.transform.position);
-        //Vector3 collisionVector = normal * (Vector3.Dot((other.transform.position - gameObject.transform.position) / 2, normal));
-        //Vector3 forceVector = collisionVector * (1.0f / ((1.0f / mass) + (1.0f / other.attachedRigidbody.mass))) * 0.5f;
-        //AddForce(-forceVector);
-
     }
 }
