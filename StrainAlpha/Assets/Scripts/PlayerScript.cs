@@ -56,6 +56,16 @@ public class PlayerScript : MonoBehaviour {
 
     private int nucleusLayer = 14;
 
+    private bool laserActive = false;
+    private bool shieldActive = false;
+    private bool chargeActive = false;
+    private bool bombActive = false;
+
+    private float laserDrainSpeed = 0.05f;
+    private float shieldDrainSpeed = 0.15f;
+    private float chargeDrainSpeed = 0.05f;
+    private float bombDrainSpeed = 0.05f;
+
     Chromosome playerGenes;
 
 	void Start () {
@@ -96,10 +106,34 @@ public class PlayerScript : MonoBehaviour {
         if (currentDashCooldown > 0)
             currentDashCooldown -= Time.deltaTime;
 
-        if (weaponSelectCooldown > 0.0f)
-        {
+        if (weaponSelectCooldown > 0)
             weaponSelectCooldown -= Time.deltaTime;
+
+        if (laserActive && playerGenes[2] > 0)
+            playerGenes[2] -= Time.deltaTime * laserDrainSpeed; 
+        else if (laserActive && playerGenes[2] <= 0)
+        {
+            laserActive = false;
+            playerGenes[2] = 0.0f;
+
+            if (laser.GetActive())
+            {
+                laser.SetActive(false);
+                fireCooldown = 0.05f;
+                moveDamp = 1.0f;
+                turnDamp = 0.0f;
+                laserDrainSpeed -= 0.15f;
+            }
         }
+
+        if (shieldActive && playerGenes[0] > 0)
+            playerGenes[0] -= Time.deltaTime * shieldDrainSpeed;
+        else if (shieldActive && playerGenes[0] <= 0)
+        {
+            shieldActive = false;
+            playerGenes[0] = 0.0f;
+            shield.SetActive(false);
+        }    
 
         Vector3 movementVector = velocity;
         Vector3 lookVector = Vector3.zero;
@@ -219,23 +253,39 @@ public class PlayerScript : MonoBehaviour {
                 switch (weaponText.text)
                 {
                     case "Charge":
+                        chargeActive = true;
                         break;
 
                     case "Bomb":
-
+                        bombActive = true;
                         break;
 
                     case "Shield":
+                        if (!shieldActive)
+                        {
+                            if (playerGenes[0] < 0.8f)
+                                break;
+                        }
+                        if (shield.GetActive())
+                            break;
                         shield.SetActive(true);
+                        shieldActive = true;
                         break;
 
                     case "Laser":
+                        if (!laserActive)
+                        {
+                            if (playerGenes[2] < 0.8f)
+                                break;
+                        }
                         if (laser.GetActive())
                             break;
                         laser.SetActive(true);
                         fireCooldown = 100.0f;
                         moveDamp = 0.4f;
                         turnDamp = 0.15f;
+                        laserActive = true;
+                        laserDrainSpeed += 0.15f;
                         break;
 
                     default:
@@ -250,6 +300,7 @@ public class PlayerScript : MonoBehaviour {
                     fireCooldown = 0.05f;
                     moveDamp = 1.0f;
                     turnDamp = 0.0f;
+                    laserDrainSpeed -= 0.15f;
                 }
             }
         }

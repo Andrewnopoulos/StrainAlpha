@@ -8,8 +8,6 @@ public class ShieldScript : MonoBehaviour {
     private Renderer renderer;
     private Collider collider;
 
-    private float shieldTime = 6.0f;
-
     private int enemyLayer = 9;
     private int enemyBulletLayer = 10;
 
@@ -20,6 +18,11 @@ public class ShieldScript : MonoBehaviour {
         collider = gameObject.GetComponent<Collider>();
 
 	}
+
+    public bool GetActive()
+    {
+        return active;
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -29,17 +32,11 @@ public class ShieldScript : MonoBehaviour {
             renderer.enabled = true;
             collider.enabled = true;
         }
-        if (active && renderer.enabled)
-        {
-            shieldTime -= Time.deltaTime;
-        }
 
-        if (shieldTime < 0)
+        if (!active)
         {
             renderer.enabled = false;
             collider.enabled = false;
-            active = false;
-            shieldTime = 3.0f;
         }
 
 	}
