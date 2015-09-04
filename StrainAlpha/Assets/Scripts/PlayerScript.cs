@@ -298,6 +298,16 @@ public class PlayerScript : MonoBehaviour {
         }
 	}
 
+    public Vector3 GetHealth()
+    {
+        return new Vector3(health, maxHealth, baseHealth);
+    }
+
+    public void TakeDamage(float _damage)
+    {
+        health -= _damage;
+    }
+
     private void ShootBullet()
     {
         GameObject newBullet = (GameObject)Instantiate(bulletPrefab, transform.position, transform.rotation);

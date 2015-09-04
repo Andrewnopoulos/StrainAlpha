@@ -15,6 +15,8 @@ public class UIScript : MonoBehaviour {
     private float barHeight;
     private float barWidth;
 
+    private Image healthBar;
+
     private Image[] backgrounds;
 
 	// Use this for initialization
@@ -33,6 +35,8 @@ public class UIScript : MonoBehaviour {
         damageGene = gameObject.GetComponentsInChildren<Image>()[5];
         rangeGene = gameObject.GetComponentsInChildren<Image>()[6];
         speedGene = gameObject.GetComponentsInChildren<Image>()[7];
+
+        healthBar = gameObject.GetComponentsInChildren<Image>()[8];
 
 	}
 	
@@ -60,7 +64,9 @@ public class UIScript : MonoBehaviour {
         backgrounds[0].rectTransform.localScale = new Vector3(1, barHeight + 10, 1);
         backgrounds[1].rectTransform.localScale = new Vector3(1, barHeight + 10, 1);
         backgrounds[2].rectTransform.localScale = new Vector3(1, -(barHeight + 10), 1);
-        backgrounds[3].rectTransform.localScale = new Vector3(1, -(barHeight + 10), 1);  
+        backgrounds[3].rectTransform.localScale = new Vector3(1, -(barHeight + 10), 1);
+
+        healthBar.rectTransform.localScale = new Vector3((Screen.width / 2) * (playerScript.GetHealth().x / playerScript.GetHealth().y), 1, 1);
 
 	}
 }
