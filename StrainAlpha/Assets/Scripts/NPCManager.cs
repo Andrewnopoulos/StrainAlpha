@@ -8,9 +8,9 @@ public class NPCManager : MonoBehaviour {
 
     public GameObject nucleus;
 
-    private List<GameObject> friendlyList;
-    private List<GameObject> infectedList;
-    private List<GameObject> killList;
+    private List<CellScript> friendlyList;
+    private List<CellScript> infectedList;
+    private List<CellScript> killList;
 
     public int InitialNeutralCells = 40;
 
@@ -37,14 +37,14 @@ public class NPCManager : MonoBehaviour {
         CellScript script = newCell.GetComponent<CellScript>();
         script.manager = this;
 
-        friendlyList.Add(newCell);
+        friendlyList.Add(script);
     }
 
     void Awake()
     {
-        friendlyList = new List<GameObject>();
-        infectedList = new List<GameObject>();
-        killList = new List<GameObject>();
+        friendlyList = new List<CellScript>();
+        infectedList = new List<CellScript>();
+        killList = new List<CellScript>();
     }
 
     void Update()
@@ -56,7 +56,7 @@ public class NPCManager : MonoBehaviour {
 
     void UpdateInfectedTargets()
     {
-        foreach (GameObject enemy in infectedList)
+        foreach (CellScript enemy in infectedList)
         {
 
         }
@@ -70,7 +70,7 @@ public class NPCManager : MonoBehaviour {
         script.SetVelocity(inputCell.velocity);
     }
 
-    public void AddToKillList(GameObject npc)
+    public void AddToKillList(CellScript npc)
     {
         killList.Add(npc);
         infectedList.Remove(npc);
@@ -80,8 +80,8 @@ public class NPCManager : MonoBehaviour {
     {
         for (int i = killList.Count - 1; i >= 0; --i)
         {
-            SpawnNucleus(killList[i].GetComponent<CellScript>());
-            Destroy(killList[i]);
+            SpawnNucleus(killList[i]);
+            Destroy(killList[i].gameObject);
             killList.Remove(killList[i]);
         }
     }
@@ -93,13 +93,12 @@ public class NPCManager : MonoBehaviour {
         script.manager = this;
         script.BecomeInfected(_inputChromosome);
 
-        infectedList.Add(newCell);
+        infectedList.Add(script);
     }
 
-    private void InfectNeutralCell(GameObject _neutralCell, Chromosome _inputChromosome)
+    private void InfectNeutralCell(CellScript _neutralCell, Chromosome _inputChromosome)
     {
-        CellScript script = _neutralCell.GetComponent<CellScript>();
-        script.BecomeInfected(_inputChromosome);
+        _neutralCell.BecomeInfected(_inputChromosome);
 
         friendlyList.Remove(_neutralCell);
         infectedList.Add(_neutralCell);

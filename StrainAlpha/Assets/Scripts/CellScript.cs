@@ -98,7 +98,7 @@ public class CellScript : MonoBehaviour {
         if (health <= 0)
         {
             //add this object to the destroy list
-            manager.AddToKillList(gameObject);
+            manager.AddToKillList(gameObject.GetComponent<CellScript>());
         }
 
         if (infected)
