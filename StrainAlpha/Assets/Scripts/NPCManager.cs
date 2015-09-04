@@ -8,44 +8,59 @@ public class NPCManager : MonoBehaviour {
 
     public GameObject nucleus;
 
-    private List<GameObject> npcList;
+    private List<GameObject> friendlyList;
+    private List<GameObject> infectedList;
     private List<GameObject> killList;
 
-    private float spawnRate = 1.0f;
-    private float spawnCooldown = 0.0f;
+    public int InitialNeutralCells = 40;
 
-	// Use this for initialization
-	void Start () {
-	
-        npcList = new List<GameObject>();
+    public int InitialInfectedCells = 2;
+
+    void Start()
+    {
+        for (int i = 0; i < InitialNeutralCells; i++)
+        {
+            SpawnNeutral();
+        }
+
+        for (int i = 0; i < InitialInfectedCells; i++)
+        {
+           CreateInfectedCell(new Chromosome(0.05f), new Vector3(10, 0, 10));
+        }
+    }
+
+    void SpawnNeutral()
+    {
+        Vector3 randomPos = new Vector3(Random.Range(-10, 10), 0, Random.Range(-10, 10));
+
+        GameObject newCell = (GameObject)Instantiate(cell, randomPos, transform.rotation);
+        CellScript script = newCell.GetComponent<CellScript>();
+        script.manager = this;
+
+        friendlyList.Add(newCell);
+    }
+
+    void Awake()
+    {
+        friendlyList = new List<GameObject>();
+        infectedList = new List<GameObject>();
         killList = new List<GameObject>();
+    }
 
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    void Update()
+    {
+        UpdateInfectedTargets();
 
-        if (spawnCooldown > 0)
-            spawnCooldown -= Time.deltaTime;
-        else
+        UpdateDeadInfected();
+    }
+
+    void UpdateInfectedTargets()
+    {
+        foreach (GameObject enemy in infectedList)
         {
-            spawnCooldown = spawnRate;
 
-            Vector3 randomPos = new Vector3(Random.Range(-5, 5), 0, Random.Range(-5, 5));
-
-            GameObject newCell = (GameObject)Instantiate(cell, randomPos, transform.rotation);
-            newCell.GetComponent<CellScript>().manager = this;
-            AddNPC(newCell);
         }
-
-        for (int i = killList.Count - 1; i >= 0; --i)
-        {
-            SpawnNucleus(killList[i].GetComponent<CellScript>());
-            Destroy(killList[i]);
-            killList.Remove(killList[i]);
-        }
-
-	}
+    }
 
     void SpawnNucleus(CellScript inputCell)
     {
@@ -55,19 +70,87 @@ public class NPCManager : MonoBehaviour {
         script.SetVelocity(inputCell.velocity);
     }
 
-    void CreateNPC()
-    {
-
-    }
-
-    public void AddNPC(GameObject npc)
-    {
-        npcList.Add(npc);
-    }
-
     public void AddToKillList(GameObject npc)
     {
         killList.Add(npc);
-        npcList.Remove(npc);
+        infectedList.Remove(npc);
     }
+
+    private void UpdateDeadInfected()
+    {
+        for (int i = killList.Count - 1; i >= 0; --i)
+        {
+            SpawnNucleus(killList[i].GetComponent<CellScript>());
+            Destroy(killList[i]);
+            killList.Remove(killList[i]);
+        }
+    }
+
+    private void CreateInfectedCell(Chromosome _inputChromosome, Vector3 _location)
+    {
+        GameObject newCell = (GameObject)Instantiate(cell, _location, transform.rotation);
+        CellScript script = newCell.GetComponent<CellScript>();
+        script.manager = this;
+        script.BecomeInfected(_inputChromosome);
+
+        infectedList.Add(newCell);
+    }
+
+    private void InfectNeutralCell(GameObject _neutralCell, Chromosome _inputChromosome)
+    {
+        CellScript script = _neutralCell.GetComponent<CellScript>();
+        script.BecomeInfected(_inputChromosome);
+
+        friendlyList.Remove(_neutralCell);
+        infectedList.Add(_neutralCell);
+    }
+
+    //private float spawnRate = 1.0f;
+    //private float spawnCooldown = 0.0f;
+
+    //// Use this for initialization
+    //void Start () {
+	
+    //    npcList = new List<GameObject>();
+    //    killList = new List<GameObject>();
+
+    //}
+	
+    //// Update is called once per frame
+    //void Update () {
+
+    //    if (spawnCooldown > 0)
+    //        spawnCooldown -= Time.deltaTime;
+    //    else
+    //    {
+    //        spawnCooldown = spawnRate;
+
+    //        Vector3 randomPos = new Vector3(Random.Range(-5, 5), 0, Random.Range(-5, 5));
+
+    //        GameObject newCell = (GameObject)Instantiate(cell, randomPos, transform.rotation);
+    //        newCell.GetComponent<CellScript>().manager = this;
+    //        AddNPC(newCell);
+    //    }
+
+
+
+    //}
+
+    //void CheckInfections()
+    //{
+    //    for (int i = 0; i < )
+    //}
+
+
+    //void CreateNPC()
+    //{
+
+    //}
+
+    //public void AddNPC(GameObject npc)
+    //{
+    //    npcList.Add(npc);
+    //}
+
+
 }
