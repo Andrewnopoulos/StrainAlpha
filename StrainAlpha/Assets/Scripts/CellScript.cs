@@ -12,7 +12,7 @@ public class CellScript : MonoBehaviour {
 
     private float MaxSpeed = 5.0f;
 
-    private bool infected = false;
+    public bool infected = false;
     private bool playerDetected = false;
 
     public float detectionRange = 5.0f;
@@ -24,7 +24,7 @@ public class CellScript : MonoBehaviour {
 
     private Chromosome myGenes;
 
-    private Transform playerLocation;
+    private Transform targetLocation;
 
     private SkinnedMeshRenderer skinMeshRenderer;
 
@@ -45,16 +45,31 @@ public class CellScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        myGenes = new Chromosome(0.1f);
-        infected = false;
-        playerDetected = false;
-        velocity = new Vector3(0, 0, 0);
+        targetLocation = GameObject.FindGameObjectWithTag("Player").transform;
+        skinMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
 	}
+
+    public Vector3 GetPosition()
+    {
+        return transform.position;
+    }
+
+    public Transform GetTargetLocation()
+    {
+        return targetLocation;
+    }
+
+    public void SetTargetLocation(Vector3 _inputLocation)
+    {
+        targetLocation.position = _inputLocation;
+    }
 
     void Awake()
     {
-        playerLocation = GameObject.FindGameObjectWithTag("Player").transform;
-        skinMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
+        myGenes = new Chromosome(0.04f);
+        playerDetected = false;
+        infected = false;
+        velocity = new Vector3(0, 0, 0);
 
         animationOffset = Random.Range(0.0f, 10.0f);
         animationSpeed = Random.Range(0.7f, 1.3f);
@@ -63,6 +78,8 @@ public class CellScript : MonoBehaviour {
         rotationAxis.Normalize();
 
         rotationSpeed = Random.Range(-MaxAngularVelocity, MaxAngularVelocity);
+
+        gameObject.tag = "Neutral";
     }
 
     float distanceFrom(GameObject otherObject)
@@ -78,8 +95,6 @@ public class CellScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        infected = true;
-
         if (health <= 0)
         {
             //add this object to the destroy list
@@ -94,13 +109,13 @@ public class CellScript : MonoBehaviour {
             {
                 velocity = velocity / velocity.magnitude * MaxSpeed;
             }
+            UpdateAnimation();
         }
 
         transform.position += velocity * Time.deltaTime;
 
         transform.Rotate(rotationAxis, rotationSpeed * Time.deltaTime);
 
-        UpdateAnimation();
 	}
 
     void UpdateAnimation()
@@ -110,12 +125,11 @@ public class CellScript : MonoBehaviour {
 
     void InfectedUpdate()
     {
-        if( playerDetected || (playerLocation.position - transform.position).magnitude < detectionRange)
+        if( playerDetected || (targetLocation.position - transform.position).magnitude < detectionRange)
         {
-            velocity += (playerLocation.position - transform.position) * speed * Time.deltaTime;
+            velocity += (targetLocation.position - transform.position) * speed * Time.deltaTime;
             playerDetected = true;
         }
-        
     }
 
     public void TakeDamage(float _damage)
@@ -128,10 +142,12 @@ public class CellScript : MonoBehaviour {
         return myGenes;
     }
 
-    public void GetInfected(Chromosome _input)
+    public void BecomeInfected(Chromosome _input)
     {
         myGenes = Chromosome.Crossover(myGenes, _input);
         infected = true;
+
+        gameObject.tag = "Enemy";
 
         // other stuff for infecting the cell
     }

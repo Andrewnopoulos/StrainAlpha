@@ -44,7 +44,11 @@ public class BulletScript : MonoBehaviour {
         if (other.gameObject.layer == enemyLayer && other.tag == "Enemy")
         {
             //deal damage to the enemy
-            other.GetComponent<CellScript>().TakeDamage(damage);
+            CellScript script = other.GetComponent<CellScript>();
+            if (script.infected)
+            {
+                script.TakeDamage(damage);
+            }
         }
         alive = false;
     }
