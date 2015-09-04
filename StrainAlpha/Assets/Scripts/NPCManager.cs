@@ -16,6 +16,8 @@ public class NPCManager : MonoBehaviour {
 
     public int InitialInfectedCells = 2;
 
+    public float infectionRange = 1.0f;
+
     void Start()
     {
         for (int i = 0; i < InitialNeutralCells; i++)
@@ -58,7 +60,18 @@ public class NPCManager : MonoBehaviour {
     {
         foreach (CellScript enemy in infectedList)
         {
+            Transform closest = enemy.GetTargetLocation();
+            Vector3 enemyPos = enemy.GetPosition();
 
+            foreach(CellScript neutral in friendlyList)
+            {
+                // if the distance you're looking at is closer than the previously looked at position
+                if ((neutral.GetTargetLocation().position - enemyPos).magnitude < (closest.position - enemyPos).magnitude)
+                {
+                    closest = neutral.GetTargetLocation();
+                }
+            }
+            enemy.SetTargetLocation(closest.position);
         }
     }
 
@@ -91,7 +104,7 @@ public class NPCManager : MonoBehaviour {
         GameObject newCell = (GameObject)Instantiate(cell, _location, transform.rotation);
         CellScript script = newCell.GetComponent<CellScript>();
         script.manager = this;
-        script.BecomeInfected(_inputChromosome);
+        script.CreateInfected(_inputChromosome);
 
         infectedList.Add(script);
     }
