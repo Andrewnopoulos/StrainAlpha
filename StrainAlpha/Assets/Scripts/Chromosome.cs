@@ -16,6 +16,8 @@ public class Chromosome {
     public static float mutationStrength = 0.1f;
     public static float randomInitValue = 0.3f;
 
+    private static float MaxValue = 1.0f;
+
     private float[] genes = new float[length];
     private GENE topIndex = GENE.HEALTH;
 
@@ -103,6 +105,11 @@ public class Chromosome {
             if (Random.Range(0.0f, 1.0f) > mutationRate)
             {
                 genes[i] += Random.Range(-0.5f * mutationStrength, mutationStrength);
+
+                if (genes[i] > MaxValue)
+                {
+                    genes[i] = MaxValue;
+                }
             }
         }
 
@@ -133,6 +140,11 @@ public class Chromosome {
         for (int i = 0; i < length; i++)
         {
             genes[i] += inputChromosome[i];
+
+            if (genes[i] > MaxValue)
+            {
+                genes[i] = MaxValue;
+            }
         }
     }
 
