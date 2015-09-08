@@ -16,6 +16,7 @@ public class UIScript : MonoBehaviour {
     private float barWidth;
 
     private Image healthBar;
+    private Image energyBar;
 
     private Image[] backgrounds;
 
@@ -38,6 +39,7 @@ public class UIScript : MonoBehaviour {
 
         healthBar = gameObject.GetComponentsInChildren<Image>()[8];
 
+        energyBar = gameObject.GetComponentsInChildren<Image>()[9];
 	}
 	
 	// Update is called once per frame
@@ -67,6 +69,7 @@ public class UIScript : MonoBehaviour {
         backgrounds[3].rectTransform.localScale = new Vector3(1, -(barHeight + 10), 1);
 
         healthBar.rectTransform.localScale = new Vector3((Screen.width / 2) * (playerScript.GetHealth().x / playerScript.GetHealth().y), 1, 1);
+        energyBar.rectTransform.localScale = new Vector3((Screen.width / 2) * (playerScript.GetEnergy().x / playerScript.GetEnergy().y), 1, 1);
 
 	}
 }

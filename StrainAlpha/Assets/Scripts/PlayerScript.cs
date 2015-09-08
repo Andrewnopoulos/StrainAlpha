@@ -38,6 +38,10 @@ public class PlayerScript : MonoBehaviour {
     private float moveDamp = 1.0f;
     private float turnDamp = 0.0f;
 
+    private float maxEnergy = 10.0f;
+    private float energy;
+    private float dashCost = 5.0f;
+
     //time until next shot
     private float fireCooldown = 0.0f;
 
@@ -49,7 +53,7 @@ public class PlayerScript : MonoBehaviour {
     private Vector3 dashDir = Vector3.zero;
 
     //time until next dash
-    private float dashCooldown = 2.0f;
+    private float dashCooldown = 0.3f;
     private float currentDashCooldown = 0.0f;
 
     private float weaponSelectCooldown = 0.0f;
@@ -87,6 +91,8 @@ public class PlayerScript : MonoBehaviour {
         speed = maxSpeed;
         fireRate = maxFireRate;
 
+        energy = maxEnergy;
+
         playerGenes = new Chromosome(0);
 
         if (Input.GetJoystickNames().Length > 0)
@@ -108,6 +114,12 @@ public class PlayerScript : MonoBehaviour {
 
         if (weaponSelectCooldown > 0)
             weaponSelectCooldown -= Time.deltaTime;
+
+        if (energy < maxEnergy)
+            energy += 3.0f * Time.deltaTime;
+
+        if (energy > maxEnergy)
+            energy = maxEnergy;
 
         if (laserActive && playerGenes[2] > 0)
             playerGenes[2] -= Time.deltaTime * laserDrainSpeed; 
@@ -178,9 +190,10 @@ public class PlayerScript : MonoBehaviour {
 
             if (Input.GetAxis("LeftTrigger") > 0.1f || Input.GetKeyDown(KeyCode.Space))
             {
-                if (currentDashCooldown <= 0)
+                if (currentDashCooldown <= 0 && energy > dashCost)
                 {
                     currentDashCooldown = dashCooldown;
+                    energy -= dashCost;
 
                     currentDash = dashTime;
                     dashDir = Vector3.Normalize(movementVector) * 3.0f;
@@ -214,10 +227,12 @@ public class PlayerScript : MonoBehaviour {
         }
         else
         {
+            Vector3 buttstuff = Vector3.zero;
             Vector3 mousePos = Input.mousePosition;
             mousePos.z = Mathf.Abs(Camera.main.transform.position.y - transform.position.y);
             mousePos = Camera.main.ScreenToWorldPoint(mousePos);
-            transform.LookAt(mousePos);
+            transform.rotation = Quaternion.LookRotation(Vector3.SmoothDamp(transform.forward, Vector3.Normalize(mousePos - transform.position), ref buttstuff, turnDamp));
+            //transform.LookAt(mousePos);
 
             if (Input.GetMouseButton(0))
             {
@@ -369,6 +384,11 @@ public class PlayerScript : MonoBehaviour {
     public Vector3 GetHealth()
     {
         return new Vector3(health, maxHealth, baseHealth);
+    }
+
+    public Vector2 GetEnergy()
+    {
+        return new Vector2(energy, maxEnergy);
     }
 
     public void TakeDamage(float _damage)
