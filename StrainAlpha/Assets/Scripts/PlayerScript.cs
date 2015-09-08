@@ -296,6 +296,74 @@ public class PlayerScript : MonoBehaviour {
                 }
             }
         }
+        else
+        {
+            if (Input.GetKeyDown(KeyCode.E) && weaponSelectCooldown <= 0.0f)
+            {
+                ForwardCyclePower();
+            }
+            else if (Input.GetKeyDown(KeyCode.Q) && weaponSelectCooldown <= 0.0f)
+            {
+                BackCyclePower();
+            }
+
+            if (Input.GetMouseButton(1))
+            {
+                //activate special power
+                switch (weaponText.text)
+                {
+                    case "Charge":
+                        chargeActive = true;
+                        break;
+
+                    case "Bomb":
+                        bombActive = true;
+                        break;
+
+                    case "Shield":
+                        if (!shieldActive)
+                        {
+                            if (playerGenes[0] < 0.8f)
+                                break;
+                        }
+                        if (shield.GetActive())
+                            break;
+                        shield.SetActive(true);
+                        shieldActive = true;
+                        break;
+
+                    case "Laser":
+                        if (!laserActive)
+                        {
+                            if (playerGenes[2] < 0.8f)
+                                break;
+                        }
+                        if (laser.GetActive())
+                            break;
+                        laser.SetActive(true);
+                        fireCooldown = 100.0f;
+                        moveDamp = 0.4f;
+                        turnDamp = 0.15f;
+                        laserActive = true;
+                        laserDrainSpeed += 0.15f;
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+            else
+            {
+                if (laser.GetActive())
+                {
+                    laser.SetActive(false);
+                    fireCooldown = 0.05f;
+                    moveDamp = 1.0f;
+                    turnDamp = 0.0f;
+                    laserDrainSpeed -= 0.15f;
+                }
+            }
+        }
 	}
 
     public Vector3 GetHealth()
