@@ -393,7 +393,8 @@ public class PlayerScript : MonoBehaviour {
 
     public void TakeDamage(float _damage)
     {
-        health -= _damage;
+        if (!shieldActive)
+            health -= _damage;
     }
 
     private void ShootBullet()
