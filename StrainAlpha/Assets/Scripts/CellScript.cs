@@ -339,7 +339,7 @@ public class CellScript : MonoBehaviour {
             manager.InfectNeutralCell(this);
         }
 
-        if (other.name == "Player" && currentHitCooldown < 0)
+        if (infected && other.name == "Player" && currentHitCooldown < 0)
         {
             other.GetComponent<PlayerScript>().TakeDamage(damage);
             currentHitCooldown = hitCooldown;
