@@ -201,13 +201,13 @@ public class CellScript : MonoBehaviour {
     {
         List<CellScript> neutralCells = manager.GetNeutralCells();
 
-        Transform closest = playerLocation;
-        Vector3 myPos = cellPosition.position;
-
         if (neutralCells.Count < 1)
         {
             return false;
         }
+
+        Transform closest = neutralCells[0].GetPosition();
+        Vector3 myPos = cellPosition.position;
 
         foreach (CellScript neutral in neutralCells)
         {
