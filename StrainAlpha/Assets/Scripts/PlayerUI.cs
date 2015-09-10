@@ -63,7 +63,7 @@ public class PlayerUI : MonoBehaviour {
                 Vector3 velocity = Vector3.zero;
                 geneImages[i].transform.localPosition = Vector3.SmoothDamp(geneImages[i].transform.localPosition, targetPos[i + 8], ref velocity, 0.05f);
                 geneImages[i].color = Color.Lerp(new Color(geneImages[i].color.r, geneImages[i].color.g, geneImages[i].color.b, Mathf.Abs(targetTrans - 0.3f)),
-                    new Color(geneImages[i].color.r, geneImages[i].color.g, geneImages[i].color.b, Mathf.Abs(0 + targetTrans)), 1 - (expanding));
+                    new Color(geneImages[i].color.r, geneImages[i].color.g, geneImages[i].color.b, Mathf.Abs(0 + targetTrans)), 1 - (expanding / 2));
             }
 
         }
