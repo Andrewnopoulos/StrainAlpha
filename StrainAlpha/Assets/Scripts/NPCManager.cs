@@ -54,7 +54,7 @@ public class NPCManager : MonoBehaviour {
         killList = new List<CellScript>();
     }
 
-    void Update()
+    void FixedUpdate()
     {
 
         UpdateDeadInfected();
