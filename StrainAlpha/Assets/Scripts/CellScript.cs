@@ -66,15 +66,6 @@ public class CellScript : MonoBehaviour {
 	void Start () {
         playerLocation = GameObject.Find("Player").transform;
         targetLocation = transform;
-
-        cellStateMachine = new CellFSM();
-
-        cellStateMachine.AddTransition(InfectedCellState.DORMANT, InfectedCellState.CHASINGPLAYER, Chase);
-        cellStateMachine.AddTransition(InfectedCellState.CHASINGPLAYER, InfectedCellState.SEARCHING, StartSearching);
-        cellStateMachine.AddTransition(InfectedCellState.CHASINGPLAYER, InfectedCellState.CHASINGPLAYER, Chase);
-        cellStateMachine.AddTransition(InfectedCellState.SEARCHING, InfectedCellState.CHASINGPLAYER, Chase);
-        cellStateMachine.AddTransition(InfectedCellState.DORMANT, InfectedCellState.DORMANT, GoDormant);
-        cellStateMachine.AddTransition(InfectedCellState.SEARCHING, InfectedCellState.DORMANT, GoDormant);
 	}
 
     void GoDormant()
@@ -135,6 +126,15 @@ public class CellScript : MonoBehaviour {
         cellPosition = gameObject.transform;
 
         gameObject.tag = "Neutral";
+
+        cellStateMachine = new CellFSM();
+
+        cellStateMachine.AddTransition(InfectedCellState.DORMANT, InfectedCellState.CHASINGPLAYER, Chase);
+        cellStateMachine.AddTransition(InfectedCellState.CHASINGPLAYER, InfectedCellState.SEARCHING, StartSearching);
+        cellStateMachine.AddTransition(InfectedCellState.CHASINGPLAYER, InfectedCellState.CHASINGPLAYER, Chase);
+        cellStateMachine.AddTransition(InfectedCellState.SEARCHING, InfectedCellState.CHASINGPLAYER, Chase);
+        cellStateMachine.AddTransition(InfectedCellState.DORMANT, InfectedCellState.DORMANT, GoDormant);
+        cellStateMachine.AddTransition(InfectedCellState.SEARCHING, InfectedCellState.DORMANT, GoDormant);
     }
 
     float distanceFrom(GameObject otherObject)

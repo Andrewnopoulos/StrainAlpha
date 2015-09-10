@@ -16,7 +16,7 @@ public class NPCManager : MonoBehaviour {
 
     public int InitialNeutralCells = 40;
 
-    public int InitialInfectedCells = 2;
+    public int InitialInfectedCells = 10;
 
     public float infectionRange = 1.0f;
 
