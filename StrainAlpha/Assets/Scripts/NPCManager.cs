@@ -37,7 +37,7 @@ public class NPCManager : MonoBehaviour {
 
     void SpawnNeutral()
     {
-        Vector3 randomPos = new Vector3(Random.Range(-10, 10), 0, Random.Range(-10, 10));
+        Vector3 randomPos = new Vector3(Random.Range(-20, 20), 0, Random.Range(-20, 20));
 
         GameObject newCell = (GameObject)Instantiate(cell, randomPos, transform.rotation);
         CellScript script = newCell.GetComponent<CellScript>();

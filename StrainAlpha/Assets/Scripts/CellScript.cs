@@ -285,7 +285,11 @@ public class CellScript : MonoBehaviour {
                 break;
         }
         
-        velocity += (targetLocation.position - transform.position) * speed * Time.deltaTime;
+        if (targetLocation != null)
+        {
+            velocity += (targetLocation.position - transform.position) * speed * Time.deltaTime;
+        }
+        
     }
 
     public void TakeDamage(float _damage)
