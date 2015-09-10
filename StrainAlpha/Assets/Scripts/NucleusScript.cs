@@ -41,15 +41,18 @@ public class NucleusScript : MonoBehaviour {
         }
         else
         {
+            // deccelerate
             velocity -= Time.deltaTime * velocity;
         }
 
+        // normalize velocity
         if (velocity.magnitude > maxVelocity)
         {
             velocity /= velocity.magnitude;
             velocity *= maxVelocity;
         }
 
+        // continue moving
         if (!attracted)
         {
             transform.position += velocity * Time.deltaTime;

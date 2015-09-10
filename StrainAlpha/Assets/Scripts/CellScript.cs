@@ -19,14 +19,17 @@ public class CellScript : MonoBehaviour {
     public NPCManager manager;
 
     private float health = 5.0f;
-    private float damage = 2.0f;
+    private float damage = 0.5f;
     private float speed = 3.5f;
+
+    private float hitCooldown = 0.5f;
+    private float currentHitCooldown = 0.0f;
 
     private float MaxSpeed = 5.0f;
 
     public bool infected = false;
     public bool playerDetected = false;
-    private bool roaming = true;
+    public bool roaming = true;
 
     public float detectionRange = 5.0f;
 
@@ -75,12 +78,19 @@ public class CellScript : MonoBehaviour {
 
     void GoDormant()
     {
-
+        targetLocation = cellPosition;
     }
 
     void StartSearching()
     {
-        FollowNearestNeutral();
+        if (FollowNearestNeutral())
+        {
+
+        }
+        else
+        {
+            cellStateMachine.Advance(InfectedCellState.DORMANT);
+        }
     }
 
     void Chase()
@@ -161,9 +171,17 @@ public class CellScript : MonoBehaviour {
             UpdateAnimation();
         }
 
+        // deccelerate moving thingy
+        if (cellStateMachine.GetState() == InfectedCellState.DORMANT)
+        {
+            velocity -= velocity * Time.deltaTime;
+        }
+
         transform.position += velocity * Time.deltaTime;
 
         transform.Rotate(rotationAxis, rotationSpeed * Time.deltaTime);
+
+        currentHitCooldown -= Time.deltaTime;
 
 	}
 
@@ -188,13 +206,13 @@ public class CellScript : MonoBehaviour {
     {
         List<CellScript> neutralCells = manager.GetNeutralCells();
 
-        Transform closest = playerLocation;
-        Vector3 myPos = cellPosition.position;
-
         if (neutralCells.Count < 1)
         {
             return false;
         }
+
+        Transform closest = neutralCells[0].GetPosition();
+        Vector3 myPos = cellPosition.position;
 
         foreach (CellScript neutral in neutralCells)
         {
@@ -227,7 +245,7 @@ public class CellScript : MonoBehaviour {
     void ChasingPlayerUpdate()
     {
         Vector3 myPos = cellPosition.position;
-        if ((playerLocation.position - myPos).magnitude > detectionRange * 2)
+        if ((playerLocation.position - myPos).magnitude > detectionRange * 1.5)
         {
             cellStateMachine.Advance(InfectedCellState.SEARCHING);
         }
@@ -251,22 +269,22 @@ public class CellScript : MonoBehaviour {
         {
             case InfectedCellState.DORMANT:
                 DormantUpdate();
+                roaming = true;
+                playerDetected = false;
                 break;
             case InfectedCellState.CHASINGPLAYER:
                 ChasingPlayerUpdate();
+                playerDetected = true;
+                roaming = false;
                 break;
             case InfectedCellState.SEARCHING:
                 SearchingUpdate();
+                roaming = true;
+                playerDetected = false;
                 break;
         }
         
         velocity += (targetLocation.position - transform.position) * speed * Time.deltaTime;
-
-        //if( playerDetected || (targetLocation.position - transform.position).magnitude < detectionRange)
-        //{
-        //    velocity += (targetLocation.position - transform.position) * speed * Time.deltaTime;
-        //    playerDetected = true;
-        //}
     }
 
     public void TakeDamage(float _damage)
@@ -320,5 +338,12 @@ public class CellScript : MonoBehaviour {
             BecomeInfected(other.GetComponent<CellScript>().GetChromosome());
             manager.InfectNeutralCell(this);
         }
+
+        if (other.name == "Player" && currentHitCooldown < 0)
+        {
+            other.GetComponent<PlayerScript>().TakeDamage(damage);
+            currentHitCooldown = hitCooldown;
+        }
+
     }
 }
