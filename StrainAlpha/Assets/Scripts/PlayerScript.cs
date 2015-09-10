@@ -121,6 +121,11 @@ public class PlayerScript : MonoBehaviour {
         if (energy > maxEnergy)
             energy = maxEnergy;
 
+        if (health <= 0)
+        {
+            Die();
+        }
+
         if (laserActive && playerGenes[2] > 0)
             playerGenes[2] -= Time.deltaTime * laserDrainSpeed; 
         else if (laserActive && playerGenes[2] <= 0)
@@ -380,6 +385,11 @@ public class PlayerScript : MonoBehaviour {
             }
         }
 	}
+
+    void Die()
+    {
+        Application.LoadLevel(Application.loadedLevel);
+    }
 
     /// <summary>
     /// returns health, maxHealth and baseHealth
