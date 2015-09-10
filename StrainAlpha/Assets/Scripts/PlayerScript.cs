@@ -381,6 +381,10 @@ public class PlayerScript : MonoBehaviour {
         }
 	}
 
+    /// <summary>
+    /// returns health, maxHealth and baseHealth
+    /// </summary>
+    /// <returns></returns>
     public Vector3 GetHealth()
     {
         return new Vector3(health, maxHealth, baseHealth);
