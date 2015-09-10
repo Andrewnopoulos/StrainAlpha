@@ -9,7 +9,12 @@ public enum InfectedCellState
     SEARCHING
 }
 
+public class CellFSM : FiniteStateMachine<InfectedCellState>
+{ }
+
 public class CellScript : MonoBehaviour {
+
+    public CellFSM cellStateMachine;
 
     public NPCManager manager;
 
@@ -56,9 +61,32 @@ public class CellScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        playerLocation = GameObject.FindGameObjectWithTag("Player").transform;
+        playerLocation = GameObject.Find("Player").transform;
         targetLocation = transform;
+
+        cellStateMachine = new CellFSM();
+
+        cellStateMachine.AddTransition(InfectedCellState.DORMANT, InfectedCellState.CHASINGPLAYER, Chase);
+        cellStateMachine.AddTransition(InfectedCellState.CHASINGPLAYER, InfectedCellState.SEARCHING, StartSearching);
+        cellStateMachine.AddTransition(InfectedCellState.SEARCHING, InfectedCellState.CHASINGPLAYER, Chase);
+        cellStateMachine.AddTransition(InfectedCellState.DORMANT, InfectedCellState.DORMANT, GoDormant);
+        cellStateMachine.AddTransition(InfectedCellState.SEARCHING, InfectedCellState.DORMANT, GoDormant);
 	}
+
+    void GoDormant()
+    {
+
+    }
+
+    void StartSearching()
+    {
+        FollowNearestNeutral();
+    }
+
+    void Chase()
+    {
+        targetLocation = playerLocation;
+    }
 
     public Transform GetPosition()
     {
@@ -106,6 +134,11 @@ public class CellScript : MonoBehaviour {
     public void SetVelocityDelta(Vector3 _inputVelocityChange)
     {
         velocity += _inputVelocityChange;
+    }
+
+    void FixedUpdate()
+    {
+
     }
 	
 	// Update is called once per frame
@@ -183,26 +216,48 @@ public class CellScript : MonoBehaviour {
         return false;
     }
 
-    void Roam()
+    void DormantUpdate()
     {
+        if (FollowPlayer())
+        {
+            cellStateMachine.Advance(InfectedCellState.CHASINGPLAYER);
+        }
+    }
 
+    void ChasingPlayerUpdate()
+    {
+        Vector3 myPos = cellPosition.position;
+        if ((playerLocation.position - myPos).magnitude > detectionRange * 2)
+        {
+            cellStateMachine.Advance(InfectedCellState.SEARCHING);
+        }
+    }
+
+    void SearchingUpdate()
+    {
+        if (FollowPlayer())
+        {
+            cellStateMachine.Advance(InfectedCellState.CHASINGPLAYER);
+        }
+        if (!FollowNearestNeutral())
+        {
+            cellStateMachine.Advance(InfectedCellState.DORMANT);
+        }
     }
 
     void InfectedUpdate()
     {
-        if (FollowPlayer())
+        switch(cellStateMachine.GetState())
         {
-            playerDetected = true;
-            roaming = false;
-        }
-        else if (FollowNearestNeutral())
-        {
-            playerDetected = false;
-            roaming = false;
-        }
-        else
-        {
-            playerDetected = false;
+            case InfectedCellState.DORMANT:
+                DormantUpdate();
+                break;
+            case InfectedCellState.CHASINGPLAYER:
+                ChasingPlayerUpdate();
+                break;
+            case InfectedCellState.SEARCHING:
+                SearchingUpdate();
+                break;
         }
         
         velocity += (targetLocation.position - transform.position) * speed * Time.deltaTime;
@@ -217,6 +272,7 @@ public class CellScript : MonoBehaviour {
     public void TakeDamage(float _damage)
     {
         health -= _damage;
+        cellStateMachine.Advance(InfectedCellState.CHASINGPLAYER);
     }
 
     public Chromosome GetChromosome()
