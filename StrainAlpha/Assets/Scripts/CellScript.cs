@@ -19,8 +19,11 @@ public class CellScript : MonoBehaviour {
     public NPCManager manager;
 
     private float health = 5.0f;
-    private float damage = 2.0f;
+    private float damage = 0.5f;
     private float speed = 3.5f;
+
+    private float hitCooldown = 0.5f;
+    private float currentHitCooldown = 0.0f;
 
     private float MaxSpeed = 5.0f;
 
@@ -178,6 +181,8 @@ public class CellScript : MonoBehaviour {
 
         transform.Rotate(rotationAxis, rotationSpeed * Time.deltaTime);
 
+        currentHitCooldown -= Time.deltaTime;
+
 	}
 
     void UpdateAnimation()
@@ -333,5 +338,12 @@ public class CellScript : MonoBehaviour {
             BecomeInfected(other.GetComponent<CellScript>().GetChromosome());
             manager.InfectNeutralCell(this);
         }
+
+        if (other.name == "Player" && currentHitCooldown < 0)
+        {
+            other.GetComponent<PlayerScript>().TakeDamage(damage);
+            currentHitCooldown = hitCooldown;
+        }
+
     }
 }
