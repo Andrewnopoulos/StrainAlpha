@@ -8,7 +8,10 @@ public class PlayerUI : MonoBehaviour {
     private float expanding;
 
     private Vector3[] targetPos;
+    private float targetTrans;
     private Image[] healthImages;
+
+    private Image[] geneImages;
 
     private PlayerScript player;
 
@@ -16,7 +19,8 @@ public class PlayerUI : MonoBehaviour {
 	void Start () {
 
         healthImages = new Image[8];
-        targetPos = new Vector3[8];
+        targetPos = new Vector3[12];
+        geneImages = new Image[4];
 
         healthImages[0] = gameObject.GetComponentsInChildren<Image>()[0];
         healthImages[1] = gameObject.GetComponentsInChildren<Image>()[1];
@@ -26,6 +30,11 @@ public class PlayerUI : MonoBehaviour {
         healthImages[5] = gameObject.GetComponentsInChildren<Image>()[5];
         healthImages[6] = gameObject.GetComponentsInChildren<Image>()[6];
         healthImages[7] = gameObject.GetComponentsInChildren<Image>()[7];
+
+        geneImages[0] = gameObject.GetComponentsInChildren<Image>()[8];
+        geneImages[1] = gameObject.GetComponentsInChildren<Image>()[9];
+        geneImages[2] = gameObject.GetComponentsInChildren<Image>()[10];
+        geneImages[3] = gameObject.GetComponentsInChildren<Image>()[11];
 
         player = gameObject.GetComponentInParent<PlayerScript>();
 	}
@@ -48,6 +57,15 @@ public class PlayerUI : MonoBehaviour {
                 Vector3 vel = Vector3.zero;
                 healthImages[i].transform.localPosition = Vector3.SmoothDamp(healthImages[i].transform.localPosition, targetPos[i], ref vel, 0.05f);
             }
+
+            for (int i = 0; i < 4; ++i)
+            {
+                Vector3 velocity = Vector3.zero;
+                geneImages[i].transform.localPosition = Vector3.SmoothDamp(geneImages[i].transform.localPosition, targetPos[i + 8], ref velocity, 0.05f);
+                geneImages[i].color = Color.Lerp(new Color(geneImages[i].color.r, geneImages[i].color.g, geneImages[i].color.b, Mathf.Abs(targetTrans - geneImages[i].color.a)),
+                    new Color(geneImages[i].color.r, geneImages[i].color.g, geneImages[i].color.b, Mathf.Abs(0 + targetTrans)), 1 - (expanding));
+            }
+
         }
 
         SetHealth();
@@ -147,7 +165,7 @@ public class PlayerUI : MonoBehaviour {
                 healthImages[i].enabled = true;
             }
         }
-        else if (!healthImages[7].enabled)
+        else if (player.GetHealth().x >= player.GetHealth().z && !healthImages[7].enabled)
         {
             for (int i = 0; i < 8; ++i)
             {
@@ -164,6 +182,12 @@ public class PlayerUI : MonoBehaviour {
             {
                 targetPos[i] = healthImages[i].transform.localPosition * 2;
             }
+            targetPos[8] = new Vector3(-106.0f, 106.0f, 0);
+            targetPos[9] = new Vector3(-106.0f, -106.0f, 0);
+            targetPos[10] = new Vector3(106.0f, -106.0f, 0);
+            targetPos[11] = new Vector3(106.0f, 106.0f, 0);
+
+            targetTrans = 0.3f;
         }
         else
         {
@@ -171,6 +195,12 @@ public class PlayerUI : MonoBehaviour {
             {
                 targetPos[i] = healthImages[i].transform.localPosition / 2;
             }
+            targetPos[8] = new Vector3(0, 0, 0);
+            targetPos[9] = new Vector3(0, 0, 0);
+            targetPos[10] = new Vector3(0, 0, 0);
+            targetPos[11] = new Vector3(0, 0, 0);
+
+            targetTrans = 0;
         }
 
         expanding = 1.0f;
