@@ -71,6 +71,7 @@ public class CellScript : MonoBehaviour {
 
         cellStateMachine.AddTransition(InfectedCellState.DORMANT, InfectedCellState.CHASINGPLAYER, Chase);
         cellStateMachine.AddTransition(InfectedCellState.CHASINGPLAYER, InfectedCellState.SEARCHING, StartSearching);
+        cellStateMachine.AddTransition(InfectedCellState.CHASINGPLAYER, InfectedCellState.CHASINGPLAYER, Chase);
         cellStateMachine.AddTransition(InfectedCellState.SEARCHING, InfectedCellState.CHASINGPLAYER, Chase);
         cellStateMachine.AddTransition(InfectedCellState.DORMANT, InfectedCellState.DORMANT, GoDormant);
         cellStateMachine.AddTransition(InfectedCellState.SEARCHING, InfectedCellState.DORMANT, GoDormant);
@@ -226,7 +227,7 @@ public class CellScript : MonoBehaviour {
             }
         }
 
-        if ( (closest.position - myPos).magnitude < detectionRange)
+        if ( (closest.position - myPos).magnitude < detectionRange * 2)
         {
             targetLocation = closest;
             return true;
@@ -269,7 +270,7 @@ public class CellScript : MonoBehaviour {
         {
             case InfectedCellState.DORMANT:
                 DormantUpdate();
-                roaming = true;
+                roaming = false;
                 playerDetected = false;
                 break;
             case InfectedCellState.CHASINGPLAYER:
@@ -310,6 +311,8 @@ public class CellScript : MonoBehaviour {
 
         gameObject.tag = "Enemy";
 
+        cellStateMachine.Advance(InfectedCellState.CHASINGPLAYER);
+
         SetBlendShapes();
     }
 
@@ -319,6 +322,8 @@ public class CellScript : MonoBehaviour {
         infected = true;
 
         gameObject.tag = "Enemy";
+
+        cellStateMachine.Advance(InfectedCellState.CHASINGPLAYER);
 
         SetBlendShapes();
         // other stuff for infecting the cell
