@@ -26,7 +26,7 @@ public class CellScript : MonoBehaviour {
 
     public bool infected = false;
     public bool playerDetected = false;
-    private bool roaming = true;
+    public bool roaming = true;
 
     public float detectionRange = 5.0f;
 
@@ -75,12 +75,19 @@ public class CellScript : MonoBehaviour {
 
     void GoDormant()
     {
-
+        targetLocation = cellPosition;
     }
 
     void StartSearching()
     {
-        FollowNearestNeutral();
+        if (FollowNearestNeutral())
+        {
+
+        }
+        else
+        {
+            cellStateMachine.Advance(InfectedCellState.DORMANT);
+        }
     }
 
     void Chase()
@@ -161,6 +168,12 @@ public class CellScript : MonoBehaviour {
             UpdateAnimation();
         }
 
+        // deccelerate moving thingy
+        if (cellStateMachine.GetState() == InfectedCellState.DORMANT)
+        {
+            velocity -= velocity * Time.deltaTime;
+        }
+
         transform.position += velocity * Time.deltaTime;
 
         transform.Rotate(rotationAxis, rotationSpeed * Time.deltaTime);
@@ -227,7 +240,7 @@ public class CellScript : MonoBehaviour {
     void ChasingPlayerUpdate()
     {
         Vector3 myPos = cellPosition.position;
-        if ((playerLocation.position - myPos).magnitude > detectionRange * 2)
+        if ((playerLocation.position - myPos).magnitude > detectionRange * 1.5)
         {
             cellStateMachine.Advance(InfectedCellState.SEARCHING);
         }
@@ -251,22 +264,22 @@ public class CellScript : MonoBehaviour {
         {
             case InfectedCellState.DORMANT:
                 DormantUpdate();
+                roaming = true;
+                playerDetected = false;
                 break;
             case InfectedCellState.CHASINGPLAYER:
                 ChasingPlayerUpdate();
+                playerDetected = true;
+                roaming = false;
                 break;
             case InfectedCellState.SEARCHING:
                 SearchingUpdate();
+                roaming = true;
+                playerDetected = false;
                 break;
         }
         
         velocity += (targetLocation.position - transform.position) * speed * Time.deltaTime;
-
-        //if( playerDetected || (targetLocation.position - transform.position).magnitude < detectionRange)
-        //{
-        //    velocity += (targetLocation.position - transform.position) * speed * Time.deltaTime;
-        //    playerDetected = true;
-        //}
     }
 
     public void TakeDamage(float _damage)
