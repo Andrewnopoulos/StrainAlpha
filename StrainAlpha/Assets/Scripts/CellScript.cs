@@ -2,6 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 
+public enum InfectedCellState
+{
+    DORMANT,
+    CHASINGPLAYER,
+    SEARCHING
+}
+
 public class CellScript : MonoBehaviour {
 
     public NPCManager manager;
@@ -13,7 +20,7 @@ public class CellScript : MonoBehaviour {
     private float MaxSpeed = 5.0f;
 
     public bool infected = false;
-    private bool playerDetected = false;
+    public bool playerDetected = false;
     private bool roaming = true;
 
     public float detectionRange = 5.0f;
