@@ -310,10 +310,15 @@ public class CellScript : MonoBehaviour {
 
     private void SetStats()
     {
-        health += myGenes[0] * 5.0f;
-        damage += myGenes[1] * 0.5f;
-        detectionRange += myGenes[2] * 4.0f;
-        speed += myGenes[3] * 3.0f;
+        health += myGenes[0] * 50.0f;
+        if (myGenes[0] >= 0.1f)
+        {
+            transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, transform.localScale.z) * (myGenes[0]) * 5.0f;
+        }
+        damage += myGenes[1] * 1.0f;
+        detectionRange += myGenes[2] * 7.0f;
+        MaxSpeed += myGenes[3] * 10.0f;
+        speed += myGenes[3] * 30.0f;
     }
 
     public void CreateInfected(Chromosome _input)
@@ -347,9 +352,9 @@ public class CellScript : MonoBehaviour {
 
     private void SetBlendShapes()
     {
-        skinMeshRenderer.SetBlendShapeWeight(0, myGenes[0] * 500);
-        skinMeshRenderer.SetBlendShapeWeight(1, myGenes[1] * 500);
-        skinMeshRenderer.SetBlendShapeWeight(2, myGenes[3] * 500);
+        skinMeshRenderer.SetBlendShapeWeight(0, myGenes[0] * 300);
+        skinMeshRenderer.SetBlendShapeWeight(1, myGenes[1] * 300);
+        skinMeshRenderer.SetBlendShapeWeight(2, myGenes[3] * 300);
     }
 
     void OnTriggerEnter(Collider other)

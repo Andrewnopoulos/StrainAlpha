@@ -384,6 +384,8 @@ public class PlayerScript : MonoBehaviour {
                 }
             }
         }
+
+        UpdateStats();
 	}
 
     void Die()
@@ -483,7 +485,16 @@ public class PlayerScript : MonoBehaviour {
         {
             playerGenes.AddChromosome(other.GetComponent<NucleusScript>().GetChromosome());
             Destroy(other.gameObject);
+            UpdateStats();
             return;
         }
+    }
+
+    void UpdateStats()
+    {
+        // health changing with playerGenes[0] goes here
+        damage = baseDamage + playerGenes[1] * 3.0f;
+        fireRate = baseFireRate - playerGenes[2] * 0.1f;
+        speed = baseSpeed + playerGenes[3] * 3.0f;
     }
 }
