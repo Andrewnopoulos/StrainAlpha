@@ -16,7 +16,7 @@ Platform assembly: C:\Users\andrew.giannopoulos\Documents\StrainAlpha\StrainAlph
 Loading C:\Users\andrew.giannopoulos\Documents\StrainAlpha\StrainAlpha\StrainPreAlpha_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
 Platform assembly: C:\Users\andrew.giannopoulos\Documents\StrainAlpha\StrainAlpha\StrainPreAlpha_Data\Managed\UnityEngine.Analytics.dll (this message is harmless)
 Loading C:\Users\andrew.giannopoulos\Documents\StrainAlpha\StrainAlpha\StrainPreAlpha_Data\Managed\UnityEngine.Analytics.dll into Unity Child Domain
-- Completed reload, in  0.037 seconds
+- Completed reload, in  0.035 seconds
 desktop: 1680x1050 59Hz; virtual: 3360x1050 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
@@ -2184,4 +2184,4 @@ Platform assembly: C:\Users\andrew.giannopoulos\Documents\StrainAlpha\StrainAlph
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
 
 Setting up 1 worker threads for Enlighten.
-  Thread -> id: 18dc -> priority: 1 
+  Thread -> id: d80 -> priority: 1 
