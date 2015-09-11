@@ -227,7 +227,7 @@ public class CellScript : MonoBehaviour {
             }
         }
 
-        if ( (closest.position - myPos).magnitude < detectionRange * 2)
+        if ( (closest.position - myPos).magnitude < detectionRange * 2.3)
         {
             targetLocation = closest;
             return true;
@@ -246,7 +246,7 @@ public class CellScript : MonoBehaviour {
     void ChasingPlayerUpdate()
     {
         Vector3 myPos = cellPosition.position;
-        if ((playerLocation.position - myPos).magnitude > detectionRange * 1.5)
+        if ((playerLocation.position - myPos).magnitude > detectionRange * 2)
         {
             cellStateMachine.Advance(InfectedCellState.SEARCHING);
         }
@@ -308,12 +308,22 @@ public class CellScript : MonoBehaviour {
         myGenes = _input;
     }
 
+    private void SetStats()
+    {
+        health += myGenes[0] * 5.0f;
+        damage += myGenes[1] * 0.5f;
+        detectionRange += myGenes[2] * 4.0f;
+        speed += myGenes[3] * 3.0f;
+    }
+
     public void CreateInfected(Chromosome _input)
     {
         myGenes = _input;
         infected = true;
 
         gameObject.tag = "Enemy";
+
+        SetStats();
 
         cellStateMachine.Advance(InfectedCellState.CHASINGPLAYER);
 
@@ -327,6 +337,8 @@ public class CellScript : MonoBehaviour {
 
         gameObject.tag = "Enemy";
 
+        SetStats();
+
         cellStateMachine.Advance(InfectedCellState.CHASINGPLAYER);
 
         SetBlendShapes();
@@ -335,9 +347,9 @@ public class CellScript : MonoBehaviour {
 
     private void SetBlendShapes()
     {
-        skinMeshRenderer.SetBlendShapeWeight(0, myGenes[0] * 100);
-        skinMeshRenderer.SetBlendShapeWeight(1, myGenes[1] * 100);
-        skinMeshRenderer.SetBlendShapeWeight(2, myGenes[2] * 100);
+        skinMeshRenderer.SetBlendShapeWeight(0, myGenes[0] * 500);
+        skinMeshRenderer.SetBlendShapeWeight(1, myGenes[1] * 500);
+        skinMeshRenderer.SetBlendShapeWeight(2, myGenes[3] * 500);
     }
 
     void OnTriggerEnter(Collider other)
