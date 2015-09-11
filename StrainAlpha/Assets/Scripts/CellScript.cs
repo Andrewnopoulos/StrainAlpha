@@ -295,6 +295,7 @@ public class CellScript : MonoBehaviour {
     public void TakeDamage(float _damage)
     {
         health -= _damage;
+        // particle effect
         cellStateMachine.Advance(InfectedCellState.CHASINGPLAYER);
     }
 

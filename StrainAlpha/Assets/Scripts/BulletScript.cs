@@ -12,6 +12,8 @@ public class BulletScript : MonoBehaviour {
 
     private int enemyLayer = 9;
 
+    public ParticleSystem particles;
+
 	// Use this for initialization
 	void Start () {
 
@@ -43,6 +45,7 @@ public class BulletScript : MonoBehaviour {
             return;
         if (other.gameObject.layer == enemyLayer && other.tag == "Enemy")
         {
+            GameObject.Instantiate(particles, transform.position, transform.localRotation);
             //deal damage to the enemy
             CellScript script = other.GetComponent<CellScript>();
             if (script.infected)
