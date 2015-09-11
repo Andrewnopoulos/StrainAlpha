@@ -66,14 +66,6 @@ public class CellScript : MonoBehaviour {
 	void Start () {
         playerLocation = GameObject.Find("Player").transform;
         targetLocation = transform;
-
-        cellStateMachine = new CellFSM();
-
-        cellStateMachine.AddTransition(InfectedCellState.DORMANT, InfectedCellState.CHASINGPLAYER, Chase);
-        cellStateMachine.AddTransition(InfectedCellState.CHASINGPLAYER, InfectedCellState.SEARCHING, StartSearching);
-        cellStateMachine.AddTransition(InfectedCellState.SEARCHING, InfectedCellState.CHASINGPLAYER, Chase);
-        cellStateMachine.AddTransition(InfectedCellState.DORMANT, InfectedCellState.DORMANT, GoDormant);
-        cellStateMachine.AddTransition(InfectedCellState.SEARCHING, InfectedCellState.DORMANT, GoDormant);
 	}
 
     void GoDormant()
@@ -134,6 +126,15 @@ public class CellScript : MonoBehaviour {
         cellPosition = gameObject.transform;
 
         gameObject.tag = "Neutral";
+
+        cellStateMachine = new CellFSM();
+
+        cellStateMachine.AddTransition(InfectedCellState.DORMANT, InfectedCellState.CHASINGPLAYER, Chase);
+        cellStateMachine.AddTransition(InfectedCellState.CHASINGPLAYER, InfectedCellState.SEARCHING, StartSearching);
+        cellStateMachine.AddTransition(InfectedCellState.CHASINGPLAYER, InfectedCellState.CHASINGPLAYER, Chase);
+        cellStateMachine.AddTransition(InfectedCellState.SEARCHING, InfectedCellState.CHASINGPLAYER, Chase);
+        cellStateMachine.AddTransition(InfectedCellState.DORMANT, InfectedCellState.DORMANT, GoDormant);
+        cellStateMachine.AddTransition(InfectedCellState.SEARCHING, InfectedCellState.DORMANT, GoDormant);
     }
 
     float distanceFrom(GameObject otherObject)
@@ -226,7 +227,7 @@ public class CellScript : MonoBehaviour {
             }
         }
 
-        if ( (closest.position - myPos).magnitude < detectionRange)
+        if ( (closest.position - myPos).magnitude < detectionRange * 2.3)
         {
             targetLocation = closest;
             return true;
@@ -245,7 +246,7 @@ public class CellScript : MonoBehaviour {
     void ChasingPlayerUpdate()
     {
         Vector3 myPos = cellPosition.position;
-        if ((playerLocation.position - myPos).magnitude > detectionRange * 1.5)
+        if ((playerLocation.position - myPos).magnitude > detectionRange * 2)
         {
             cellStateMachine.Advance(InfectedCellState.SEARCHING);
         }
@@ -269,7 +270,7 @@ public class CellScript : MonoBehaviour {
         {
             case InfectedCellState.DORMANT:
                 DormantUpdate();
-                roaming = true;
+                roaming = false;
                 playerDetected = false;
                 break;
             case InfectedCellState.CHASINGPLAYER:
@@ -284,7 +285,11 @@ public class CellScript : MonoBehaviour {
                 break;
         }
         
-        velocity += (targetLocation.position - transform.position) * speed * Time.deltaTime;
+        if (targetLocation != null)
+        {
+            velocity += (targetLocation.position - transform.position) * speed * Time.deltaTime;
+        }
+        
     }
 
     public void TakeDamage(float _damage)
@@ -303,12 +308,24 @@ public class CellScript : MonoBehaviour {
         myGenes = _input;
     }
 
+    private void SetStats()
+    {
+        health += myGenes[0] * 5.0f;
+        damage += myGenes[1] * 0.5f;
+        detectionRange += myGenes[2] * 4.0f;
+        speed += myGenes[3] * 3.0f;
+    }
+
     public void CreateInfected(Chromosome _input)
     {
         myGenes = _input;
         infected = true;
 
         gameObject.tag = "Enemy";
+
+        SetStats();
+
+        cellStateMachine.Advance(InfectedCellState.CHASINGPLAYER);
 
         SetBlendShapes();
     }
@@ -320,15 +337,19 @@ public class CellScript : MonoBehaviour {
 
         gameObject.tag = "Enemy";
 
+        SetStats();
+
+        cellStateMachine.Advance(InfectedCellState.CHASINGPLAYER);
+
         SetBlendShapes();
         // other stuff for infecting the cell
     }
 
     private void SetBlendShapes()
     {
-        skinMeshRenderer.SetBlendShapeWeight(0, myGenes[0] * 100);
-        skinMeshRenderer.SetBlendShapeWeight(1, myGenes[1] * 100);
-        skinMeshRenderer.SetBlendShapeWeight(2, myGenes[2] * 100);
+        skinMeshRenderer.SetBlendShapeWeight(0, myGenes[0] * 500);
+        skinMeshRenderer.SetBlendShapeWeight(1, myGenes[1] * 500);
+        skinMeshRenderer.SetBlendShapeWeight(2, myGenes[3] * 500);
     }
 
     void OnTriggerEnter(Collider other)
@@ -339,7 +360,7 @@ public class CellScript : MonoBehaviour {
             manager.InfectNeutralCell(this);
         }
 
-        if (other.name == "Player" && currentHitCooldown < 0)
+        if (infected && other.name == "Player" && currentHitCooldown < 0)
         {
             other.GetComponent<PlayerScript>().TakeDamage(damage);
             currentHitCooldown = hitCooldown;

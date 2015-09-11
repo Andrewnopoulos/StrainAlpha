@@ -12,8 +12,8 @@ public enum GENE
 public class Chromosome {
 
     private static int length = 4;
-    public static float mutationRate = 0.2f;
-    public static float mutationStrength = 0.1f;
+    public static float mutationRate = 0.3f;
+    public static float mutationStrength = 0.2f;
     public static float randomInitValue = 0.3f;
 
     private static float MaxValue = 1.0f;
@@ -110,6 +110,9 @@ public class Chromosome {
                 if (genes[i] > MaxValue)
                 {
                     genes[i] = MaxValue;
+                }else if (genes[i] < 0)
+                {
+                    genes[i] = 0;
                 }
             }
         }
@@ -145,6 +148,10 @@ public class Chromosome {
             if (genes[i] > MaxValue)
             {
                 genes[i] = MaxValue;
+            }
+            else if (genes[i] < 0)
+            {
+                genes[i] = 0;
             }
         }
     }

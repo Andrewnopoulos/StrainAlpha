@@ -44,7 +44,7 @@ public class PlayerUI : MonoBehaviour {
 
         expanding -= Time.deltaTime;
 
-        if (Input.GetButtonDown("RightStickPress"))
+        if (Input.GetButtonDown("RightStickPress") || Input.GetMouseButtonDown(2))
         {
             ShowStats();
             statsExpanded = !statsExpanded;
