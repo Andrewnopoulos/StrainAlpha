@@ -10,7 +10,11 @@ public class BulletScript : MonoBehaviour {
 
     private bool alive = true;
 
+    public bool isEnemyBullet = false;
+
     private int enemyLayer = 9;
+
+    private int playerLayer = 8;
 
     public ParticleSystem particles;
 
@@ -18,6 +22,12 @@ public class BulletScript : MonoBehaviour {
 	void Start () {
 
 	}
+
+    public void SetAsEnemyBullet()
+    {
+        gameObject.layer = enemyLayer;
+        isEnemyBullet = true;
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -31,7 +41,6 @@ public class BulletScript : MonoBehaviour {
 
         if (!alive)
             Kill();
-
 	}
 
     void Kill()
@@ -43,7 +52,7 @@ public class BulletScript : MonoBehaviour {
     {
         if (!alive)
             return;
-        if (other.gameObject.layer == enemyLayer && other.tag == "Enemy")
+        if (!isEnemyBullet && other.gameObject.layer == enemyLayer && other.tag == "Enemy")
         {
             GameObject.Instantiate(particles, transform.position, transform.localRotation);
             //deal damage to the enemy
@@ -52,7 +61,23 @@ public class BulletScript : MonoBehaviour {
             {
                 script.TakeDamage(damage);
             }
+            alive = false;
         }
-        alive = false;
+
+        if (isEnemyBullet && other.gameObject.layer == playerLayer)
+        {
+            GameObject.Instantiate(particles, transform.position, transform.localRotation);
+
+            PlayerScript script = other.GetComponent<PlayerScript>();
+            script.TakeDamage(damage);
+            alive = false;
+        }
+
+        if (!isEnemyBullet && other.gameObject.layer != enemyLayer)
+        {
+            alive = false;
+        }
+        
+        
     }
 }

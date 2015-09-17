@@ -29,7 +29,7 @@ public class NPCManager : MonoBehaviour {
 
         for (int i = 0; i < InitialInfectedCells; i++)
         {
-           CreateInfectedCell(new Chromosome(0.3f), new Vector3(10, 0, 10));
+           CreateInfectedCell(new Chromosome(4), new Vector3(10, 0, 10));
         }
 
         playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>();
@@ -43,6 +43,18 @@ public class NPCManager : MonoBehaviour {
         CellScript script = newCell.GetComponent<CellScript>();
 
         script.manager = this;
+
+        friendlyList.Add(script);
+    }
+
+    public void SpawnNeutral(Vector3 position, Chromosome inputChromosome)
+    {
+        GameObject newCell = (GameObject)Instantiate(cell, position, transform.rotation);
+        CellScript script = newCell.GetComponent<CellScript>();
+
+        script.manager = this;
+
+        script.SetChromosome(inputChromosome);
 
         friendlyList.Add(script);
     }

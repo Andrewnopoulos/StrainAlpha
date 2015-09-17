@@ -12,9 +12,9 @@ public enum GENE
 public class Chromosome {
 
     private static int length = 4;
-    public static float mutationRate = 0.3f;
+    public static float mutationRate = 0.1f;
     public static float mutationStrength = 0.2f;
-    public static float randomInitValue = 0.3f;
+    public static float randomInitValue = 0.04f;
 
     private static float MaxValue = 1.0f;
 
@@ -32,10 +32,32 @@ public class Chromosome {
         
     }
 
-    public Chromosome(float initVal)
+    public Chromosome(int input)
     {
-        initGenes(initVal);
+        if (input == 4)
+        {
+            initGenes(randomInitValue);
+        }
+        else
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                if (i == input)
+                {
+                    genes[i] = Random.Range(0.6f, 0.8f);
+                }
+                else
+                {
+                    genes[i] = Random.Range(0.0f, randomInitValue);
+                }
+            }
+        }
     }
+
+    //public Chromosome(float initVal)
+    //{
+    //    initGenes(initVal);
+    //}
 
     public Chromosome()
     {

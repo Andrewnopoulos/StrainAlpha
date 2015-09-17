@@ -16,20 +16,28 @@ public class CellScript : MonoBehaviour {
 
     public CellFSM cellStateMachine;
 
+    public GameObject bulletPrefab;
+
     public NPCManager manager;
 
     private float health = 5.0f;
     private float damage = 0.5f;
     private float speed = 3.5f;
 
+    private float fireCoolDown = 0.0f;
+
     private float hitCooldown = 0.5f;
     private float currentHitCooldown = 0.0f;
 
     private float MaxSpeed = 5.0f;
 
+    public float turnDamp = 0.05f;
+
     public bool infected = false;
     public bool playerDetected = false;
     public bool roaming = true;
+
+    private bool ranged = false;
 
     public float detectionRange = 5.0f;
 
@@ -107,10 +115,11 @@ public class CellScript : MonoBehaviour {
 
     void Awake()
     {
-        myGenes = new Chromosome(0.04f);
+        myGenes = new Chromosome(4);
         playerDetected = false;
         infected = false;
         roaming = true;
+        ranged = false;
         velocity = new Vector3(0, 0, 0);
 
         animationOffset = Random.Range(0.0f, 10.0f);
@@ -159,6 +168,11 @@ public class CellScript : MonoBehaviour {
         {
             //add this object to the destroy list
             manager.AddToKillList(gameObject.GetComponent<CellScript>());
+        }
+
+        if (fireCoolDown > 0)
+        {
+            fireCoolDown -= Time.deltaTime;
         }
 
         if (infected)
@@ -245,6 +259,14 @@ public class CellScript : MonoBehaviour {
 
     void ChasingPlayerUpdate()
     {
+        if (fireCoolDown <= 0)
+        {
+            ShootBullet();
+        }
+
+        Vector3 buttstuff = Vector3.zero;
+        transform.rotation = Quaternion.LookRotation(Vector3.SmoothDamp(transform.forward, Vector3.Normalize(playerLocation.position - transform.position), ref buttstuff, turnDamp));
+
         Vector3 myPos = cellPosition.position;
         if ((playerLocation.position - myPos).magnitude > detectionRange * 2)
         {
@@ -292,6 +314,16 @@ public class CellScript : MonoBehaviour {
         
     }
 
+    private void ShootBullet()
+    {
+        GameObject newBullet = (GameObject)Instantiate(bulletPrefab, transform.position, transform.rotation);
+        BulletScript script = newBullet.GetComponent<BulletScript>();
+        script.damage = damage;
+        script.speed = 15.0f;
+        script.SetAsEnemyBullet();
+        fireCoolDown = fireRate;
+    }
+
     public void TakeDamage(float _damage)
     {
         health -= _damage;
@@ -312,7 +344,7 @@ public class CellScript : MonoBehaviour {
     private void SetStats()
     {
         health += myGenes[0] * 50.0f;
-        if (myGenes[0] >= 0.1f)
+        if (myGenes[0] >= 0.15f)
         {
             transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, transform.localScale.z) * (myGenes[0]) * 5.0f;
         }
@@ -320,6 +352,11 @@ public class CellScript : MonoBehaviour {
         detectionRange += myGenes[2] * 7.0f;
         MaxSpeed += myGenes[3] * 10.0f;
         speed += myGenes[3] * 30.0f;
+
+        if (myGenes[2] > 0.5f)
+        {
+            ranged = true;
+        }
     }
 
     public void CreateInfected(Chromosome _input)

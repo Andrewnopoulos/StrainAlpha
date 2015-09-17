@@ -2,16 +2,24 @@
 using UnityEngine.UI;
 using System.Collections;
 
+public enum Weapon
+{
+    SHIELD = 0,
+    LASER = 1,
+    BOMB = 2,
+    CHARGE = 3,
+}
+
 public class PlayerScript : MonoBehaviour {
 
     private bool isControllerConnected = false;
 
     public GameObject bulletPrefab;
-    public GameObject canvas;
-    private Text weaponText;
 
     private ShieldScript shield;
     private LaserScript laser;
+
+    private Weapon currentWeapon = Weapon.SHIELD;
 
     private CharacterController characterController;
 
@@ -75,8 +83,7 @@ public class PlayerScript : MonoBehaviour {
 	void Start () {
 
         characterController = GetComponent<CharacterController>();
-        canvas = GameObject.Find("CanvasObject");
-        weaponText = canvas.GetComponentInChildren<Text>();
+        //weaponText = canvas.GetComponentInChildren<Text>();
 
         shield = gameObject.GetComponentInChildren<ShieldScript>();
         laser = gameObject.GetComponentInChildren<LaserScript>();
@@ -262,17 +269,17 @@ public class PlayerScript : MonoBehaviour {
             if (Input.GetAxis("RightTrigger") > 0.1f)
             {
                 //activate special power
-                switch (weaponText.text)
+                switch (currentWeapon)
                 {
-                    case "Charge":
+                    case Weapon.CHARGE:
                         chargeActive = true;
                         break;
-
-                    case "Bomb":
+                
+                    case Weapon.BOMB:
                         bombActive = true;
                         break;
-
-                    case "Shield":
+                
+                    case Weapon.SHIELD:
                         if (!shieldActive)
                         {
                             if (playerGenes[0] < 0.8f)
@@ -283,8 +290,8 @@ public class PlayerScript : MonoBehaviour {
                         shield.SetActive(true);
                         shieldActive = true;
                         break;
-
-                    case "Laser":
+                
+                    case Weapon.LASER:
                         if (!laserActive)
                         {
                             if (playerGenes[2] < 0.8f)
@@ -299,7 +306,7 @@ public class PlayerScript : MonoBehaviour {
                         laserActive = true;
                         laserDrainSpeed += 0.15f;
                         break;
-
+                
                     default:
                         break;
                 }
@@ -330,17 +337,17 @@ public class PlayerScript : MonoBehaviour {
             if (Input.GetMouseButton(1))
             {
                 //activate special power
-                switch (weaponText.text)
+                switch (currentWeapon)
                 {
-                    case "Charge":
+                    case Weapon.CHARGE:
                         chargeActive = true;
                         break;
-
-                    case "Bomb":
+                
+                    case Weapon.BOMB:
                         bombActive = true;
                         break;
-
-                    case "Shield":
+                
+                    case Weapon.SHIELD:
                         if (!shieldActive)
                         {
                             if (playerGenes[0] < 0.8f)
@@ -351,8 +358,8 @@ public class PlayerScript : MonoBehaviour {
                         shield.SetActive(true);
                         shieldActive = true;
                         break;
-
-                    case "Laser":
+                
+                    case Weapon.LASER:
                         if (!laserActive)
                         {
                             if (playerGenes[2] < 0.8f)
@@ -367,7 +374,7 @@ public class PlayerScript : MonoBehaviour {
                         laserActive = true;
                         laserDrainSpeed += 0.15f;
                         break;
-
+                
                     default:
                         break;
                 }
@@ -419,29 +426,30 @@ public class PlayerScript : MonoBehaviour {
         BulletScript script = newBullet.GetComponent<BulletScript>();
         script.damage = damage;
         script.speed = 15.0f;
+        script.isEnemyBullet = false;
         fireCooldown = fireRate;
     }
 
     private void ForwardCyclePower()
     {
-        switch (weaponText.text)
+        switch (currentWeapon)
         {
-            case "Charge":
-                weaponText.text = "Bomb";
+            case Weapon.CHARGE:
+                currentWeapon = Weapon.BOMB;
                 break;
-
-            case "Bomb":
-                weaponText.text = "Shield";
+        
+            case Weapon.BOMB:
+                currentWeapon = Weapon.SHIELD;
                 break;
-
-            case "Shield":
-                weaponText.text = "Laser";
+        
+            case Weapon.SHIELD:
+                currentWeapon = Weapon.LASER;
                 break;
-
-            case "Laser":
-                weaponText.text = "Charge";
+        
+            case Weapon.LASER:
+                currentWeapon = Weapon.CHARGE;
                 break;
-
+        
             default:
                 break;
         }
@@ -450,24 +458,24 @@ public class PlayerScript : MonoBehaviour {
 
     private void BackCyclePower()
     {
-        switch (weaponText.text)
+        switch (currentWeapon)
         {
-            case "Charge":
-                weaponText.text = "Laser";
+            case Weapon.CHARGE:
+                currentWeapon = Weapon.LASER;
                 break;
-
-            case "Bomb":
-                weaponText.text = "Charge";
+        
+            case Weapon.BOMB:
+                currentWeapon = Weapon.CHARGE;
                 break;
-
-            case "Shield":
-                weaponText.text = "Bomb";
+        
+            case Weapon.SHIELD:
+                currentWeapon = Weapon.BOMB;
                 break;
-
-            case "Laser":
-                weaponText.text = "Shield";
+        
+            case Weapon.LASER:
+                currentWeapon = Weapon.SHIELD;
                 break;
-
+        
             default:
                 break;
         }
