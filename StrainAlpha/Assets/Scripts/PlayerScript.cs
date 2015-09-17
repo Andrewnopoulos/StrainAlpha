@@ -18,6 +18,7 @@ public class PlayerScript : MonoBehaviour {
 
     private ShieldScript shield;
     private LaserScript laser;
+    private ChargeScript charge;
 
     private Weapon currentWeapon = Weapon.SHIELD;
 
@@ -87,6 +88,7 @@ public class PlayerScript : MonoBehaviour {
 
         shield = gameObject.GetComponentInChildren<ShieldScript>();
         laser = gameObject.GetComponentInChildren<LaserScript>();
+        charge = gameObject.GetComponentInChildren<ChargeScript>();
 
         maxHealth = baseHealth;
         maxDamage = baseDamage;
@@ -147,6 +149,22 @@ public class PlayerScript : MonoBehaviour {
                 moveDamp = 1.0f;
                 turnDamp = 0.0f;
                 laserDrainSpeed -= 0.15f;
+            }
+        }
+
+        if (chargeActive && playerGenes[3] > 0)
+            playerGenes[3] -= Time.deltaTime * chargeDrainSpeed;
+        else if (chargeActive && playerGenes[3] <= 0)
+        {
+            chargeActive = false;
+            playerGenes[3] = 0.0f;
+
+            if (charge.GetActive())
+            {
+                charge.SetActive(false);
+                fireCooldown = 0.05f;
+                moveDamp = 1.0f;
+                turnDamp = 0.0f;
             }
         }
 
@@ -272,6 +290,17 @@ public class PlayerScript : MonoBehaviour {
                 switch (currentWeapon)
                 {
                     case Weapon.CHARGE:
+                        if (!chargeActive)
+                        {
+                            if (playerGenes[3] < 0.8f)
+                                break;
+                        }
+                        if (charge.GetActive())
+                            break;
+                        charge.SetActive(true);
+                        fireCooldown = 100.0f;
+                        moveDamp = 1.5f;
+                        turnDamp = 0.5f;
                         chargeActive = true;
                         break;
                 
@@ -320,6 +349,13 @@ public class PlayerScript : MonoBehaviour {
                     moveDamp = 1.0f;
                     turnDamp = 0.0f;
                     laserDrainSpeed -= 0.15f;
+                }
+                if (charge.GetActive())
+                {
+                    charge.SetActive(false);
+                    fireCooldown = 0.05f;
+                    moveDamp = 1.0f;
+                    turnDamp = 0.0f;
                 }
             }
         }
@@ -340,6 +376,17 @@ public class PlayerScript : MonoBehaviour {
                 switch (currentWeapon)
                 {
                     case Weapon.CHARGE:
+                        if (!chargeActive)
+                        {
+                            if (playerGenes[3] < 0.8f)
+                                break;
+                        }
+                        if (charge.GetActive())
+                            break;
+                        charge.SetActive(true);
+                        fireCooldown = 100.0f;
+                        moveDamp = 1.5f;
+                        turnDamp = 0.05f;
                         chargeActive = true;
                         break;
                 
@@ -388,6 +435,13 @@ public class PlayerScript : MonoBehaviour {
                     moveDamp = 1.0f;
                     turnDamp = 0.0f;
                     laserDrainSpeed -= 0.15f;
+                }
+                if (charge.GetActive())
+                {
+                    charge.SetActive(false);
+                    fireCooldown = 0.05f;
+                    moveDamp = 1.0f;
+                    turnDamp = 0.0f;
                 }
             }
         }
