@@ -111,6 +111,10 @@ public class CellScript : MonoBehaviour {
     void Chase()
     {
         targetLocation = playerLocation;
+        if (ranged)
+        {
+            fireCoolDown = Random.Range(0, fireRate);
+        }
     }
 
     public Transform GetPosition()
