@@ -9,6 +9,16 @@ public enum InfectedCellState
     SEARCHING
 }
 
+public enum InfectedSpecialType
+{
+    SPEED, // high speed
+    HEALTH, // high health
+    DAMAGE, // high damage
+    KAMIKAZE, // speed + damage
+    REPLICATION, // health + speed
+    MINE // health + damage
+}
+
 public class CellFSM : FiniteStateMachine<InfectedCellState>
 { }
 
