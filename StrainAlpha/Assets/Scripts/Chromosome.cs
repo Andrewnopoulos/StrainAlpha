@@ -13,24 +13,13 @@ public class Chromosome {
 
     private static int length = 4;
     public static float mutationRate = 0.1f;
-    public static float mutationStrength = 0.2f;
+    public static float mutationStrength = 0.4f;
     public static float randomInitValue = 0.04f;
 
     private static float MaxValue = 1.0f;
 
     private float[] genes = new float[length];
     private GENE topIndex = GENE.HEALTH;
-
-	// Use this for initialization
-	void Start () 
-    {
-	    
-	}
-
-    void Awake()
-    {
-        
-    }
 
     public Chromosome(int input)
     {
@@ -108,7 +97,7 @@ public class Chromosome {
             output1[i] = mum[i];
             output2[i] = dad[i];
         }
-        for (int i = 0; i < crossoverPoint; i++)
+        for (int i = crossoverPoint; i < length; i++)
         {
             output2[i] = mum[i];
             output1[i] = dad[i];
@@ -118,7 +107,16 @@ public class Chromosome {
         Chromosome out2 = new Chromosome(output2);
 
         // Change this to evaluate the Chromosomes and return the better one
-        return out1;
+        float c1Strength = 0;
+        float c2Strength = 0;
+
+        for (int i = 0; i < length; i ++)
+        {
+            c1Strength += output1[i];
+            c2Strength += output2[i];
+        }
+
+        return (c1Strength > c2Strength) ? out1 : out2;
     }
 
     public void Mutate()

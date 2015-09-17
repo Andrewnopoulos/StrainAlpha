@@ -14,6 +14,11 @@ public class CellFSM : FiniteStateMachine<InfectedCellState>
 
 public class CellScript : MonoBehaviour {
 
+    public float Chromosome1;
+    public float Chromosome2;
+    public float Chromosome3;
+    public float Chromosome4;
+
     public CellFSM cellStateMachine;
 
     public GameObject bulletPrefab;
@@ -37,7 +42,7 @@ public class CellScript : MonoBehaviour {
     public bool playerDetected = false;
     public bool roaming = true;
 
-    private bool ranged = false;
+    public bool ranged = false;
 
     public float detectionRange = 5.0f;
 
@@ -74,6 +79,10 @@ public class CellScript : MonoBehaviour {
 	void Start () {
         playerLocation = GameObject.Find("Player").transform;
         targetLocation = transform;
+        Chromosome1 = 0;
+        Chromosome2 = 0;
+        Chromosome3 = 0;
+        Chromosome4 = 0;
 	}
 
     void GoDormant()
@@ -163,6 +172,11 @@ public class CellScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+        Chromosome1 = myGenes[0];
+        Chromosome2 = myGenes[1];
+        Chromosome3 = myGenes[2];
+        Chromosome4 = myGenes[3];
 
         if (health <= 0)
         {
@@ -259,7 +273,7 @@ public class CellScript : MonoBehaviour {
 
     void ChasingPlayerUpdate()
     {
-        if (fireCoolDown <= 0)
+        if (fireCoolDown <= 0 && ranged)
         {
             ShootBullet();
         }
@@ -339,6 +353,7 @@ public class CellScript : MonoBehaviour {
     public void SetChromosome(Chromosome _input)
     {
         myGenes = _input;
+        SetStats();
     }
 
     private void SetStats()
@@ -353,10 +368,16 @@ public class CellScript : MonoBehaviour {
         MaxSpeed += myGenes[3] * 10.0f;
         speed += myGenes[3] * 30.0f;
 
-        if (myGenes[2] > 0.5f)
+        if (myGenes[2] > 0.3f)
         {
             ranged = true;
         }
+
+        Chromosome1 = myGenes[0];
+        Chromosome2 = myGenes[1];
+        Chromosome3 = myGenes[2];
+        Chromosome4 = myGenes[3];
+
     }
 
     public void CreateInfected(Chromosome _input)
