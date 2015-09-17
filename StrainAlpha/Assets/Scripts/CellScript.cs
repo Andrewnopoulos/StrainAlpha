@@ -413,7 +413,7 @@ public class CellScript : MonoBehaviour {
     {
         skinMeshRenderer.SetBlendShapeWeight(0, myGenes[0] * 300);
         skinMeshRenderer.SetBlendShapeWeight(1, myGenes[1] * 300);
-        skinMeshRenderer.SetBlendShapeWeight(2, myGenes[3] * 300);
+        skinMeshRenderer.SetBlendShapeWeight(2, myGenes[2] * 300);
     }
 
     void OnTriggerEnter(Collider other)
