@@ -419,6 +419,7 @@ public class PlayerScript : MonoBehaviour {
         BulletScript script = newBullet.GetComponent<BulletScript>();
         script.damage = damage;
         script.speed = 15.0f;
+        script.isEnemyBullet = false;
         fireCooldown = fireRate;
     }
 
