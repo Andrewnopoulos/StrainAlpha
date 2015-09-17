@@ -102,7 +102,7 @@ public class PlayerScript : MonoBehaviour {
 
         energy = maxEnergy;
 
-        playerGenes = new Chromosome(0);
+        playerGenes = new Chromosome();
 
         if (Input.GetJoystickNames().Length > 0)
         {

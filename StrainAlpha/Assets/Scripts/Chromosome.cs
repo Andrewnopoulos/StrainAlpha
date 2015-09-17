@@ -13,7 +13,7 @@ public class Chromosome {
 
     private static int length = 4;
     public static float mutationRate = 0.1f;
-    public static float mutationStrength = 0.4f;
+    public static float mutationStrength = 0.3f;
     public static float randomInitValue = 0.04f;
 
     private static float MaxValue = 1.0f;
@@ -50,7 +50,7 @@ public class Chromosome {
 
     public Chromosome()
     {
-        initGenes(randomInitValue);
+        initGenes(0);
     }
 
     public Chromosome(float[] initValues)
@@ -106,7 +106,6 @@ public class Chromosome {
         Chromosome out1 = new Chromosome(output1);
         Chromosome out2 = new Chromosome(output2);
 
-        // Change this to evaluate the Chromosomes and return the better one
         float c1Strength = 0;
         float c2Strength = 0;
 
