@@ -76,7 +76,7 @@ public class PlayerScript : MonoBehaviour {
 
     private float laserDrainSpeed = 0.05f;
     private float shieldDrainSpeed = 0.15f;
-    private float chargeDrainSpeed = 0.05f;
+    private float chargeDrainSpeed = 0.25f;
     private float bombDrainSpeed = 0.05f;
 
     Chromosome playerGenes;
@@ -182,7 +182,11 @@ public class PlayerScript : MonoBehaviour {
 
         velocity *= 0.9f;
 
-        if (currentDash > 0)
+        if (chargeActive)
+        {
+            movementVector += transform.forward;
+        }
+        else if (currentDash > 0)
         {
             movementVector += dashDir;
         }
@@ -300,7 +304,7 @@ public class PlayerScript : MonoBehaviour {
                         charge.SetActive(true);
                         fireCooldown = 100.0f;
                         moveDamp = 1.5f;
-                        turnDamp = 0.5f;
+                        turnDamp = 0.1f;
                         chargeActive = true;
                         break;
                 
@@ -349,13 +353,6 @@ public class PlayerScript : MonoBehaviour {
                     moveDamp = 1.0f;
                     turnDamp = 0.0f;
                     laserDrainSpeed -= 0.15f;
-                }
-                if (charge.GetActive())
-                {
-                    charge.SetActive(false);
-                    fireCooldown = 0.05f;
-                    moveDamp = 1.0f;
-                    turnDamp = 0.0f;
                 }
             }
         }
@@ -386,7 +383,7 @@ public class PlayerScript : MonoBehaviour {
                         charge.SetActive(true);
                         fireCooldown = 100.0f;
                         moveDamp = 1.5f;
-                        turnDamp = 0.05f;
+                        turnDamp = 0.1f;
                         chargeActive = true;
                         break;
                 
@@ -435,13 +432,6 @@ public class PlayerScript : MonoBehaviour {
                     moveDamp = 1.0f;
                     turnDamp = 0.0f;
                     laserDrainSpeed -= 0.15f;
-                }
-                if (charge.GetActive())
-                {
-                    charge.SetActive(false);
-                    fireCooldown = 0.05f;
-                    moveDamp = 1.0f;
-                    turnDamp = 0.0f;
                 }
             }
         }
