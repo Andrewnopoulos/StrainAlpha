@@ -45,7 +45,8 @@ public class ShieldScript : MonoBehaviour {
     {
         if (other.gameObject.layer == enemyBulletLayer)
         {
-            Destroy(other);
+
+            //Destroy(other);
         }
     }
 

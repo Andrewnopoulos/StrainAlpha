@@ -102,7 +102,8 @@ public class PlayerScript : MonoBehaviour {
 
         energy = maxEnergy;
 
-        playerGenes = new Chromosome();
+        playerGenes = new Chromosome(0);
+        // TODO change this back to default constructor
 
         if (Input.GetJoystickNames().Length > 0)
         {
@@ -169,7 +170,9 @@ public class PlayerScript : MonoBehaviour {
         }
 
         if (shieldActive && playerGenes[0] > 0)
-            playerGenes[0] -= Time.deltaTime * shieldDrainSpeed;
+        {
+            //playerGenes[0] -= Time.deltaTime * shieldDrainSpeed;
+        }
         else if (shieldActive && playerGenes[0] <= 0)
         {
             shieldActive = false;

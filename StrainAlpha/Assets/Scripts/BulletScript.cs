@@ -85,7 +85,7 @@ public class BulletScript : MonoBehaviour {
             GameObject.Instantiate(particles, transform.position, transform.localRotation);
             SetAsFriendlyBullet();
 
-            Vector3 delta = transform.position - other.transform.position;
+            Vector3 delta = other.transform.position - transform.position;
             delta.Normalize();
             transform.forward -= 2 * delta;
             transform.forward.Normalize();
@@ -94,7 +94,7 @@ public class BulletScript : MonoBehaviour {
             
         }
 
-        if (!isEnemyBullet && other.gameObject.layer != enemyLayer)
+        if (!isEnemyBullet && other.gameObject.layer != enemyLayer && other.gameObject.layer != shieldLayer)
         {
             alive = false;
         }
