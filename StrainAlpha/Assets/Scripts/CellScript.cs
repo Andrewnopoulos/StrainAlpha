@@ -115,7 +115,7 @@ public class CellScript : MonoBehaviour {
 
     void Awake()
     {
-        myGenes = new Chromosome(0.04f);
+        myGenes = new Chromosome(4);
         playerDetected = false;
         infected = false;
         roaming = true;
