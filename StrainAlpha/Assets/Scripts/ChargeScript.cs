@@ -3,7 +3,7 @@ using System.Collections;
 
 public class ChargeScript : MonoBehaviour {
 
-    public float damage = 5.0f;
+    public float damage = 2.0f;
 
     private Renderer renderer;
     private Collider collider;

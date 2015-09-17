@@ -80,9 +80,8 @@ public class PlayerScript : MonoBehaviour {
     private float bombDrainSpeed = 0.05f;
 
     Chromosome playerGenes;
-
-	void Start () {
-
+    void Awake()
+    {
         characterController = GetComponent<CharacterController>();
         //weaponText = canvas.GetComponentInChildren<Text>();
 
@@ -103,7 +102,10 @@ public class PlayerScript : MonoBehaviour {
         energy = maxEnergy;
 
         playerGenes = new Chromosome();
+    }
 
+	void Start () 
+    {
         if (Input.GetJoystickNames().Length > 0)
         {
             isControllerConnected = true;
@@ -146,8 +148,8 @@ public class PlayerScript : MonoBehaviour {
             {
                 laser.SetActive(false);
                 fireCooldown = 0.05f;
-                moveDamp = 1.0f;
-                turnDamp = 0.0f;
+                moveDamp += 0.6f;
+                turnDamp -= 0.15f;
                 laserDrainSpeed -= 0.15f;
             }
         }
@@ -163,8 +165,8 @@ public class PlayerScript : MonoBehaviour {
             {
                 charge.SetActive(false);
                 fireCooldown = 0.05f;
-                moveDamp = 1.0f;
-                turnDamp = 0.0f;
+                moveDamp -= 0.5f;
+                turnDamp -= 0.1f;
             }
         }
 
@@ -303,8 +305,8 @@ public class PlayerScript : MonoBehaviour {
                             break;
                         charge.SetActive(true);
                         fireCooldown = 100.0f;
-                        moveDamp = 1.5f;
-                        turnDamp = 0.1f;
+                        moveDamp += 0.5f;
+                        turnDamp += 0.1f;
                         chargeActive = true;
                         break;
                 
@@ -334,8 +336,8 @@ public class PlayerScript : MonoBehaviour {
                             break;
                         laser.SetActive(true);
                         fireCooldown = 100.0f;
-                        moveDamp = 0.4f;
-                        turnDamp = 0.15f;
+                        moveDamp -= 0.6f;
+                        turnDamp += 0.15f;
                         laserActive = true;
                         laserDrainSpeed += 0.15f;
                         break;
@@ -350,8 +352,8 @@ public class PlayerScript : MonoBehaviour {
                 {
                     laser.SetActive(false);
                     fireCooldown = 0.05f;
-                    moveDamp = 1.0f;
-                    turnDamp = 0.0f;
+                    moveDamp += 0.6f;
+                    turnDamp -= 0.15f;
                     laserDrainSpeed -= 0.15f;
                 }
             }
@@ -382,8 +384,8 @@ public class PlayerScript : MonoBehaviour {
                             break;
                         charge.SetActive(true);
                         fireCooldown = 100.0f;
-                        moveDamp = 1.5f;
-                        turnDamp = 0.1f;
+                        moveDamp += 0.5f;
+                        turnDamp += 0.1f;
                         chargeActive = true;
                         break;
                 
@@ -413,8 +415,8 @@ public class PlayerScript : MonoBehaviour {
                             break;
                         laser.SetActive(true);
                         fireCooldown = 100.0f;
-                        moveDamp = 0.4f;
-                        turnDamp = 0.15f;
+                        moveDamp -= 0.6f;
+                        turnDamp += 0.15f;
                         laserActive = true;
                         laserDrainSpeed += 0.15f;
                         break;
@@ -429,8 +431,8 @@ public class PlayerScript : MonoBehaviour {
                 {
                     laser.SetActive(false);
                     fireCooldown = 0.05f;
-                    moveDamp = 1.0f;
-                    turnDamp = 0.0f;
+                    moveDamp += 0.6f;
+                    turnDamp -= 0.15f;
                     laserDrainSpeed -= 0.15f;
                 }
             }
