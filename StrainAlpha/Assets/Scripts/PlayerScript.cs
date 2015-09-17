@@ -18,6 +18,7 @@ public class PlayerScript : MonoBehaviour {
 
     private ShieldScript shield;
     private LaserScript laser;
+    private ChargeScript charge;
 
     private Weapon currentWeapon = Weapon.SHIELD;
 
@@ -75,7 +76,7 @@ public class PlayerScript : MonoBehaviour {
 
     private float laserDrainSpeed = 0.05f;
     private float shieldDrainSpeed = 0.15f;
-    private float chargeDrainSpeed = 0.05f;
+    private float chargeDrainSpeed = 0.25f;
     private float bombDrainSpeed = 0.05f;
 
     Chromosome playerGenes;
@@ -87,6 +88,7 @@ public class PlayerScript : MonoBehaviour {
 
         shield = gameObject.GetComponentInChildren<ShieldScript>();
         laser = gameObject.GetComponentInChildren<LaserScript>();
+        charge = gameObject.GetComponentInChildren<ChargeScript>();
 
         maxHealth = baseHealth;
         maxDamage = baseDamage;
@@ -100,7 +102,7 @@ public class PlayerScript : MonoBehaviour {
 
         energy = maxEnergy;
 
-        playerGenes = new Chromosome(0);
+        playerGenes = new Chromosome();
 
         if (Input.GetJoystickNames().Length > 0)
         {
@@ -150,8 +152,26 @@ public class PlayerScript : MonoBehaviour {
             }
         }
 
+        if (chargeActive && playerGenes[3] > 0)
+            playerGenes[3] -= Time.deltaTime * chargeDrainSpeed;
+        else if (chargeActive && playerGenes[3] <= 0)
+        {
+            chargeActive = false;
+            playerGenes[3] = 0.0f;
+
+            if (charge.GetActive())
+            {
+                charge.SetActive(false);
+                fireCooldown = 0.05f;
+                moveDamp = 1.0f;
+                turnDamp = 0.0f;
+            }
+        }
+
         if (shieldActive && playerGenes[0] > 0)
+        {
             playerGenes[0] -= Time.deltaTime * shieldDrainSpeed;
+        }
         else if (shieldActive && playerGenes[0] <= 0)
         {
             shieldActive = false;
@@ -164,7 +184,11 @@ public class PlayerScript : MonoBehaviour {
 
         velocity *= 0.9f;
 
-        if (currentDash > 0)
+        if (chargeActive)
+        {
+            movementVector += transform.forward;
+        }
+        else if (currentDash > 0)
         {
             movementVector += dashDir;
         }
@@ -272,6 +296,17 @@ public class PlayerScript : MonoBehaviour {
                 switch (currentWeapon)
                 {
                     case Weapon.CHARGE:
+                        if (!chargeActive)
+                        {
+                            if (playerGenes[3] < 0.8f)
+                                break;
+                        }
+                        if (charge.GetActive())
+                            break;
+                        charge.SetActive(true);
+                        fireCooldown = 100.0f;
+                        moveDamp = 1.5f;
+                        turnDamp = 0.1f;
                         chargeActive = true;
                         break;
                 
@@ -340,6 +375,17 @@ public class PlayerScript : MonoBehaviour {
                 switch (currentWeapon)
                 {
                     case Weapon.CHARGE:
+                        if (!chargeActive)
+                        {
+                            if (playerGenes[3] < 0.8f)
+                                break;
+                        }
+                        if (charge.GetActive())
+                            break;
+                        charge.SetActive(true);
+                        fireCooldown = 100.0f;
+                        moveDamp = 1.5f;
+                        turnDamp = 0.1f;
                         chargeActive = true;
                         break;
                 
