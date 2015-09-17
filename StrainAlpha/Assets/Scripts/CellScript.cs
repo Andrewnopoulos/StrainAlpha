@@ -9,21 +9,29 @@ public enum InfectedCellState
     SEARCHING
 }
 
+public enum InfectedSpecialType
+{
+    REGULAR, // none of the below
+    SPEED, // high speed
+    HEALTH, // high health
+    DAMAGE, // high damage
+    KAMIKAZE, // speed + damage
+    REPLICATION, // health + speed
+    MINE // health + damage
+}
+
 public class CellFSM : FiniteStateMachine<InfectedCellState>
 { }
 
 public class CellScript : MonoBehaviour {
-
-    public float Chromosome1;
-    public float Chromosome2;
-    public float Chromosome3;
-    public float Chromosome4;
 
     public CellFSM cellStateMachine;
 
     public GameObject bulletPrefab;
 
     public NPCManager manager;
+
+    public InfectedSpecialType infectedType = InfectedSpecialType.REGULAR;
 
     private float health = 5.0f;
     private float damage = 0.5f;
@@ -38,6 +46,8 @@ public class CellScript : MonoBehaviour {
 
     public float turnDamp = 0.05f;
 
+    public float geneTriggerValue = 0.6f;
+
     public bool infected = false;
     public bool playerDetected = false;
     public bool roaming = true;
@@ -47,7 +57,7 @@ public class CellScript : MonoBehaviour {
     public float detectionRange = 5.0f;
 
     //fire rate is synonymous with range; values over 0.5 make the enemy melee
-    private float fireRate = 1.0f;
+    private float fireRate = 2.0f;
 
     public Vector3 velocity;
 
@@ -79,10 +89,6 @@ public class CellScript : MonoBehaviour {
 	void Start () {
         playerLocation = GameObject.Find("Player").transform;
         targetLocation = transform;
-        Chromosome1 = 0;
-        Chromosome2 = 0;
-        Chromosome3 = 0;
-        Chromosome4 = 0;
 	}
 
     void GoDormant()
@@ -105,6 +111,10 @@ public class CellScript : MonoBehaviour {
     void Chase()
     {
         targetLocation = playerLocation;
+        if (ranged)
+        {
+            fireCoolDown = Random.Range(0, fireRate);
+        }
     }
 
     public Transform GetPosition()
@@ -145,6 +155,8 @@ public class CellScript : MonoBehaviour {
 
         gameObject.tag = "Neutral";
 
+        infectedType = InfectedSpecialType.REGULAR;
+
         cellStateMachine = new CellFSM();
 
         cellStateMachine.AddTransition(InfectedCellState.DORMANT, InfectedCellState.CHASINGPLAYER, Chase);
@@ -172,11 +184,6 @@ public class CellScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
-        Chromosome1 = myGenes[0];
-        Chromosome2 = myGenes[1];
-        Chromosome3 = myGenes[2];
-        Chromosome4 = myGenes[3];
 
         if (health <= 0)
         {
@@ -273,13 +280,16 @@ public class CellScript : MonoBehaviour {
 
     void ChasingPlayerUpdate()
     {
-        if (fireCoolDown <= 0 && ranged)
+        if (ranged)
         {
-            ShootBullet();
-        }
+            Vector3 buttstuff = Vector3.zero;
+            transform.rotation = Quaternion.LookRotation(Vector3.SmoothDamp(transform.forward, Vector3.Normalize(playerLocation.position - transform.position), ref buttstuff, turnDamp));
 
-        Vector3 buttstuff = Vector3.zero;
-        transform.rotation = Quaternion.LookRotation(Vector3.SmoothDamp(transform.forward, Vector3.Normalize(playerLocation.position - transform.position), ref buttstuff, turnDamp));
+            if (fireCoolDown <= 0)
+            {
+                ShootBullet();
+            }
+        }
 
         Vector3 myPos = cellPosition.position;
         if ((playerLocation.position - myPos).magnitude > detectionRange * 2)
@@ -368,16 +378,38 @@ public class CellScript : MonoBehaviour {
         MaxSpeed += myGenes[3] * 10.0f;
         speed += myGenes[3] * 30.0f;
 
-        if (myGenes[2] > 0.3f)
+        if (myGenes[2] > geneTriggerValue)
         {
             ranged = true;
         }
 
-        Chromosome1 = myGenes[0];
-        Chromosome2 = myGenes[1];
-        Chromosome3 = myGenes[2];
-        Chromosome4 = myGenes[3];
-
+        if (myGenes[0] > geneTriggerValue) // health
+        {
+            infectedType = InfectedSpecialType.HEALTH;
+            if (myGenes[1] > geneTriggerValue) // damage
+            {
+                infectedType = InfectedSpecialType.MINE;
+                return;
+            }
+            if (myGenes[3] > geneTriggerValue) // speed
+            {
+                infectedType = InfectedSpecialType.REPLICATION;
+                return;
+            }
+        }
+        if (myGenes[1] > geneTriggerValue) // damage
+        {
+            infectedType = InfectedSpecialType.DAMAGE;
+            if(myGenes[3] > geneTriggerValue) // speed
+            {
+                infectedType = InfectedSpecialType.KAMIKAZE;
+                return;
+            }
+        }
+        if (myGenes[3] > geneTriggerValue) // speed
+        {
+            infectedType = InfectedSpecialType.SPEED;
+        }
     }
 
     public void CreateInfected(Chromosome _input)

@@ -171,7 +171,9 @@ public class PlayerScript : MonoBehaviour {
         }
 
         if (shieldActive && playerGenes[0] > 0)
+        {
             playerGenes[0] -= Time.deltaTime * shieldDrainSpeed;
+        }
         else if (shieldActive && playerGenes[0] <= 0)
         {
             shieldActive = false;

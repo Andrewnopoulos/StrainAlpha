@@ -16,6 +16,8 @@ public class BulletScript : MonoBehaviour {
 
     private int playerLayer = 8;
 
+    private int shieldLayer = 13;
+
     public ParticleSystem particles;
 
 	// Use this for initialization
@@ -27,6 +29,11 @@ public class BulletScript : MonoBehaviour {
     {
         gameObject.layer = enemyLayer;
         isEnemyBullet = true;
+    }
+
+    public void SetAsFriendlyBullet()
+    {
+        isEnemyBullet = false;
     }
 	
 	// Update is called once per frame
@@ -73,7 +80,21 @@ public class BulletScript : MonoBehaviour {
             alive = false;
         }
 
-        if (!isEnemyBullet && other.gameObject.layer != enemyLayer)
+        if (isEnemyBullet && other.gameObject.layer == shieldLayer)
+        {
+            GameObject.Instantiate(particles, transform.position, transform.localRotation);
+            SetAsFriendlyBullet();
+
+            Vector3 delta = other.transform.position - transform.position;
+            delta.Normalize();
+            transform.forward -= 2 * delta;
+            transform.forward.Normalize();
+            lifeTime = 1.5f;
+            alive = true;
+            
+        }
+
+        if (!isEnemyBullet && other.gameObject.layer != enemyLayer && other.gameObject.layer != shieldLayer)
         {
             alive = false;
         }
