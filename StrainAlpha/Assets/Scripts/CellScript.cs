@@ -48,6 +48,9 @@ public class CellScript : MonoBehaviour {
 
     public float geneTriggerValue = 0.6f;
 
+    private float replicationCountdown = 10.0f;
+    public float MaxReplicationTime = 10.0f;
+
     public bool infected = false;
     public bool playerDetected = false;
     public bool roaming = true;
@@ -89,6 +92,8 @@ public class CellScript : MonoBehaviour {
 	void Start () {
         playerLocation = GameObject.Find("Player").transform;
         targetLocation = transform;
+
+        
 	}
 
     void GoDormant()
@@ -149,13 +154,13 @@ public class CellScript : MonoBehaviour {
 
         rotationSpeed = Random.Range(-MaxAngularVelocity, MaxAngularVelocity);
 
-        skinMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
-
         cellPosition = gameObject.transform;
 
         gameObject.tag = "Neutral";
 
         infectedType = InfectedSpecialType.REGULAR;
+
+        skinMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
 
         cellStateMachine = new CellFSM();
 
@@ -165,6 +170,7 @@ public class CellScript : MonoBehaviour {
         cellStateMachine.AddTransition(InfectedCellState.SEARCHING, InfectedCellState.CHASINGPLAYER, Chase);
         cellStateMachine.AddTransition(InfectedCellState.DORMANT, InfectedCellState.DORMANT, GoDormant);
         cellStateMachine.AddTransition(InfectedCellState.SEARCHING, InfectedCellState.DORMANT, GoDormant);
+
     }
 
     float distanceFrom(GameObject otherObject)
@@ -276,6 +282,33 @@ public class CellScript : MonoBehaviour {
         {
             cellStateMachine.Advance(InfectedCellState.CHASINGPLAYER);
         }
+
+        if (infectedType == InfectedSpecialType.REPLICATION)
+        {
+            ReplicationUpdate();
+        }
+
+    }
+
+    void ReplicationUpdate()
+    {
+        replicationCountdown -= Time.deltaTime;
+        if (replicationCountdown < 0)
+        {
+            SpawnCopy();
+        }
+    }
+
+    // will mutate both the child and itself when it spawns a child
+    void SpawnCopy()
+    {
+        Chromosome ChildChromosome = myGenes;
+        ChildChromosome[0] *= 0.1f;
+        ChildChromosome.Mutate();
+        manager.CreateInfectedCell(ChildChromosome, transform.position);
+        replicationCountdown = Random.Range(MaxReplicationTime - 1.0f, MaxReplicationTime + 1.0f);
+        myGenes.Mutate();
+        SetStats();
     }
 
     void ChasingPlayerUpdate()
@@ -368,15 +401,15 @@ public class CellScript : MonoBehaviour {
 
     private void SetStats()
     {
-        health += myGenes[0] * 50.0f;
-        if (myGenes[0] >= 0.15f)
+        health += myGenes[0] * 5.0f;
+        if (myGenes[0] >= geneTriggerValue)
         {
-            transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, transform.localScale.z) * (myGenes[0]) * 5.0f;
+            transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, transform.localScale.z) * ( 1 + (myGenes[0] - geneTriggerValue));
         }
         damage += myGenes[1] * 1.0f;
         detectionRange += myGenes[2] * 7.0f;
-        MaxSpeed += myGenes[3] * 10.0f;
-        speed += myGenes[3] * 30.0f;
+        MaxSpeed += myGenes[3] * 3.0f;
+        speed += myGenes[3] * 5.0f;
 
         if (myGenes[2] > geneTriggerValue)
         {
@@ -410,6 +443,8 @@ public class CellScript : MonoBehaviour {
         {
             infectedType = InfectedSpecialType.SPEED;
         }
+
+        SetBlendShapes();
     }
 
     public void CreateInfected(Chromosome _input)
@@ -423,7 +458,6 @@ public class CellScript : MonoBehaviour {
 
         cellStateMachine.Advance(InfectedCellState.CHASINGPLAYER);
 
-        SetBlendShapes();
     }
 
     public void BecomeInfected(Chromosome _input)
@@ -437,7 +471,6 @@ public class CellScript : MonoBehaviour {
 
         cellStateMachine.Advance(InfectedCellState.CHASINGPLAYER);
 
-        SetBlendShapes();
         // other stuff for infecting the cell
     }
 
