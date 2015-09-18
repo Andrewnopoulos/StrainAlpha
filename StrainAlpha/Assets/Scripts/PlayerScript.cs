@@ -282,8 +282,13 @@ public class PlayerScript : MonoBehaviour {
                 }
                 else
                 {
+                    bombDrainSpeed = 0.2f;
                     bomb.ShootBullet();
                 }
+            }
+            else if (bombActive)
+            {
+                bombDrainSpeed = 0.05f;
             }
         }
         else
@@ -301,9 +306,14 @@ public class PlayerScript : MonoBehaviour {
                 {
                     if (fireCooldown <= 0)
                     {
+                        bombDrainSpeed = 0.2f;
                         ShootBullet();
                     }
                 }
+            }
+            else if (bombActive)
+            {
+                bombDrainSpeed = 0.05f;
             }
         }
 
