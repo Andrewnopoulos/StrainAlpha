@@ -19,6 +19,7 @@ public class PlayerScript : MonoBehaviour {
     private ShieldScript shield;
     private LaserScript laser;
     private ChargeScript charge;
+    private BombScript bomb;
 
     private Weapon currentWeapon = Weapon.SHIELD;
 
@@ -88,6 +89,7 @@ public class PlayerScript : MonoBehaviour {
         shield = gameObject.GetComponentInChildren<ShieldScript>();
         laser = gameObject.GetComponentInChildren<LaserScript>();
         charge = gameObject.GetComponentInChildren<ChargeScript>();
+        bomb = gameObject.GetComponentInChildren<BombScript>();
 
         maxHealth = baseHealth;
         maxDamage = baseDamage;
@@ -166,7 +168,7 @@ public class PlayerScript : MonoBehaviour {
                 charge.SetActive(false);
                 fireCooldown = 0.05f;
                 moveDamp -= 0.5f;
-                turnDamp -= 0.1f;
+                turnDamp -= 0.08f;
             }
         }
 
@@ -179,7 +181,21 @@ public class PlayerScript : MonoBehaviour {
             shieldActive = false;
             playerGenes[0] = 0.0f;
             shield.SetActive(false);
-        }    
+        }
+
+        if (bombActive && playerGenes[1] > 0)
+            playerGenes[1] -= Time.deltaTime * bombDrainSpeed;
+        else if (bombActive && playerGenes[1] <= 0)
+        {
+            bombActive = false;
+            playerGenes[1] = 0.0f;
+
+            if (bomb.GetActive())
+            {
+                bomb.SetActive(false);
+                fireCooldown = 0.05f;
+            }
+        }
 
         Vector3 movementVector = velocity;
         Vector3 lookVector = Vector3.zero;
@@ -256,11 +272,23 @@ public class PlayerScript : MonoBehaviour {
             {
                 Vector3 buttstuff = Vector3.zero;
                 transform.rotation = Quaternion.LookRotation(Vector3.SmoothDamp(transform.forward, lookVector, ref buttstuff, turnDamp));
-                //transform.rotation = Quaternion.LookRotation(lookVector);
-                if (fireCooldown <= 0)
+
+                if (!bombActive)
                 {
-                    ShootBullet();
+                    if (fireCooldown <= 0)
+                    {
+                        ShootBullet();
+                    }
                 }
+                else
+                {
+                    bombDrainSpeed = 0.2f;
+                    bomb.ShootBullet();
+                }
+            }
+            else if (bombActive)
+            {
+                bombDrainSpeed = 0.05f;
             }
         }
         else
@@ -274,10 +302,18 @@ public class PlayerScript : MonoBehaviour {
 
             if (Input.GetMouseButton(0))
             {
-                if (fireCooldown <= 0)
+                if (!bombActive)
                 {
-                    ShootBullet();
+                    if (fireCooldown <= 0)
+                    {
+                        bombDrainSpeed = 0.2f;
+                        ShootBullet();
+                    }
                 }
+            }
+            else if (bombActive)
+            {
+                bombDrainSpeed = 0.05f;
             }
         }
 
@@ -306,13 +342,22 @@ public class PlayerScript : MonoBehaviour {
                         if (charge.GetActive())
                             break;
                         charge.SetActive(true);
-                        fireCooldown = 100.0f;
+                        fireCooldown = 1000.0f;
                         moveDamp += 0.5f;
-                        turnDamp += 0.1f;
+                        turnDamp += 0.08f;
                         chargeActive = true;
                         break;
                 
                     case Weapon.BOMB:
+                        if (!bombActive)
+                        {
+                            if (playerGenes[1] < 0.8f)
+                                break;
+                        }
+                        if (bomb.GetActive())
+                            break;
+                        bomb.SetActive(true);
+                        fireCooldown = 1000.0f;
                         bombActive = true;
                         break;
                 
@@ -337,7 +382,7 @@ public class PlayerScript : MonoBehaviour {
                         if (laser.GetActive())
                             break;
                         laser.SetActive(true);
-                        fireCooldown = 100.0f;
+                        fireCooldown = 1000.0f;
                         moveDamp -= 0.6f;
                         turnDamp += 0.15f;
                         laserActive = true;
@@ -387,11 +432,20 @@ public class PlayerScript : MonoBehaviour {
                         charge.SetActive(true);
                         fireCooldown = 100.0f;
                         moveDamp += 0.5f;
-                        turnDamp += 0.1f;
+                        turnDamp += 0.08f;
                         chargeActive = true;
                         break;
                 
                     case Weapon.BOMB:
+                        if (!bombActive)
+                        {
+                            if (playerGenes[1] < 0.8f)
+                                break;
+                        }
+                        if (bomb.GetActive())
+                            break;
+                        bomb.SetActive(true);
+                        fireCooldown = 1000.0f;
                         bombActive = true;
                         break;
                 
@@ -483,11 +537,11 @@ public class PlayerScript : MonoBehaviour {
         switch (currentWeapon)
         {
             case Weapon.CHARGE:
-                currentWeapon = Weapon.BOMB;
+                currentWeapon = Weapon.SHIELD;
                 break;
         
             case Weapon.BOMB:
-                currentWeapon = Weapon.SHIELD;
+                currentWeapon = Weapon.CHARGE;
                 break;
         
             case Weapon.SHIELD:
@@ -495,7 +549,7 @@ public class PlayerScript : MonoBehaviour {
                 break;
         
             case Weapon.LASER:
-                currentWeapon = Weapon.CHARGE;
+                currentWeapon = Weapon.BOMB;
                 break;
         
             default:
@@ -509,15 +563,15 @@ public class PlayerScript : MonoBehaviour {
         switch (currentWeapon)
         {
             case Weapon.CHARGE:
-                currentWeapon = Weapon.LASER;
+                currentWeapon = Weapon.BOMB;
                 break;
         
             case Weapon.BOMB:
-                currentWeapon = Weapon.CHARGE;
+                currentWeapon = Weapon.LASER;
                 break;
         
             case Weapon.SHIELD:
-                currentWeapon = Weapon.BOMB;
+                currentWeapon = Weapon.CHARGE;
                 break;
         
             case Weapon.LASER:
