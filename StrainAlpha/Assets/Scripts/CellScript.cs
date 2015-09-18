@@ -149,8 +149,7 @@ public class CellScript : MonoBehaviour {
         animationOffset = Random.Range(0.0f, 10.0f);
         animationSpeed = Random.Range(0.7f, 1.3f);
 
-        rotationAxis = new Vector3(Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f));
-        rotationAxis.Normalize();
+        rotationAxis = new Vector3(0, 1, 0);
 
         rotationSpeed = Random.Range(-MaxAngularVelocity, MaxAngularVelocity);
 
@@ -221,7 +220,7 @@ public class CellScript : MonoBehaviour {
 
         transform.position += velocity * Time.deltaTime;
 
-        transform.Rotate(rotationAxis, rotationSpeed * Time.deltaTime);
+        //transform.Rotate(rotationAxis, rotationSpeed * Time.deltaTime);
 
         currentHitCooldown -= Time.deltaTime;
 
@@ -311,17 +310,29 @@ public class CellScript : MonoBehaviour {
         SetStats();
     }
 
+    void LookToPlayer()
+    {
+        Vector3 buttstuff = Vector3.zero;
+        transform.rotation = Quaternion.LookRotation(Vector3.SmoothDamp(transform.forward, 
+            Vector3.Normalize(playerLocation.position - transform.position), 
+            ref buttstuff, turnDamp));
+    }
+
     void ChasingPlayerUpdate()
     {
         if (ranged)
         {
-            Vector3 buttstuff = Vector3.zero;
-            transform.rotation = Quaternion.LookRotation(Vector3.SmoothDamp(transform.forward, Vector3.Normalize(playerLocation.position - transform.position), ref buttstuff, turnDamp));
+            LookToPlayer();
 
             if (fireCoolDown <= 0)
             {
                 ShootBullet();
             }
+        }
+
+        if (infectedType == InfectedSpecialType.SPEED)
+        { 
+            LookToPlayer();
         }
 
         Vector3 myPos = cellPosition.position;
