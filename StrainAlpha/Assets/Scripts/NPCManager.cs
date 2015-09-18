@@ -8,6 +8,8 @@ public class NPCManager : MonoBehaviour {
 
     public GameObject nucleus;
 
+    public GameObject explosion;
+
     private PlayerScript playerScript;
 
     private List<CellScript> friendlyList;
@@ -95,7 +97,15 @@ public class NPCManager : MonoBehaviour {
     {
         for (int i = killList.Count - 1; i >= 0; --i)
         {
-            SpawnNucleus(killList[i]);
+            
+            if (killList[i].infectedType == InfectedSpecialType.KAMIKAZE)
+            {
+                GameObject newExplosion = (GameObject)Instantiate(explosion, killList[i].transform.position, killList[i].transform.rotation);
+            }
+            else
+            {
+                SpawnNucleus(killList[i]);
+            }
             Destroy(killList[i].gameObject);
             killList.Remove(killList[i]);
         }
