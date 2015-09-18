@@ -478,34 +478,18 @@ public class PlayerUI : MonoBehaviour {
             {
                 targetPos[i] = new Vector3(-150.0f, 150.0f, 0);
             }
-            //for (int i = 8; i < 13; ++i)
-            //{
-            //    targetPos[i] = new Vector3(-80.0f - ((i - 8) * 18.0f), 80.0f + ((i - 8) * 18.0f), 0);
-            //}
             for (int i = 13; i < 18; ++i)
             {
                 targetPos[i] = new Vector3(-150.0f, -150.0f, 0);
             }
-            //for (int i = 13; i < 18; ++i)
-            //{
-            //    targetPos[i] = new Vector3(-80.0f - ((i - 13) * 18.0f), -80.0f - ((i - 13) * 18.0f), 0);
-            //}
             for (int i = 18; i < 23; ++i)
             {
                 targetPos[i] = new Vector3(150.0f, -150.0f, 0);
             }
-            //for (int i = 18; i < 23; ++i)
-            //{
-            //    targetPos[i] = new Vector3(80.0f + ((i - 18) * 18.0f), 80.0f + ((i - 18) * 18.0f), 0);
-            //}
             for (int i = 23; i < 28; ++i)
             {
                 targetPos[i] = new Vector3(150.0f, 150.0f, 0);
             }
-            //for (int i = 23; i < 28; ++i)
-            //{
-            //    targetPos[i] = new Vector3(80.0f + ((i - 23) * 18.0f), -80.0f - ((i - 23) * 18.0f), 0);
-            //}
 
             targetAlpha = 0.5f;
         }

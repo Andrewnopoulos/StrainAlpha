@@ -537,11 +537,11 @@ public class PlayerScript : MonoBehaviour {
         switch (currentWeapon)
         {
             case Weapon.CHARGE:
-                currentWeapon = Weapon.BOMB;
+                currentWeapon = Weapon.SHIELD;
                 break;
         
             case Weapon.BOMB:
-                currentWeapon = Weapon.SHIELD;
+                currentWeapon = Weapon.CHARGE;
                 break;
         
             case Weapon.SHIELD:
@@ -549,7 +549,7 @@ public class PlayerScript : MonoBehaviour {
                 break;
         
             case Weapon.LASER:
-                currentWeapon = Weapon.CHARGE;
+                currentWeapon = Weapon.BOMB;
                 break;
         
             default:
@@ -563,15 +563,15 @@ public class PlayerScript : MonoBehaviour {
         switch (currentWeapon)
         {
             case Weapon.CHARGE:
-                currentWeapon = Weapon.LASER;
+                currentWeapon = Weapon.BOMB;
                 break;
         
             case Weapon.BOMB:
-                currentWeapon = Weapon.CHARGE;
+                currentWeapon = Weapon.LASER;
                 break;
         
             case Weapon.SHIELD:
-                currentWeapon = Weapon.BOMB;
+                currentWeapon = Weapon.CHARGE;
                 break;
         
             case Weapon.LASER:
