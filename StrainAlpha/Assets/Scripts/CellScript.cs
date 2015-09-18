@@ -51,6 +51,10 @@ public class CellScript : MonoBehaviour {
     private float replicationCountdown = 10.0f;
     public float MaxReplicationTime = 10.0f;
 
+    private float kamikazeTimer = 0.0f;
+
+    public float kamikazeLifetime = 3.0f;
+
     public bool infected = false;
     public bool playerDetected = false;
     public bool roaming = true;
@@ -92,8 +96,6 @@ public class CellScript : MonoBehaviour {
 	void Start () {
         playerLocation = GameObject.Find("Player").transform;
         targetLocation = transform;
-
-        
 	}
 
     void GoDormant()
@@ -120,6 +122,29 @@ public class CellScript : MonoBehaviour {
         {
             fireCoolDown = Random.Range(0, fireRate);
         }
+
+        if (infectedType == InfectedSpecialType.KAMIKAZE)
+        {
+            SetKamikaze();
+        }
+    }
+
+    void SetKamikaze()
+    {
+        kamikazeTimer = kamikazeLifetime;
+        MaxSpeed *= 2.5f;
+        speed *= 0.7f;
+        health *= 0.3f;
+    }
+
+    void KamikazeUpdate()
+    {
+        kamikazeTimer -= Time.deltaTime;
+
+        if (kamikazeTimer < 0)
+        {
+            manager.AddToKillList(this);
+        }
     }
 
     public Transform GetPosition()
@@ -145,6 +170,8 @@ public class CellScript : MonoBehaviour {
         roaming = true;
         ranged = false;
         velocity = new Vector3(0, 0, 0);
+
+        kamikazeTimer = 0.0f;
 
         animationOffset = Random.Range(0.0f, 10.0f);
         animationSpeed = Random.Range(0.7f, 1.3f);
@@ -320,6 +347,12 @@ public class CellScript : MonoBehaviour {
 
     void ChasingPlayerUpdate()
     {
+        if (infectedType == InfectedSpecialType.KAMIKAZE)
+        {
+            KamikazeUpdate();
+            return;
+        }
+
         if (ranged)
         {
             LookToPlayer();
@@ -336,7 +369,7 @@ public class CellScript : MonoBehaviour {
         }
 
         Vector3 myPos = cellPosition.position;
-        if ((playerLocation.position - myPos).magnitude > detectionRange * 2)
+        if ((playerLocation.position - myPos).magnitude > (infected ? detectionRange * 2 : detectionRange * 0.5f) )
         {
             cellStateMachine.Advance(InfectedCellState.SEARCHING);
         }
@@ -396,7 +429,10 @@ public class CellScript : MonoBehaviour {
     {
         health -= _damage;
         // particle effect
-        cellStateMachine.Advance(InfectedCellState.CHASINGPLAYER);
+        if (infected)
+        {
+            cellStateMachine.Advance(InfectedCellState.CHASINGPLAYER);
+        }
     }
 
     public Chromosome GetChromosome()
@@ -502,8 +538,15 @@ public class CellScript : MonoBehaviour {
 
         if (infected && other.name == "Player" && currentHitCooldown < 0)
         {
-            other.GetComponent<PlayerScript>().TakeDamage(damage);
-            currentHitCooldown = hitCooldown;
+            if (infectedType == InfectedSpecialType.KAMIKAZE)
+            {
+                kamikazeTimer = 0.01f;
+            }
+            else
+            {
+                other.GetComponent<PlayerScript>().TakeDamage(damage);
+                currentHitCooldown = hitCooldown;
+            }
         }
 
     }
