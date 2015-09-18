@@ -20,6 +20,11 @@ public class PlayerUI : MonoBehaviour {
     private Image damageGene;
     private Image speedGene;
 
+    private float previousHealth;
+    private float previousRange;
+    private float previousDamage;
+    private float previousSpeed;
+
     private PlayerScript player;
 
     private GameObject anchor;
@@ -96,11 +101,8 @@ public class PlayerUI : MonoBehaviour {
         }
 
         SetHealth();
+        SetGenes();
 
-        if (statsExpanded)
-        {
-            SetGenes();
-        }
 	}
 
     void LateUpdate()
@@ -205,6 +207,15 @@ public class PlayerUI : MonoBehaviour {
 
     void SetGenes()
     {
+        healthGene.transform.RotateAround(anchor.transform.position, transform.forward, (previousHealth - player.GetGene(0)) * 90);
+        rangeGene.transform.RotateAround(anchor.transform.position, transform.forward, (player.GetGene(2) - previousRange) * 90);
+        damageGene.transform.RotateAround(anchor.transform.position, transform.forward, (previousDamage - player.GetGene(1)) * 90);
+        speedGene.transform.RotateAround(anchor.transform.position, transform.forward, (player.GetGene(3) - previousSpeed) * 90);
+
+        previousHealth = player.GetGene(0);
+        previousRange = player.GetGene(2);
+        previousDamage = player.GetGene(1);
+        previousSpeed = player.GetGene(3);
        
     }
 
