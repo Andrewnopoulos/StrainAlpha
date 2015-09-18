@@ -88,13 +88,13 @@ public class PlayerUI : MonoBehaviour {
         if (expanding > 0)
         {
 
-            if (targetAlpha < 1.0f)
+            if (targetAlpha == 0.0f)
             {
-                currentAlpha = expanding;
+                currentAlpha = expanding * targetAlpha;
             }
             else
             {
-                currentAlpha = 1.0f - expanding;
+                currentAlpha = (1.0f - expanding) * targetAlpha;
             }
 
             for (int i = 0; i < 8; ++i)
@@ -507,7 +507,7 @@ public class PlayerUI : MonoBehaviour {
             //    targetPos[i] = new Vector3(80.0f + ((i - 23) * 18.0f), -80.0f - ((i - 23) * 18.0f), 0);
             //}
 
-            targetAlpha = 1.0f;
+            targetAlpha = 0.5f;
         }
         else
         {
@@ -520,7 +520,7 @@ public class PlayerUI : MonoBehaviour {
                 targetPos[i] = new Vector3(0, 0, 0);
             }
 
-            targetAlpha = -1.0f;
+            targetAlpha = 0.0f;
         }
 
         expanding = 1.0f;
