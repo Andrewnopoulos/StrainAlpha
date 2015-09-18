@@ -138,14 +138,11 @@ public class FiniteStateMachine<S>
 
         if (mTransitions.ContainsKey(tr))
         {
-            Debug.Log("[FSM] Transition: " + tr.GetInitState() + " - " + tr.GetEndState() + " exists already.");
             return;
         }
 
         mTransitions.Add(tr, c);
 
-        Debug.Log("[FSM] Added transition " + mTransitions.Count + ": " + tr.GetInitState() + " - " + tr.GetEndState()
-          + ", Callback: " + c);
     }
 
     // Call this to prevent the state machine from leaving this state

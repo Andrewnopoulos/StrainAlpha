@@ -101,7 +101,7 @@ public class NPCManager : MonoBehaviour {
         }
     }
 
-    private void CreateInfectedCell(Chromosome _inputChromosome, Vector3 _location)
+    public void CreateInfectedCell(Chromosome _inputChromosome, Vector3 _location)
     {
         GameObject newCell = (GameObject)Instantiate(cell, _location, transform.rotation);
         CellScript script = newCell.GetComponent<CellScript>();

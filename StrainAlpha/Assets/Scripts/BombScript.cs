@@ -3,67 +3,40 @@ using System.Collections;
 
 public class BombScript : MonoBehaviour {
 
-    public float damage = 100.0f;
+    private float damage = 8.0f;
 
-    public float speed = 4.0f;
-    public Vector3 size;
-
-    public float explosionRadius;
-
-    private float lifeTime = 0.8f;
+    public GameObject bullet;
 
     private bool active = false;
-    private bool alive = true;
 
     private int enemyLayer = 9;
 
-	// Use this for initialization
-	void Start () 
-    {
-        size = transform.localScale;
-        explosionRadius = gameObject.GetComponent<SphereCollider>().radius;
-	}
+    private float fireRate = 0.2f;
+    private float fireCooldown = 0.2f;
 
     // Update is called once per frame
     void Update()
     {
-        if (!active && lifeTime > 0.0f)
-        {
-            size += new Vector3(0.5f, 0.5f, 0.5f) * Time.deltaTime;
-            lifeTime = 0.8f;
-        }
-        else if (active && lifeTime > 0.0f)
-        {
-            transform.position += transform.forward * speed * Time.deltaTime;
-        }
-
-        lifeTime -= Time.deltaTime;
-
-        if (lifeTime <= -0.1f)
-        {
-            alive = false;
-        }
-
+        fireRate -= Time.deltaTime;
     }
 
-    public void Launch()
+    public void ShootBullet()
     {
-        gameObject.transform.parent = null;
-        active = true;
-    }
 
-    void OnTriggerStay(Collider other)
-    {
-        if (!alive)
-            return;
-        if (!active)
-            return;
-        if (lifeTime > 0)
-            return;
-        if (other.gameObject.layer == enemyLayer)
+        if (fireRate < 0)
         {
-            other.GetComponent<CellScript>().TakeDamage(damage * Time.deltaTime);
+            Instantiate(bullet, transform.position, transform.rotation);
+            fireRate = fireCooldown;
         }
     }
 
+    public void SetActive(bool _active)
+    {
+        active = _active;
+    }
+
+    public bool GetActive()
+    {
+        return active;
+    }
 }
