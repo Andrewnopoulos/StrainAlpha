@@ -310,6 +310,11 @@ public class PlayerScript : MonoBehaviour {
                         ShootBullet();
                     }
                 }
+                else
+                {
+                    bombDrainSpeed = 0.2f;
+                    bomb.ShootBullet();
+                }
             }
             else if (bombActive)
             {
