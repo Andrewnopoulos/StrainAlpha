@@ -15,6 +15,7 @@ public class PlayerUI : MonoBehaviour {
 
     private Image[] healthImages;
 
+    private Image selectedImage;
     private Image healthGene;
     private Image rangeGene;
     private Image damageGene;
@@ -50,10 +51,11 @@ public class PlayerUI : MonoBehaviour {
         healthImages[6] = allImages[6];
         healthImages[7] = allImages[7];
 
-        healthGene = allImages[9];
-        rangeGene = allImages[11];
-        damageGene = allImages[13];
-        speedGene = allImages[15];
+        selectedImage = allImages[8];
+        healthGene = allImages[10];
+        rangeGene = allImages[12];
+        damageGene = allImages[14];
+        speedGene = allImages[16];
 
         player = GameObject.Find("Player").GetComponent<PlayerScript>();
 
@@ -217,6 +219,16 @@ public class PlayerUI : MonoBehaviour {
         previousDamage = player.GetGene(1);
         previousSpeed = player.GetGene(3);
        
+    }
+
+    public void RotateRight()
+    {
+        selectedImage.transform.RotateAround(anchor.transform.position, transform.forward, 90);
+    }
+
+    public void RotateLeft()
+    {
+        selectedImage.transform.RotateAround(anchor.transform.position, transform.forward, -90);
     }
 
     void ShowStats()

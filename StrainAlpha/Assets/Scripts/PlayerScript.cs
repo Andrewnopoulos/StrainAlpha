@@ -16,6 +16,8 @@ public class PlayerScript : MonoBehaviour {
 
     public GameObject bulletPrefab;
 
+    private PlayerUI ui;
+
     private ShieldScript shield;
     private LaserScript laser;
     private ChargeScript charge;
@@ -100,6 +102,8 @@ public class PlayerScript : MonoBehaviour {
         damage = maxDamage;
         speed = maxSpeed;
         fireRate = maxFireRate;
+
+        ui = GameObject.Find("PlayerUI").GetComponent<PlayerUI>();
 
         energy = maxEnergy;
 
@@ -561,6 +565,7 @@ public class PlayerScript : MonoBehaviour {
                 break;
         }
         weaponSelectCooldown = 0.3f;
+        ui.RotateRight();
     }
 
     private void BackCyclePower()
@@ -587,6 +592,7 @@ public class PlayerScript : MonoBehaviour {
                 break;
         }
         weaponSelectCooldown = 0.3f;
+        ui.RotateLeft();
     }
 
     public float GetGene(int i)
