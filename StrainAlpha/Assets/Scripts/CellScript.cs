@@ -446,6 +446,11 @@ public class CellScript : MonoBehaviour {
         SetStats();
     }
 
+    void LateUpdate()
+    {
+        transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, -1 * (detectionRange - 1), (detectionRange - 1)), transform.position.z);
+    }
+
     private void SetStats()
     {
         health += myGenes[0] * 5.0f;
