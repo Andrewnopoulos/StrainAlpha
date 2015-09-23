@@ -256,7 +256,7 @@ public class CellScript : MonoBehaviour {
 
     void UpdateAnimation()
     {
-   //     skinMeshRenderer.SetBlendShapeWeight(1, (Mathf.Sin(animationSpeed * Time.time + animationOffset) * maxAnimationAmplitude) + maxAnimationAmplitude);
+        skinMeshRenderer.SetBlendShapeWeight(3, (Mathf.Sin(animationSpeed * Time.time + animationOffset) * maxAnimationAmplitude) + maxAnimationAmplitude);
     }
 
     bool FollowPlayer()
@@ -413,7 +413,6 @@ public class CellScript : MonoBehaviour {
         {
             velocity += (targetLocation.position - transform.position) * speed * Time.deltaTime;
         }
-        
     }
 
     private void ShootBullet()
@@ -538,9 +537,9 @@ public class CellScript : MonoBehaviour {
 
     private void SetBlendShapes()
     {
-        skinMeshRenderer.SetBlendShapeWeight(0, myGenes[0] * 300);
+        //skinMeshRenderer.SetBlendShapeWeight(0, myGenes[0] * 300);
         skinMeshRenderer.SetBlendShapeWeight(1, myGenes[1] * 300);
-        skinMeshRenderer.SetBlendShapeWeight(2, myGenes[2] * 300);
+        //skinMeshRenderer.SetBlendShapeWeight(2, myGenes[2] * 300);
     }
 
     void OnTriggerEnter(Collider other)
