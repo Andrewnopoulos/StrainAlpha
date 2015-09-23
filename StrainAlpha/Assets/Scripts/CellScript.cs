@@ -132,9 +132,10 @@ public class CellScript : MonoBehaviour {
     void SetKamikaze()
     {
         kamikazeTimer = kamikazeLifetime;
-        MaxSpeed *= 2.5f;
-        speed *= 0.7f;
+        MaxSpeed *= 2.4f;
+        speed *= 0.75f;
         health *= 0.3f;
+        detectionRange *= 2.5f;
     }
 
     void KamikazeUpdate()
@@ -454,7 +455,7 @@ public class CellScript : MonoBehaviour {
             transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, transform.localScale.z) * ( 1 + (myGenes[0] - geneTriggerValue));
         }
         damage += myGenes[1] * 1.0f;
-        detectionRange += myGenes[2] * 7.0f;
+        detectionRange += myGenes[2] * 1.0f;
         MaxSpeed += myGenes[3] * 3.0f;
         speed += myGenes[3] * 5.0f;
 
@@ -503,7 +504,14 @@ public class CellScript : MonoBehaviour {
 
         SetStats();
 
-        cellStateMachine.Advance(InfectedCellState.CHASINGPLAYER);
+        if (infectedType != InfectedSpecialType.KAMIKAZE)
+        {
+            cellStateMachine.Advance(InfectedCellState.CHASINGPLAYER);
+        }
+        else
+        {
+            cellStateMachine.Advance(InfectedCellState.DORMANT);
+        }
 
     }
 
@@ -516,8 +524,15 @@ public class CellScript : MonoBehaviour {
 
         SetStats();
 
-        cellStateMachine.Advance(InfectedCellState.CHASINGPLAYER);
-
+        if (infectedType != InfectedSpecialType.KAMIKAZE)
+        {
+            cellStateMachine.Advance(InfectedCellState.CHASINGPLAYER);
+        }
+        else
+        {
+            cellStateMachine.Advance(InfectedCellState.DORMANT);
+        }
+        
         // other stuff for infecting the cell
     }
 
