@@ -129,6 +129,11 @@ public class CellScript : MonoBehaviour {
         {
             SetKamikaze();
         }
+
+        if (infectedType == InfectedSpecialType.MINE)
+        {
+            SetMine();
+        }
     }
 
     void SetKamikaze()
@@ -145,6 +150,21 @@ public class CellScript : MonoBehaviour {
         kamikazeTimer -= Time.deltaTime;
 
         if (kamikazeTimer < 0)
+        {
+            manager.AddToKillList(this);
+        }
+    }
+
+    void SetMine()
+    {
+        MaxSpeed = 0.0f;
+        speed = 0.0f;
+        detectionRange = 1.0f;
+    }
+
+    void MineUpdate()
+    {
+        if (cellStateMachine.GetState() == InfectedCellState.CHASINGPLAYER)
         {
             manager.AddToKillList(this);
         }
@@ -371,6 +391,12 @@ public class CellScript : MonoBehaviour {
         if (infectedType == InfectedSpecialType.SPEED)
         {
             SpeedUpdate();
+        }
+
+        if (infectedType == InfectedSpecialType.MINE)
+        {
+            MineUpdate();
+            return;
         }
 
         if (ranged)
