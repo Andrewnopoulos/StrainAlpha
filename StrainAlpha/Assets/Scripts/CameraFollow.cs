@@ -6,14 +6,14 @@ public class CameraFollow : MonoBehaviour {
     public GameObject player;
 
     private bool screenShake = false;
-    private float axisShake = 0.5f;
+    private float axisShake = 2.0f;
 
     private float shakeHoldTime = 0.02f;
     private float shakeCooldown = 0;
     private Vector3 shakeOffset;
 
-    private float shakeLength = 0.1f;
-    private float currentShakeLength = 0;
+    private float shakeLength = 0.2f;
+    private float currentShakeLength = 0.1f;
 
     private Vector3 velocity = Vector3.zero;
     private float smoothTime = 0.15f;
