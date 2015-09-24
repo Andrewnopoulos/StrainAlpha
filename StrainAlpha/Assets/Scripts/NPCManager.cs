@@ -118,7 +118,7 @@ public class NPCManager : MonoBehaviour {
             else if (killList[i].infectedType == InfectedSpecialType.MINE)
             {
                 GameObject newExplosion = (GameObject)Instantiate(explosion, killList[i].transform.position, killList[i].transform.rotation);
-                newExplosion.transform.localScale *= 2.0f;
+                newExplosion.transform.localScale *= 3.5f;
             }
             else
             {

@@ -159,12 +159,12 @@ public class CellScript : MonoBehaviour {
     {
         MaxSpeed = 0.0f;
         speed = 0.0f;
-        detectionRange = 1.0f;
+        detectionRange = 3.0f;
     }
 
     void MineUpdate()
     {
-        if (cellStateMachine.GetState() == InfectedCellState.CHASINGPLAYER)
+        if ((playerLocation.position - cellPosition.position).magnitude < detectionRange)
         {
             manager.AddToKillList(this);
         }
@@ -259,7 +259,7 @@ public class CellScript : MonoBehaviour {
         {
             InfectedUpdate();
 
-            if (velocity.magnitude >= MaxSpeed)
+            if (velocity.magnitude >= MaxSpeed && velocity.magnitude != 0.0f)
             {
                 velocity = velocity / velocity.magnitude * MaxSpeed;
             }
