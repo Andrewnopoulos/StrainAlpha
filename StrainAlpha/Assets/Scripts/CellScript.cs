@@ -352,12 +352,25 @@ public class CellScript : MonoBehaviour {
             ref buttstuff, turnDamp));
     }
 
+    void SpeedUpdate()
+    {
+        Vector3 buttstuff = Vector3.zero;
+        transform.rotation = Quaternion.LookRotation(Vector3.SmoothDamp(transform.forward,
+            -velocity,
+            ref buttstuff, turnDamp));
+    }
+
     void ChasingPlayerUpdate()
     {
         if (infectedType == InfectedSpecialType.KAMIKAZE)
         {
             KamikazeUpdate();
             return;
+        }
+
+        if (infectedType == InfectedSpecialType.SPEED)
+        {
+            SpeedUpdate();
         }
 
         if (ranged)
@@ -368,11 +381,6 @@ public class CellScript : MonoBehaviour {
             {
                 ShootBullet();
             }
-        }
-
-        if (infectedType == InfectedSpecialType.SPEED)
-        { 
-            LookToPlayer();
         }
 
         Vector3 myPos = cellPosition.position;
@@ -459,6 +467,7 @@ public class CellScript : MonoBehaviour {
         SetStats();
     }
 
+    // clamp position
     void LateUpdate()
     {
         transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, -1 * (detectionRange - 1), (detectionRange - 1)), transform.position.z);
@@ -467,10 +476,6 @@ public class CellScript : MonoBehaviour {
     private void SetStats()
     {
         health += myGenes[0] * 5.0f;
-        if (myGenes[0] >= geneTriggerValue)
-        {
-            transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, transform.localScale.z) * ( 1 + (myGenes[0] - geneTriggerValue));
-        }
         damage += myGenes[1] * 1.0f;
         detectionRange += myGenes[2] * 1.0f;
         MaxSpeed += myGenes[3] * 3.0f;
@@ -559,17 +564,17 @@ public class CellScript : MonoBehaviour {
         switch(infectedType)
         {
             case InfectedSpecialType.SPEED:
-                skinMeshRenderer.SetBlendShapeWeight(2, 100 * infectedTimerScale);
+                skinMeshRenderer.SetBlendShapeWeight(2, 110 * infectedTimerScale);
+                transform.localScale = transform.localScale * (1 - infectedTimerScale * 0.015f);
                 break;
             default:
                 skinMeshRenderer.SetBlendShapeWeight(1, myGenes[1] * 300 * infectedTimerScale);
                 break;
-
         }
 
 
         //skinMeshRenderer.SetBlendShapeWeight(0, myGenes[0] * 300);
-        skinMeshRenderer.SetBlendShapeWeight(1, myGenes[1] * 300 * infectedTimerScale);
+        //skinMeshRenderer.SetBlendShapeWeight(1, myGenes[1] * 300 * infectedTimerScale);
         //skinMeshRenderer.SetBlendShapeWeight(2, myGenes[2] * 300);
     }
 
