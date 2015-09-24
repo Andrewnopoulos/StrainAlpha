@@ -31,6 +31,8 @@ public class CellScript : MonoBehaviour {
 
     public NPCManager manager;
 
+    private BlendColourScript blendShapeChild;
+
     public InfectedSpecialType infectedType = InfectedSpecialType.REGULAR;
 
     private float health = 5.0f;
@@ -223,6 +225,8 @@ public class CellScript : MonoBehaviour {
         cellStateMachine.AddTransition(InfectedCellState.SEARCHING, InfectedCellState.CHASINGPLAYER, Chase);
         cellStateMachine.AddTransition(InfectedCellState.DORMANT, InfectedCellState.DORMANT, GoDormant);
         cellStateMachine.AddTransition(InfectedCellState.SEARCHING, InfectedCellState.DORMANT, GoDormant);
+
+        blendShapeChild = GetComponentInChildren<BlendColourScript>();
 
     }
 
@@ -608,6 +612,8 @@ public class CellScript : MonoBehaviour {
         // change colour of cell
 
         GetComponentInChildren<Renderer>().material.SetColor("_Color", new Vector4(1, 0, 0, 1));
+
+        blendShapeChild.infected = true;
 
         //skinMeshRenderer.SetBlendShapeWeight(0, myGenes[0] * 300);
         //skinMeshRenderer.SetBlendShapeWeight(1, myGenes[1] * 300 * infectedTimerScale);
