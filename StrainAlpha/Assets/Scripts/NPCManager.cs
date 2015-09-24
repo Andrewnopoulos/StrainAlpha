@@ -22,6 +22,12 @@ public class NPCManager : MonoBehaviour {
 
     public float infectionRange = 1.0f;
 
+    public float SpawnUrgency = 0.0f;
+
+    public int LargeNumberOfCells = 600;
+
+    public float SpawnUrgencyScale = 5.0f;
+
     void Start()
     {
         for (int i = 0; i < InitialNeutralCells; i++)
@@ -35,6 +41,15 @@ public class NPCManager : MonoBehaviour {
         }
 
         playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>();
+
+        SpawnUrgency = 5.0f;
+    }
+
+    void Update()
+    {
+        int CellCount = friendlyList.Count + infectedList.Count;
+
+        SpawnUrgency = (float)CellCount / LargeNumberOfCells * SpawnUrgencyScale;
     }
 
     void SpawnNeutral()
@@ -101,6 +116,11 @@ public class NPCManager : MonoBehaviour {
             if (killList[i].infectedType == InfectedSpecialType.KAMIKAZE)
             {
                 GameObject newExplosion = (GameObject)Instantiate(explosion, killList[i].transform.position, killList[i].transform.rotation);
+            }
+            else if (killList[i].infectedType == InfectedSpecialType.MINE)
+            {
+                GameObject newExplosion = (GameObject)Instantiate(explosion, killList[i].transform.position, killList[i].transform.rotation);
+                newExplosion.transform.localScale *= 3.5f;
             }
             else
             {

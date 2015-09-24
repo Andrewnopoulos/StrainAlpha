@@ -129,6 +129,11 @@ public class CellScript : MonoBehaviour {
         {
             SetKamikaze();
         }
+
+        if (infectedType == InfectedSpecialType.MINE)
+        {
+            SetMine();
+        }
     }
 
     void SetKamikaze()
@@ -145,6 +150,21 @@ public class CellScript : MonoBehaviour {
         kamikazeTimer -= Time.deltaTime;
 
         if (kamikazeTimer < 0)
+        {
+            manager.AddToKillList(this);
+        }
+    }
+
+    void SetMine()
+    {
+        MaxSpeed = 0.0f;
+        speed = 0.0f;
+        detectionRange = 3.0f;
+    }
+
+    void MineUpdate()
+    {
+        if ((playerLocation.position - cellPosition.position).magnitude < detectionRange)
         {
             manager.AddToKillList(this);
         }
@@ -239,7 +259,7 @@ public class CellScript : MonoBehaviour {
         {
             InfectedUpdate();
 
-            if (velocity.magnitude >= MaxSpeed)
+            if (velocity.magnitude >= MaxSpeed && velocity.magnitude != 0.0f)
             {
                 velocity = velocity / velocity.magnitude * MaxSpeed;
             }
@@ -373,6 +393,12 @@ public class CellScript : MonoBehaviour {
             SpeedUpdate();
         }
 
+        if (infectedType == InfectedSpecialType.MINE)
+        {
+            MineUpdate();
+            return;
+        }
+
         if (ranged)
         {
             LookToPlayer();
@@ -470,7 +496,14 @@ public class CellScript : MonoBehaviour {
     // clamp position
     void LateUpdate()
     {
-        transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, -1 * (detectionRange - 1), (detectionRange - 1)), transform.position.z);
+        if (infectedType == InfectedSpecialType.MINE)
+        {
+            transform.position = new Vector3(transform.position.x, 0, transform.position.z);
+        }
+        else
+        {
+            transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, -1 * (detectionRange - 1), (detectionRange - 1)), transform.position.z);
+        }
     }
 
     private void SetStats()
@@ -571,7 +604,6 @@ public class CellScript : MonoBehaviour {
                 skinMeshRenderer.SetBlendShapeWeight(1, myGenes[1] * 300 * infectedTimerScale);
                 break;
         }
-
 
         //skinMeshRenderer.SetBlendShapeWeight(0, myGenes[0] * 300);
         //skinMeshRenderer.SetBlendShapeWeight(1, myGenes[1] * 300 * infectedTimerScale);
