@@ -16,6 +16,8 @@ public class Chromosome {
     public static float mutationStrength = 0.3f;
     public static float randomInitValue = 0.04f;
 
+    public static float additionScaling = 0.4f;
+
     private static float MaxValue = 1.0f;
 
     private float[] genes = new float[length];
@@ -162,7 +164,7 @@ public class Chromosome {
     {
         for (int i = 0; i < length; i++)
         {
-            genes[i] += inputChromosome[i];
+            genes[i] += inputChromosome[i] * additionScaling;
 
             if (genes[i] > MaxValue)
             {
