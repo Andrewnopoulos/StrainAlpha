@@ -496,7 +496,14 @@ public class CellScript : MonoBehaviour {
     // clamp position
     void LateUpdate()
     {
-        transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, -1 * (detectionRange - 1), (detectionRange - 1)), transform.position.z);
+        if (infectedType == InfectedSpecialType.MINE)
+        {
+            transform.position = new Vector3(transform.position.x, 0, transform.position.z);
+        }
+        else
+        {
+            transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, -1 * (detectionRange - 1), (detectionRange - 1)), transform.position.z);
+        }
     }
 
     private void SetStats()
