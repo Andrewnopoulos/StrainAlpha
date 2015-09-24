@@ -48,7 +48,7 @@ public class ChargeScript : MonoBehaviour {
     void BounceEnemy(Collider other)
     {
         Vector3 delta = gameObject.transform.position - other.transform.position;
-        delta = new Vector3(delta.x * 5.0f, 0, delta.z * 5.0f);
+        delta = new Vector3(delta.x * 50.0f, 0, delta.z * 50.0f);
         other.attachedRigidbody.AddForce(delta);
     }
 }

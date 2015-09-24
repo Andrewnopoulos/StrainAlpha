@@ -22,6 +22,13 @@ public class TutorialScript : MonoBehaviour {
         helpMessages.Add("Use the right stick to aim and shoot...");
         helpMessages.Add("Shoot enemies to destroy them. When enemies die they drop their core...");
         helpMessages.Add("Collect these cores to gain points in your personal gene levels...");
+        helpMessages.Add("Your gene levels are represented as the bars on the inner ring around the nanobot...");
+        helpMessages.Add("These gene levels passively grant bonuses to the player, but can be activated to provide short term powerful effects...");
+        helpMessages.Add("Switch which gene is selected with the right and left bumpers...");
+        helpMessages.Add("Your nanobot's health is represnted by the outer blue ring...");
+        helpMessages.Add("If it becomes empty you will die, so be careful...");
+        helpMessages.Add("Survive until the time runs out to fight the boss...");
+        helpMessages.Add("Each level has a unique boss. Kill the boss to move on to the next level...");
 
         message = gameObject.GetComponentInChildren<Text>();
     }
