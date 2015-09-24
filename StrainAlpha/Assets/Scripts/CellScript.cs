@@ -55,6 +55,8 @@ public class CellScript : MonoBehaviour {
 
     public float kamikazeLifetime = 3.0f;
 
+    private float infectedTimerScale = 0.0f;
+
     public bool infected = false;
     public bool playerDetected = false;
     public bool roaming = true;
@@ -189,6 +191,8 @@ public class CellScript : MonoBehaviour {
 
         skinMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
 
+        skinMeshRenderer.SetBlendShapeWeight(0, 100);
+
         cellStateMachine = new CellFSM();
 
         cellStateMachine.AddTransition(InfectedCellState.DORMANT, InfectedCellState.CHASINGPLAYER, Chase);
@@ -256,7 +260,7 @@ public class CellScript : MonoBehaviour {
 
     void UpdateAnimation()
     {
-        skinMeshRenderer.SetBlendShapeWeight(3, (Mathf.Sin(animationSpeed * Time.time + animationOffset) * maxAnimationAmplitude) + maxAnimationAmplitude);
+        skinMeshRenderer.SetBlendShapeWeight(3, infectedTimerScale * ((Mathf.Sin(animationSpeed * Time.time + animationOffset) * maxAnimationAmplitude) + maxAnimationAmplitude));
     }
 
     bool FollowPlayer()
@@ -408,6 +412,13 @@ public class CellScript : MonoBehaviour {
                 playerDetected = false;
                 break;
         }
+
+        if (infectedTimerScale > 1.0f)
+        {
+            infectedTimerScale += Time.deltaTime;
+            SetBlendShapes();
+        }
+        
         
         if (targetLocation != null)
         {
@@ -542,8 +553,21 @@ public class CellScript : MonoBehaviour {
 
     private void SetBlendShapes()
     {
+
+        switch(infectedType)
+        {
+            case InfectedSpecialType.SPEED:
+                skinMeshRenderer.SetBlendShapeWeight(2, 100 * infectedTimerScale);
+                break;
+            default:
+                skinMeshRenderer.SetBlendShapeWeight(1, myGenes[1] * 300 * infectedTimerScale);
+                break;
+
+        }
+
+
         //skinMeshRenderer.SetBlendShapeWeight(0, myGenes[0] * 300);
-        skinMeshRenderer.SetBlendShapeWeight(1, myGenes[1] * 300);
+        skinMeshRenderer.SetBlendShapeWeight(1, myGenes[1] * 300 * infectedTimerScale);
         //skinMeshRenderer.SetBlendShapeWeight(2, myGenes[2] * 300);
     }
 
