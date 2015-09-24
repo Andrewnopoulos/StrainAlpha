@@ -7,9 +7,15 @@ public class CampScript : MonoBehaviour {
 
     public NPCManager manager;
 
+    private SphereCollider spawnCollider;
+
     public int NeutralType;
     public int population;
     private float SpawnDistanceScale;
+
+    public bool canSpawn;
+
+    public float spawnTimer;
 
 	// Use this for initialization
 	void Start () {
@@ -23,6 +29,9 @@ public class CampScript : MonoBehaviour {
         {
             SpawnNeutralCell();
         }
+
+        canSpawn = true;
+        spawnTimer = 5.0f;
 	}
 
     void Awake()
@@ -39,7 +48,14 @@ public class CampScript : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void Update () {
-	
-	}
+    void Update()
+    {
+        spawnTimer -= Time.deltaTime;
+        
+        if (canSpawn && spawnTimer < 0)
+        {
+            SpawnNeutralCell();
+            spawnTimer = manager.SpawnUrgency;
+        }
+    }
 }

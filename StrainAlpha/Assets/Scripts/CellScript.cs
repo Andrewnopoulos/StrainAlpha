@@ -572,7 +572,6 @@ public class CellScript : MonoBehaviour {
                 break;
         }
 
-
         //skinMeshRenderer.SetBlendShapeWeight(0, myGenes[0] * 300);
         //skinMeshRenderer.SetBlendShapeWeight(1, myGenes[1] * 300 * infectedTimerScale);
         //skinMeshRenderer.SetBlendShapeWeight(2, myGenes[2] * 300);
