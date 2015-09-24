@@ -144,16 +144,19 @@ public class PlayerScript : MonoBehaviour {
         }
 
         if (laserActive && playerGenes[2] > 0)
-            playerGenes[2] -= Time.deltaTime * laserDrainSpeed; 
+        {
+            playerGenes[2] -= Time.deltaTime * laserDrainSpeed;
+            fireCooldown = 100.0f;
+        }
         else if (laserActive && playerGenes[2] <= 0)
         {
             laserActive = false;
             playerGenes[2] = 0.0f;
+            fireCooldown = 0.05f;
 
             if (laser.GetActive())
             {
                 laser.SetActive(false);
-                fireCooldown = 0.05f;
                 moveDamp += 0.6f;
                 turnDamp -= 0.15f;
                 laserDrainSpeed -= 0.15f;
@@ -161,16 +164,19 @@ public class PlayerScript : MonoBehaviour {
         }
 
         if (chargeActive && playerGenes[3] > 0)
+        {
             playerGenes[3] -= Time.deltaTime * chargeDrainSpeed;
+            fireCooldown = 100.0f;
+        }
         else if (chargeActive && playerGenes[3] <= 0)
         {
             chargeActive = false;
             playerGenes[3] = 0.0f;
+            fireCooldown = 0.05f;
 
             if (charge.GetActive())
             {
                 charge.SetActive(false);
-                fireCooldown = 0.05f;
                 moveDamp -= 0.5f;
                 turnDamp -= 0.08f;
             }
@@ -188,16 +194,19 @@ public class PlayerScript : MonoBehaviour {
         }
 
         if (bombActive && playerGenes[1] > 0)
+        {
             playerGenes[1] -= Time.deltaTime * bombDrainSpeed;
+            fireCooldown = 100.0f;
+        }
         else if (bombActive && playerGenes[1] <= 0)
         {
             bombActive = false;
             playerGenes[1] = 0.0f;
+            fireCooldown = 0.0f;
 
             if (bomb.GetActive())
             {
                 bomb.SetActive(false);
-                fireCooldown = 0.05f;
             }
         }
 
