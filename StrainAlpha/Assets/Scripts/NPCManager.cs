@@ -22,6 +22,10 @@ public class NPCManager : MonoBehaviour {
 
     public float infectionRange = 1.0f;
 
+    public float SpawnUrgency = 0.0f;
+
+    public int LargeNumberOfNeutrals = 200;
+
     void Start()
     {
         for (int i = 0; i < InitialNeutralCells; i++)
@@ -35,6 +39,15 @@ public class NPCManager : MonoBehaviour {
         }
 
         playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>();
+
+        SpawnUrgency = 5.0f;
+    }
+
+    void Update()
+    {
+        int neutralCells = friendlyList.Count;
+
+        SpawnUrgency = (float)neutralCells / LargeNumberOfNeutrals * 5.0f;
     }
 
     void SpawnNeutral()
