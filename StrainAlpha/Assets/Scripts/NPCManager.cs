@@ -26,6 +26,8 @@ public class NPCManager : MonoBehaviour {
 
     public int LargeNumberOfCells = 600;
 
+    public float SpawnUrgencyScale = 5.0f;
+
     void Start()
     {
         for (int i = 0; i < InitialNeutralCells; i++)
@@ -47,7 +49,7 @@ public class NPCManager : MonoBehaviour {
     {
         int CellCount = friendlyList.Count + infectedList.Count;
 
-        SpawnUrgency = (float)CellCount / LargeNumberOfCells * 10.0f;
+        SpawnUrgency = (float)CellCount / LargeNumberOfCells * SpawnUrgencyScale;
     }
 
     void SpawnNeutral()
