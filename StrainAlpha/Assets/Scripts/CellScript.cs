@@ -63,7 +63,7 @@ public class CellScript : MonoBehaviour {
 
     public bool ranged = false;
 
-    public float detectionRange = 5.0f;
+    public float detectionRange = 8.0f;
 
     //fire rate is synonymous with range; values over 0.5 make the enemy melee
     private float fireRate = 2.0f;
@@ -288,7 +288,7 @@ public class CellScript : MonoBehaviour {
     bool FollowPlayer()
     {
         Vector3 myPos = cellPosition.position;
-        if ((playerLocation.position - myPos).magnitude < detectionRange)
+        if ((playerLocation.position - myPos).magnitude < detectionRange * 2)
         {
             targetLocation = playerLocation;
             return true;
@@ -321,7 +321,7 @@ public class CellScript : MonoBehaviour {
             }
         }
 
-        if ( (closest.position - myPos).magnitude < detectionRange * 2.3f)
+        if ( (closest.position - myPos).magnitude < detectionRange * 2.5f)
         {
             targetLocation = closest;
             return true;
@@ -510,7 +510,7 @@ public class CellScript : MonoBehaviour {
     {
         health += myGenes[0] * 5.0f;
         damage += myGenes[1] * 1.0f;
-        detectionRange += myGenes[2] * 1.0f;
+        detectionRange += myGenes[2] * 5.0f;
         MaxSpeed += myGenes[3] * 3.0f;
         speed += myGenes[3] * 5.0f;
 
@@ -604,6 +604,10 @@ public class CellScript : MonoBehaviour {
                 skinMeshRenderer.SetBlendShapeWeight(1, myGenes[1] * 300 * infectedTimerScale);
                 break;
         }
+
+        // change colour of cell
+
+        GetComponentInChildren<Renderer>().material.SetColor("_Color", new Vector4(1, 0, 0, 1));
 
         //skinMeshRenderer.SetBlendShapeWeight(0, myGenes[0] * 300);
         //skinMeshRenderer.SetBlendShapeWeight(1, myGenes[1] * 300 * infectedTimerScale);
