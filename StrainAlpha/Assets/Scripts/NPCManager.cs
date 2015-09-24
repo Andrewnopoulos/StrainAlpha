@@ -115,6 +115,11 @@ public class NPCManager : MonoBehaviour {
             {
                 GameObject newExplosion = (GameObject)Instantiate(explosion, killList[i].transform.position, killList[i].transform.rotation);
             }
+            else if (killList[i].infectedType == InfectedSpecialType.MINE)
+            {
+                GameObject newExplosion = (GameObject)Instantiate(explosion, killList[i].transform.position, killList[i].transform.rotation);
+                newExplosion.transform.localScale *= 2.0f;
+            }
             else
             {
                 SpawnNucleus(killList[i]);
