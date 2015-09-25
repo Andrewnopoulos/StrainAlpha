@@ -17,7 +17,8 @@ public enum InfectedSpecialType
     DAMAGE, // high damage
     KAMIKAZE, // speed + damage
     REPLICATION, // health + speed
-    MINE // health + damage
+    MINE, // health + damage
+    RANGED // high ranged
 }
 
 public class CellFSM : FiniteStateMachine<InfectedCellState>
@@ -30,6 +31,8 @@ public class CellScript : MonoBehaviour {
     public GameObject bulletPrefab;
 
     public NPCManager manager;
+
+    private BlendColourScript blendShapeChild;
 
     public InfectedSpecialType infectedType = InfectedSpecialType.REGULAR;
 
@@ -223,6 +226,8 @@ public class CellScript : MonoBehaviour {
         cellStateMachine.AddTransition(InfectedCellState.SEARCHING, InfectedCellState.CHASINGPLAYER, Chase);
         cellStateMachine.AddTransition(InfectedCellState.DORMANT, InfectedCellState.DORMANT, GoDormant);
         cellStateMachine.AddTransition(InfectedCellState.SEARCHING, InfectedCellState.DORMANT, GoDormant);
+
+        blendShapeChild = GetComponentInChildren<BlendColourScript>();
 
     }
 
@@ -514,11 +519,6 @@ public class CellScript : MonoBehaviour {
         MaxSpeed += myGenes[3] * 3.0f;
         speed += myGenes[3] * 5.0f;
 
-        if (myGenes[2] > geneTriggerValue)
-        {
-            ranged = true;
-        }
-
         if (myGenes[0] > geneTriggerValue) // health
         {
             infectedType = InfectedSpecialType.HEALTH;
@@ -545,6 +545,12 @@ public class CellScript : MonoBehaviour {
         if (myGenes[3] > geneTriggerValue) // speed
         {
             infectedType = InfectedSpecialType.SPEED;
+        }
+
+        if (myGenes[2] > geneTriggerValue)
+        {
+            ranged = true;
+            infectedType = InfectedSpecialType.RANGED;
         }
 
         SetBlendShapes();
@@ -608,6 +614,8 @@ public class CellScript : MonoBehaviour {
         // change colour of cell
 
         GetComponentInChildren<Renderer>().material.SetColor("_Color", new Vector4(1, 0, 0, 1));
+
+        blendShapeChild.infected = true;
 
         //skinMeshRenderer.SetBlendShapeWeight(0, myGenes[0] * 300);
         //skinMeshRenderer.SetBlendShapeWeight(1, myGenes[1] * 300 * infectedTimerScale);

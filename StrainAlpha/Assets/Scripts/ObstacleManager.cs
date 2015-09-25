@@ -45,7 +45,7 @@ public class ObstacleManager : MonoBehaviour {
 	    for (int i = objects.Count - 1; i >= 0; --i)
         {
             objects[i].transform.position += velocity * Time.deltaTime;
-
+            objects[i].transform.Rotate(velocity * Time.deltaTime);
             if (objects[i].transform.position.y > upperLimit)
             {
                 Destroy(objects[i]);
