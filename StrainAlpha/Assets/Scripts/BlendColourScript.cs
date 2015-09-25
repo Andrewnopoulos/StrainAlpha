@@ -39,6 +39,12 @@ public class BlendColourScript : MonoBehaviour {
                 case InfectedSpecialType.RANGED:
                     myRenderer.material.color = new Color(0, 0, colourBlend, 0.5f);
                     break;
+                case InfectedSpecialType.REPLICATION:
+                    myRenderer.material.color = new Color(0, colourBlend / 2, colourBlend / 2, 0.5f);
+                    break;
+                case InfectedSpecialType.KAMIKAZE:
+                    myRenderer.material.color = new Color(colourBlend / 2, 0, colourBlend / 2, 0.5f);
+                    break;
 
                 default:
                     myRenderer.material.color = new Color(colourBlend, 0, 0, 0.5f);
