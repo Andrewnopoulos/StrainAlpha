@@ -11,6 +11,8 @@ public class BlendColourScript : MonoBehaviour {
 
     private InfectedSpecialType type;
 
+    public float colorBrightness = 0.5f;
+
 	// Use this for initialization
 	void Start () {
         infected = false;
@@ -23,7 +25,7 @@ public class BlendColourScript : MonoBehaviour {
 	void Update () {
 	    if (infected)
         {
-            if (colourBlend < 1.0f)
+            if (colourBlend < colorBrightness)
             {
                 colourBlend += Time.deltaTime;
             }
