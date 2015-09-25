@@ -11,6 +11,9 @@ public class BlendColourScript : MonoBehaviour {
 
     private InfectedSpecialType type;
 
+    public float colorBrightness = 0.5f;
+    public float enemyOpacity = 0.5f;
+
 	// Use this for initialization
 	void Start () {
         infected = false;
@@ -23,7 +26,7 @@ public class BlendColourScript : MonoBehaviour {
 	void Update () {
 	    if (infected)
         {
-            if (colourBlend < 1.0f)
+            if (colourBlend < colorBrightness)
             {
                 colourBlend += Time.deltaTime;
             }
@@ -31,17 +34,23 @@ public class BlendColourScript : MonoBehaviour {
             switch (type)
             {
                 case InfectedSpecialType.HEALTH:
-                    myRenderer.material.color = new Color(0, colourBlend, 0, 0.5f);
+                    myRenderer.material.color = new Color(0, colourBlend, 0, enemyOpacity);
                     break;
                 case InfectedSpecialType.SPEED:
-                    myRenderer.material.color = new Color(colourBlend/2, colourBlend/2, 0, 0.5f);
+                    myRenderer.material.color = new Color(colourBlend / 2, colourBlend / 2, 0, enemyOpacity);
                     break;
                 case InfectedSpecialType.RANGED:
-                    myRenderer.material.color = new Color(0, 0, colourBlend, 0.5f);
+                    myRenderer.material.color = new Color(0, 0, colourBlend, enemyOpacity);
+                    break;
+                case InfectedSpecialType.REPLICATION:
+                    myRenderer.material.color = new Color(0, colourBlend / 2, colourBlend / 2, enemyOpacity);
+                    break;
+                case InfectedSpecialType.KAMIKAZE:
+                    myRenderer.material.color = new Color(colourBlend / 2, 0, colourBlend / 2, enemyOpacity);
                     break;
 
                 default:
-                    myRenderer.material.color = new Color(colourBlend, 0, 0, 0.5f);
+                    myRenderer.material.color = new Color(colourBlend, 0, 0, enemyOpacity);
                     break;
             }
             
