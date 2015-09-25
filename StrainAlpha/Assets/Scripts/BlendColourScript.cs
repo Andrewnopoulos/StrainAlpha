@@ -9,11 +9,14 @@ public class BlendColourScript : MonoBehaviour {
 
     private float colourBlend = 0.0f;
 
+    private InfectedSpecialType type;
+
 	// Use this for initialization
 	void Start () {
         infected = false;
         myRenderer = GetComponent<Renderer>();
         colourBlend = 0.0f;
+        type = GetComponentInParent<CellScript>().infectedType;
 	}
 	
 	// Update is called once per frame
@@ -24,7 +27,24 @@ public class BlendColourScript : MonoBehaviour {
             {
                 colourBlend += Time.deltaTime;
             }
-            myRenderer.material.color = new Color(colourBlend, 0, 0, 0.5f);
+
+            switch (type)
+            {
+                case InfectedSpecialType.HEALTH:
+                    myRenderer.material.color = new Color(0, colourBlend, 0, 0.5f);
+                    break;
+                case InfectedSpecialType.SPEED:
+                    myRenderer.material.color = new Color(colourBlend/2, colourBlend/2, 0, 0.5f);
+                    break;
+                case InfectedSpecialType.RANGED:
+                    myRenderer.material.color = new Color(0, 0, colourBlend, 0.5f);
+                    break;
+
+                default:
+                    myRenderer.material.color = new Color(colourBlend, 0, 0, 0.5f);
+                    break;
+            }
+            
         }
 	}
 }
