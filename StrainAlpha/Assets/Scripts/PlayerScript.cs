@@ -150,7 +150,8 @@ public class PlayerScript : MonoBehaviour {
         if (laserActive && playerGenes[2] > 0)
         {
             playerGenes[2] -= Time.deltaTime * laserDrainSpeed;
-            fireCooldown = 100.0f;
+            if (laser.GetActive())
+                fireCooldown = 100.0f;
         }
         else if (laserActive && playerGenes[2] <= 0)
         {
