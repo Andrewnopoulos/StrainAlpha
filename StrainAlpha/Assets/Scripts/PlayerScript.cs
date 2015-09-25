@@ -27,6 +27,8 @@ public class PlayerScript : MonoBehaviour {
 
     private CharacterController characterController;
 
+    private CameraFollow cameraScript;
+
     private float mass = 1.0f;
 
     private Vector3 velocity;
@@ -112,6 +114,8 @@ public class PlayerScript : MonoBehaviour {
 
 	void Start () 
     {
+        cameraScript = GameObject.Find("Main Camera").GetComponent<CameraFollow>();
+
         if (Input.GetJoystickNames().Length > 0)
         {
             isControllerConnected = true;
@@ -265,8 +269,6 @@ public class PlayerScript : MonoBehaviour {
                     currentDash = dashTime;
                     dashDir = Vector3.Normalize(movementVector) * 3.0f;
                     movementVector += dashDir;
-
-                    //apply screen shake
                 }
             }
         
@@ -537,7 +539,10 @@ public class PlayerScript : MonoBehaviour {
     public void TakeDamage(float _damage)
     {
         if (!shieldActive)
+        {
             health -= _damage;
+            cameraScript.ShakeScreen();
+        }
     }
 
     private void ShootBullet()
