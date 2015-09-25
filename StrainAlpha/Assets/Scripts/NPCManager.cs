@@ -37,7 +37,8 @@ public class NPCManager : MonoBehaviour {
 
         for (int i = 0; i < InitialInfectedCells; i++)
         {
-           CreateInfectedCell(new Chromosome(4), new Vector3(10, 0, 10));
+            Vector2 randomSpawn = Random.insideUnitCircle * 50;
+           CreateInfectedCell(new Chromosome(4), new Vector3(randomSpawn.x, 0, randomSpawn.y));
         }
 
         playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>();
