@@ -53,7 +53,6 @@ public class BlendColourScript : MonoBehaviour {
                     myRenderer.material.color = new Color(colourBlend, 0, 0, enemyOpacity);
                     break;
             }
-            
         }
 	}
 }
