@@ -45,6 +45,8 @@ public class CellScript : MonoBehaviour {
     private float hitCooldown = 0.5f;
     private float currentHitCooldown = 0.0f;
 
+    public int scoreWorth = 100;
+
     private float MaxSpeed = 5.0f;
 
     public float turnDamp = 0.05f;
@@ -511,6 +513,14 @@ public class CellScript : MonoBehaviour {
         }
     }
 
+    private void ModifyScore()
+    {
+        scoreWorth += (int)(myGenes[0] * 100.0f);
+        scoreWorth += (int)(myGenes[1] * 100.0f);
+        scoreWorth += (int)(myGenes[2] * 100.0f);
+        scoreWorth += (int)(myGenes[3] * 100.0f);
+    }
+
     private void SetStats()
     {
         health += myGenes[0] * 5.0f;
@@ -518,6 +528,8 @@ public class CellScript : MonoBehaviour {
         detectionRange += myGenes[2] * 5.0f;
         MaxSpeed += myGenes[3] * 3.0f;
         speed += myGenes[3] * 5.0f;
+
+        ModifyScore();
 
         if (myGenes[0] > geneTriggerValue) // health
         {

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -15,6 +16,8 @@ public class NPCManager : MonoBehaviour {
     private List<CellScript> friendlyList;
     private List<CellScript> infectedList;
     private List<CellScript> killList;
+
+    private PlayerUI ui;
 
     public int InitialNeutralCells = 40;
 
@@ -42,6 +45,8 @@ public class NPCManager : MonoBehaviour {
         }
 
         playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>();
+
+        ui = GameObject.Find("PlayerUI").GetComponent<PlayerUI>();
 
         SpawnUrgency = 5.0f;
     }
@@ -127,6 +132,9 @@ public class NPCManager : MonoBehaviour {
             {
                 SpawnNucleus(killList[i]);
             }
+
+            ui.AddScore(killList[i].scoreWorth);
+
             Destroy(killList[i].gameObject);
             killList.Remove(killList[i]);
         }
