@@ -21,6 +21,9 @@ public class PlayerUI : MonoBehaviour {
     private Image damageGene;
     private Image speedGene;
 
+    private int score = 0;
+    private Text scoreText;
+
     private float previousHealth;
     private float previousRange;
     private float previousDamage;
@@ -57,6 +60,8 @@ public class PlayerUI : MonoBehaviour {
         damageGene = allImages[14];
         speedGene = allImages[16];
 
+        scoreText = gameObject.GetComponentInChildren<Text>();
+
         player = GameObject.Find("Player").GetComponent<PlayerScript>();
 
         anchor = GameObject.Find("PlayerAnchor");
@@ -68,6 +73,8 @@ public class PlayerUI : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+        scoreText.text = score.ToString();
 
         expanding -= Time.deltaTime;
 
@@ -253,5 +260,10 @@ public class PlayerUI : MonoBehaviour {
         }
 
         expanding = 1.0f;
+    }
+
+    public void AddScore(int _score)
+    {
+        score += _score;
     }
 }
