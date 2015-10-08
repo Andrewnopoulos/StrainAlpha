@@ -47,6 +47,11 @@ public class BossScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 	
+        if (health <= 0)
+        {
+            Die();
+        }
+
         switch (attackType)
         {
             case AttackType.DORMANT:
@@ -78,6 +83,12 @@ public class BossScript : MonoBehaviour {
 
 	}
 
+    void LateUpdate()
+    {
+        transform.position = new Vector3(transform.position.x, 0, transform.position.z);
+        transform.localRotation = Quaternion.Euler(transform.localEulerAngles.x, transform.localEulerAngles.y, 0);
+    }
+
     private void AttackRadial()
     {
         shootCooldown -= Time.deltaTime;
@@ -90,6 +101,8 @@ public class BossScript : MonoBehaviour {
             script.speed = 15.0f;
             script.SetAsEnemyBullet();
             shootCooldown = shootRate;
+            script.transform.localScale *= 2;
+            script.lifeTime = 3.0f;
         }
 
         attackCooldown -= Time.deltaTime;
@@ -106,12 +119,14 @@ public class BossScript : MonoBehaviour {
         {
             for (int i = 0; i < 32; ++i)
             {
-                transform.Rotate(new Vector3(0, 1, 0), (360 / 32) * i);
+                transform.Rotate(new Vector3(0, 1, 0), (360 / 32));
                 GameObject newBullet = (GameObject)Instantiate(bulletPrefab, transform.position, transform.rotation);
                 BulletScript script = newBullet.GetComponent<BulletScript>();
                 script.damage = damage;
                 script.speed = 15.0f;
                 script.SetAsEnemyBullet();
+                script.transform.localScale *= 2;
+                script.lifeTime = 3.0f;
             }
             shootCooldown = shootRate;
         }
@@ -133,6 +148,8 @@ public class BossScript : MonoBehaviour {
             script.damage = damage;
             script.speed = 15.0f;
             script.SetAsEnemyBullet();
+            script.transform.localScale *= 2;
+            script.lifeTime = 3.0f;
             shootCooldown = shootRate;
         }
         attackCooldown -= Time.deltaTime;
@@ -183,5 +200,15 @@ public class BossScript : MonoBehaviour {
     private void SpawnCells()
     {
 
+    }
+
+    public void TakeDamage(float pain)
+    {
+        health -= pain;
+    }
+
+    void Die()
+    {
+        Destroy(gameObject);
     }
 }
