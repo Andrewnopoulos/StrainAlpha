@@ -15,8 +15,11 @@ public class LaserScript : MonoBehaviour {
     private float baseLength = 25.0f;
     private float currentLength = 0.0f;
 
-    private float baseWidth = 0.3f;
-    private float currentWidth = 0.1f;
+    private float baseWidth = 1;
+    private float currentWidth = 0.05f;
+
+    private float basePos = 12.5f;
+    private float currentPos = 0.0f;
 
 	// Use this for initialization
 	void Start () {
@@ -29,19 +32,22 @@ public class LaserScript : MonoBehaviour {
 	void Update () {
 	
         gameObject.transform.localScale = new Vector3(currentWidth, transform.localScale.y, currentLength);
+        gameObject.transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, currentPos);
 
         if (active)
         {
-            currentLength = (baseLength - currentLength) * (Time.deltaTime * 10.0f);
-            if (currentLength > baseLength - 1.0f)
+            currentPos += (basePos - currentPos) * (Time.deltaTime * 8.0f);
+            currentLength += (baseLength - currentLength) * (Time.deltaTime * 8.0f);
+            if (currentLength > baseLength - 10.0f)
             {
-                currentWidth = (baseWidth - currentWidth) * (Time.deltaTime * 10.0f);
+                currentWidth += (baseWidth - currentWidth) * (Time.deltaTime * 4.0f);
             }
         }
         else
         {
             currentLength = 0.0f;
-            currentWidth = 0.1f;
+            currentWidth = 0.05f;
+            currentPos = 0.0f;
         }
 	}
 
