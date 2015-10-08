@@ -23,6 +23,8 @@ public class PlayerUI : MonoBehaviour {
 
     private int score = 0;
     private Text scoreText;
+    private float baseScoreSize = 0.4f;
+    private float scoreSize = 0.4f;
 
     private float previousHealth;
     private float previousRange;
@@ -75,6 +77,10 @@ public class PlayerUI : MonoBehaviour {
 	void Update () {
 
         scoreText.text = score.ToString();
+
+        scoreSize -= (scoreSize - baseScoreSize) * Time.deltaTime * 2.0f;
+
+        scoreText.transform.localScale = new Vector3(scoreSize, scoreSize, scoreSize);
 
         expanding -= Time.deltaTime;
 
@@ -265,5 +271,6 @@ public class PlayerUI : MonoBehaviour {
     public void AddScore(int _score)
     {
         score += _score;
+        scoreSize = 0.6f;
     }
 }
