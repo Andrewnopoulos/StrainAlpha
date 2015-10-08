@@ -86,6 +86,8 @@ public class PlayerScript : MonoBehaviour {
 
     private float damageReduction = 0.0f;
 
+    public bool godMode = false;
+
     Chromosome playerGenes;
     void Awake()
     {
@@ -125,6 +127,11 @@ public class PlayerScript : MonoBehaviour {
 	}
 	
 	void Update () {
+
+        if (godMode)
+        {
+            playerGenes = new Chromosome(new float[4] {1, 1, 1, 1});
+        }
 	
         if (fireCooldown > 0)
             fireCooldown -= Time.deltaTime;
@@ -541,7 +548,7 @@ public class PlayerScript : MonoBehaviour {
 
     public void TakeDamage(float _damage)
     {
-        if (!shieldActive)
+        if (!shieldActive && !godMode)
         {
             health -= _damage * (1 - damageReduction);
             cameraScript.ShakeScreen();
