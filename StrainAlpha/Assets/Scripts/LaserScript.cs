@@ -12,6 +12,12 @@ public class LaserScript : MonoBehaviour {
 
     private int enemyLayer = 9;
 
+    private float baseLength = 25.0f;
+    private float currentLength = 0.0f;
+
+    private float baseWidth = 0.3f;
+    private float currentWidth = 0.1f;
+
 	// Use this for initialization
 	void Start () {
 
@@ -22,6 +28,21 @@ public class LaserScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 	
+        gameObject.transform.localScale = new Vector3(currentWidth, transform.localScale.y, currentLength);
+
+        if (active)
+        {
+            currentLength = (baseLength - currentLength) * (Time.deltaTime * 10.0f);
+            if (currentLength > baseLength - 1.0f)
+            {
+                currentWidth = (baseWidth - currentWidth) * (Time.deltaTime * 10.0f);
+            }
+        }
+        else
+        {
+            currentLength = 0.0f;
+            currentWidth = 0.1f;
+        }
 	}
 
     void OnTriggerStay(Collider other)
