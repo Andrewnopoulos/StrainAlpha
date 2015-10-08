@@ -20,10 +20,19 @@ public class BulletScript : MonoBehaviour {
 
     public ParticleSystem particles;
 
+    private bool gravitating = false;
+
+    private Vector3 velocity;
+
 	// Use this for initialization
 	void Start () {
-
+        
 	}
+
+    void Awake()
+    {
+        velocity = transform.forward;
+    }
 
     public void SetAsEnemyBullet()
     {
@@ -39,7 +48,12 @@ public class BulletScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        transform.position += transform.forward * speed * Time.deltaTime;
+        if (gravitating)
+        {
+            
+        }
+
+        transform.position += velocity * speed * Time.deltaTime;
 
         lifeTime -= Time.deltaTime;
 
@@ -49,6 +63,16 @@ public class BulletScript : MonoBehaviour {
         if (!alive)
             Kill();
 	}
+
+    public void SetGravitating(bool _gravitating)
+    {
+        gravitating = _gravitating;
+    }
+
+    public void ApplyForce(Vector3 _force)
+    {
+        velocity += _force * Time.deltaTime;
+    }
 
     void Kill()
     {
@@ -91,7 +115,6 @@ public class BulletScript : MonoBehaviour {
             transform.forward.Normalize();
             lifeTime = 1.5f;
             alive = true;
-            
         }
 
         if (!isEnemyBullet && other.gameObject.layer != enemyLayer && other.gameObject.layer != shieldLayer)
