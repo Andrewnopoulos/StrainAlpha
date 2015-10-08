@@ -127,11 +127,6 @@ public class PlayerScript : MonoBehaviour {
 	}
 	
 	void Update () {
-
-        if (godMode)
-        {
-            playerGenes = new Chromosome(new float[4] {1, 1, 1, 1});
-        }
 	
         if (fireCooldown > 0)
             fireCooldown -= Time.deltaTime;
@@ -358,6 +353,11 @@ public class PlayerScript : MonoBehaviour {
                 BackCyclePower();
             }
 
+            if (Input.GetButton("LeftStickPress") && godMode)
+            {
+                playerGenes = new Chromosome(new float[4] { 1, 1, 1, 1 });
+            }
+
             if (Input.GetAxis("RightTrigger") > 0.1f)
             {
                 //activate special power
@@ -444,6 +444,11 @@ public class PlayerScript : MonoBehaviour {
             else if (Input.GetKeyDown(KeyCode.Q) && weaponSelectCooldown <= 0.0f)
             {
                 BackCyclePower();
+            }
+
+            if (Input.GetKeyDown(KeyCode.Tab) && godMode)
+            {
+                playerGenes = new Chromosome(new float[4] { 1, 1, 1, 1 });
             }
 
             if (Input.GetMouseButton(1))
