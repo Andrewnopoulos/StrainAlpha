@@ -70,6 +70,8 @@ public class CellScript : MonoBehaviour {
 
     public float detectionRange = 8.0f;
 
+    private bool gravitating = false;
+
     //fire rate is synonymous with range; values over 0.5 make the enemy melee
     private float fireRate = 2.0f;
 
@@ -108,6 +110,16 @@ public class CellScript : MonoBehaviour {
     void GoDormant()
     {
         targetLocation = cellPosition;
+    }
+
+    public void SetGravitating(bool _gravitating)
+    {
+        gravitating = _gravitating;
+    }
+
+    public void ApplyForce(Vector3 _force)
+    {
+        velocity += _force * Time.deltaTime;
     }
 
     void StartSearching()
@@ -178,6 +190,11 @@ public class CellScript : MonoBehaviour {
     public Transform GetPosition()
     {
         return cellPosition;
+    }
+
+    public Vector3 GetCurrentLocation()
+    {
+        return cellPosition.position;
     }
 
     public Transform GetTargetLocation()
@@ -266,7 +283,7 @@ public class CellScript : MonoBehaviour {
         {
             InfectedUpdate();
 
-            if (velocity.magnitude >= MaxSpeed && velocity.magnitude != 0.0f)
+            if (velocity.magnitude >= MaxSpeed && velocity.magnitude != 0.0f && !gravitating)
             {
                 velocity = velocity / velocity.magnitude * MaxSpeed;
             }
@@ -408,8 +425,11 @@ public class CellScript : MonoBehaviour {
 
         if (ranged)
         {
-            LookToPlayer();
-
+            if (!gravitating)
+            {
+                LookToPlayer();
+            }
+            
             if (fireCoolDown <= 0)
             {
                 ShootBullet();
