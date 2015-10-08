@@ -3,7 +3,7 @@ using System.Collections;
 
 public class BlackHoleScript : MonoBehaviour {
 
-    private bool active = false;
+    public bool active = false;
 
     private Renderer renderer;
     private Collider collider;
@@ -47,7 +47,8 @@ public class BlackHoleScript : MonoBehaviour {
         if (other.gameObject.layer == enemyBulletLayer)
         {
             Destroy(other);
-        }else if (other.gameObject.layer == enemyLayer)
+        }
+        else if (other.gameObject.layer == enemyLayer && other.tag == "Enemy")
         {
             // TODO change this to something like bouncing enemies off or some shit
             other.GetComponent<CellScript>().TakeDamage(10.0f);
