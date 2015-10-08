@@ -6,7 +6,7 @@ public class BulletScript : MonoBehaviour {
     public float damage = 0.0f;
     public float speed = 0.0f;
 
-    private float lifeTime = 2.0f;
+    public float lifeTime = 2.0f;
 
     private bool alive = true;
 
@@ -92,6 +92,14 @@ public class BulletScript : MonoBehaviour {
             {
                 script.TakeDamage(damage);
             }
+            alive = false;
+        }
+        if (!isEnemyBullet && other.gameObject.layer == enemyLayer && other.tag == "Boss")
+        {
+            GameObject.Instantiate(particles, transform.position, transform.localRotation);
+            //deal damage to the enemy
+            BossScript script = other.GetComponent<BossScript>();
+            script.TakeDamage(damage);
             alive = false;
         }
 
