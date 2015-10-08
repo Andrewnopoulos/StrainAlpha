@@ -26,6 +26,7 @@ public class BossScript : MonoBehaviour {
     private Transform playerLocation;
 
     public GameObject bulletPrefab;
+    public GameObject infectedCell;
 
     private bool roaming = false;
 
@@ -199,7 +200,24 @@ public class BossScript : MonoBehaviour {
 
     private void SpawnCells()
     {
-
+        shootCooldown -= Time.deltaTime;
+        transform.LookAt(playerLocation);
+        if (shootCooldown <= 0)
+        {
+            GameObject newBullet = (GameObject)Instantiate(bulletPrefab, transform.position, transform.rotation);
+            BulletScript script = newBullet.GetComponent<BulletScript>();
+            script.damage = damage;
+            script.speed = 15.0f;
+            script.SetAsEnemyBullet();
+            script.transform.localScale *= 2;
+            script.lifeTime = 3.0f;
+            shootCooldown = shootRate;
+        }
+        attackCooldown -= Time.deltaTime;
+        if (attackCooldown <= 0)
+        {
+            attackType = AttackType.DORMANT;
+        }
     }
 
     public void TakeDamage(float pain)
