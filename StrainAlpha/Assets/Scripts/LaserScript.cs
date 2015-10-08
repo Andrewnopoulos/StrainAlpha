@@ -15,7 +15,7 @@ public class LaserScript : MonoBehaviour {
     private float baseLength = 25.0f;
     private float currentLength = 0.0f;
 
-    private float baseWidth = 0.4f;
+    private float baseWidth = 1;
     private float currentWidth = 0.05f;
 
     private float basePos = 12.5f;
