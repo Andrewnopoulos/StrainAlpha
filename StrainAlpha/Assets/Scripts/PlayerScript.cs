@@ -84,6 +84,8 @@ public class PlayerScript : MonoBehaviour {
     private float chargeDrainSpeed = 0.25f;
     private float bombDrainSpeed = 0.05f;
 
+    private float damageReduction = 0.0f;
+
     Chromosome playerGenes;
     void Awake()
     {
@@ -541,7 +543,7 @@ public class PlayerScript : MonoBehaviour {
     {
         if (!shieldActive)
         {
-            health -= _damage;
+            health -= _damage * (1 - damageReduction);
             cameraScript.ShakeScreen();
         }
     }
@@ -632,5 +634,6 @@ public class PlayerScript : MonoBehaviour {
         damage = baseDamage + playerGenes[1] * 3.0f;
         fireRate = baseFireRate - playerGenes[2] * 0.1f;
         speed = baseSpeed + playerGenes[3] * 3.0f;
+        damageReduction = playerGenes[0] * 0.5f;
     }
 }
