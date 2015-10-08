@@ -20,6 +20,7 @@ public class ExplosiveBulletScript : MonoBehaviour {
 
     private Collider[] colliders;
     private Renderer[] explosionMesh;
+    public GameObject explosionParticles;
 
 	// Use this for initialization
 	void Start () {
@@ -78,7 +79,9 @@ public class ExplosiveBulletScript : MonoBehaviour {
             colliders[0].enabled = !colliders[0].enabled;
             colliders[1].enabled = !colliders[1].enabled;
 
-            explosionMesh[1].enabled = true;
+            explosionMesh[0].enabled = false;
+            Instantiate(explosionParticles, transform.position, Quaternion.Euler(90, 0, 0));
+
         }
         if (other.gameObject.layer != enemyLayer && other.gameObject.layer != shieldLayer)
         {
@@ -87,7 +90,8 @@ public class ExplosiveBulletScript : MonoBehaviour {
             colliders[0].enabled = !colliders[0].enabled;
             colliders[1].enabled = !colliders[1].enabled;
 
-            explosionMesh[1].enabled = true;
+            explosionMesh[0].enabled = false;
+            Instantiate(explosionParticles, transform.position, Quaternion.Euler(90, 0, 0));
         }
 
     }
