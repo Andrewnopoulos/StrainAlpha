@@ -47,7 +47,7 @@ public class BossScript : MonoBehaviour {
 
     public float gravitationForce = 1.0f;
 
-    private float scale = 1.0f;
+    private float scale = 0.0f;
 
     private float targetScale = 1.0f;
 
