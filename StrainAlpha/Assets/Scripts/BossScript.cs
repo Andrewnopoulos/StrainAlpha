@@ -15,7 +15,7 @@ public class BossScript : MonoBehaviour {
     private AttackType attackType = AttackType.DORMANT;
 
     private float health = 500.0f;
-    private float damage = 2.0f;
+    private float damage = 1.0f;
     private float speed = 3.5f;
 
     public int scoreWorth = 100000;
@@ -47,6 +47,10 @@ public class BossScript : MonoBehaviour {
 
     public float gravitationForce = 1.0f;
 
+    private float scale = 1.0f;
+
+    private float targetScale = 1.0f;
+
 	// Use this for initialization
 	void Start () {
         playerLocation = GameObject.Find("Player").transform;
@@ -56,6 +60,10 @@ public class BossScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+        scale += (targetScale - scale) * (Time.deltaTime);
+
+        transform.localScale = new Vector3(scale, scale, scale);
 
         if (!born)
         {
@@ -260,6 +268,10 @@ public class BossScript : MonoBehaviour {
         {
             //absorb the enemy
             Destroy(other.gameObject);
+
+            targetScale += 0.04f;
+            health += 2.0f;
+            damage += 0.01f;
 
         }
     }

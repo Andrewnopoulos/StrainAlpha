@@ -23,6 +23,8 @@ public class NPCManager : MonoBehaviour {
 
     private PlayerUI ui;
 
+    private CameraFollow cameraScript;
+
     public int InitialNeutralCells = 40;
 
     public int InitialInfectedCells = 10;
@@ -59,6 +61,8 @@ public class NPCManager : MonoBehaviour {
         playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>();
 
         ui = GameObject.Find("PlayerUI").GetComponent<PlayerUI>();
+
+        cameraScript = GameObject.Find("Main Camera").GetComponent<CameraFollow>();
 
         SpawnUrgency = 5.0f;
     }
@@ -126,6 +130,8 @@ public class NPCManager : MonoBehaviour {
             cell.targetLocation = bossy.transform;
             cell.beAbsorbed = true;
         }
+
+        cameraScript.SetPlayerDist(25.0f);
     }
 
     void Awake()

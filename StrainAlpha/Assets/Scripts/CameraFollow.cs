@@ -18,6 +18,9 @@ public class CameraFollow : MonoBehaviour {
     private Vector3 velocity = Vector3.zero;
     private float smoothTime = 0.15f;
 
+    private float playerDistance = 17.6f;
+    private float targetDist = 17.6f;
+
 	// Use this for initialization
 	void Start () {
 
@@ -31,6 +34,8 @@ public class CameraFollow : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
     {
+        playerDistance += (targetDist - playerDistance) * (Time.deltaTime);
+
         if (screenShake)
         {
             currentShakeLength -= Time.deltaTime;
@@ -51,15 +56,20 @@ public class CameraFollow : MonoBehaviour {
 
             Vector3 goalPos = player.transform.position;
             goalPos.x += shakeOffset.x;
-            goalPos.y = transform.position.y;
+            goalPos.y = playerDistance;
             goalPos.z += shakeOffset.z;
             transform.position = Vector3.SmoothDamp(transform.position, goalPos, ref velocity, smoothTime);
         }
         else
         {
             Vector3 goalPos = player.transform.position;
-            goalPos.y = transform.position.y;
+            goalPos.y = playerDistance;
             transform.position = Vector3.SmoothDamp(transform.position, goalPos, ref velocity, smoothTime);
         }
 	}
+
+    public void SetPlayerDist(float dist)
+    {
+        targetDist = dist;
+    }
 }
