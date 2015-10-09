@@ -568,6 +568,7 @@ public class PlayerScript : MonoBehaviour {
         script.speed = 15.0f;
         script.isEnemyBullet = false;
         fireCooldown = fireRate;
+        SendMessage("Play");
     }
 
     private void ForwardCyclePower()
