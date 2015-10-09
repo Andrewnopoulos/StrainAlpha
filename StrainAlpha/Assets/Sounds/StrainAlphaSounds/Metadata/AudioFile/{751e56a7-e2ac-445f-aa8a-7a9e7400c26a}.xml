@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.01.07.00">
+    <object class="AudioFile" id="{751e56a7-e2ac-445f-aa8a-7a9e7400c26a}">
+        <property name="frequencyInKHz">
+            <value>44.0999985</value>
+        </property>
+        <property name="channelCount">
+            <value>2</value>
+        </property>
+        <property name="length">
+            <value>0.76918367346938776</value>
+        </property>
+        <property name="audioFilePath">
+            <value>$(AUDIO_BIN_DIR)/laser_gun_metallic_05 {159a154b-0c73-49a1-8967-686af5e97a67}.wav</value>
+        </property>
+        <relationship name="container">
+            <destination>{8c823093-dcf2-417e-b7b8-755b7737a3b2}</destination>
+        </relationship>
+    </object>
+</objects>
