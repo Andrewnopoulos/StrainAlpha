@@ -101,6 +101,8 @@ public class CellScript : MonoBehaviour {
     // animates to twice of maxAnimationAmplitude's value
     public float maxAnimationAmplitude = 30;
 
+    public bool beAbsorbed = false;
+
 	// Use this for initialization
 	void Start () {
         playerLocation = GameObject.Find("Player").transform;
@@ -457,23 +459,26 @@ public class CellScript : MonoBehaviour {
 
     void InfectedUpdate()
     {
-        switch(cellStateMachine.GetState())
+        if (!beAbsorbed)
         {
-            case InfectedCellState.DORMANT:
-                DormantUpdate();
-                roaming = false;
-                playerDetected = false;
-                break;
-            case InfectedCellState.CHASINGPLAYER:
-                ChasingPlayerUpdate();
-                playerDetected = true;
-                roaming = false;
-                break;
-            case InfectedCellState.SEARCHING:
-                SearchingUpdate();
-                roaming = true;
-                playerDetected = false;
-                break;
+            switch (cellStateMachine.GetState())
+            {
+                case InfectedCellState.DORMANT:
+                    DormantUpdate();
+                    roaming = false;
+                    playerDetected = false;
+                    break;
+                case InfectedCellState.CHASINGPLAYER:
+                    ChasingPlayerUpdate();
+                    playerDetected = true;
+                    roaming = false;
+                    break;
+                case InfectedCellState.SEARCHING:
+                    SearchingUpdate();
+                    roaming = true;
+                    playerDetected = false;
+                    break;
+            }
         }
 
         if (infectedTimerScale < 1.0f)

@@ -28,6 +28,8 @@ public class BossScript : MonoBehaviour {
     public GameObject bulletPrefab;
     public GameObject infectedCell;
 
+    private PlayerUI ui;
+
     private bool roaming = false;
 
     private float dormantTime = 1.0f;
@@ -39,55 +41,74 @@ public class BossScript : MonoBehaviour {
     private float attackLength = 5.0f;
     private float attackCooldown = 5.0f;
 
+    private bool born = false;
+
+    public float birthTime = 30.0f;
+
+    public float gravitationForce = 1.0f;
+
 	// Use this for initialization
 	void Start () {
         playerLocation = GameObject.Find("Player").transform;
         target = new Vector3(0, 0, 0);
+        ui = GameObject.Find("PlayerUI").GetComponent<PlayerUI>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	
-        if (health <= 0)
-        {
-            Die();
-        }
 
-        switch (attackType)
+        if (!born)
         {
-            case AttackType.DORMANT:
-                {
-                    Dormant();
-                    break;
-                }
-            case AttackType.ATTACKRADIAL:
-                {
-                    AttackRadial();
-                    break;
-                }
-            case AttackType.ATTACKCIRCLE:
-                {
-                    AttackCircle();
-                    break;
-                }
-            case AttackType.ATTACKTARGET:
-                {
-                    AttackTarget();
-                    break;
-                }
-            case AttackType.SPAWNCELLS:
-                {
-                    SpawnCells();
-                    break;
-                }
-        }
+            birthTime -= Time.deltaTime;
 
+            if (birthTime <= 0)
+            {
+                born = true;
+                gameObject.GetComponentsInChildren<Collider>()[0].enabled = true;
+            }
+        }
+        else
+        {
+            if (health <= 0)
+            {
+                Die();
+            }
+
+            switch (attackType)
+            {
+                case AttackType.DORMANT:
+                    {
+                        Dormant();
+                        break;
+                    }
+                case AttackType.ATTACKRADIAL:
+                    {
+                        AttackRadial();
+                        break;
+                    }
+                case AttackType.ATTACKCIRCLE:
+                    {
+                        AttackCircle();
+                        break;
+                    }
+                case AttackType.ATTACKTARGET:
+                    {
+                        AttackTarget();
+                        break;
+                    }
+                case AttackType.SPAWNCELLS:
+                    {
+                        SpawnCells();
+                        break;
+                    }
+            }
+        }
 	}
 
     void LateUpdate()
     {
         transform.position = new Vector3(transform.position.x, 0, transform.position.z);
-        transform.localRotation = Quaternion.Euler(transform.localEulerAngles.x, transform.localEulerAngles.y, 0);
+        transform.localRotation = Quaternion.Euler(0, transform.localEulerAngles.y, 0);
     }
 
     private void AttackRadial()
@@ -227,6 +248,20 @@ public class BossScript : MonoBehaviour {
 
     void Die()
     {
+        ui.AddScore(scoreWorth);
         Destroy(gameObject);
     }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (born)
+            return;
+        if (other.tag == "Enemy" && other.gameObject.layer == 9)
+        {
+            //absorb the enemy
+            Destroy(other.gameObject);
+
+        }
+    }
+
 }

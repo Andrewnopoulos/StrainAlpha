@@ -11,11 +11,15 @@ public class NPCManager : MonoBehaviour {
 
     public GameObject explosion;
 
+    public GameObject boss;
+
     private PlayerScript playerScript;
 
     private List<CellScript> friendlyList;
     private List<CellScript> infectedList;
     private List<CellScript> killList;
+
+    private BossScript endBoss;
 
     private PlayerUI ui;
 
@@ -30,6 +34,14 @@ public class NPCManager : MonoBehaviour {
     public int LargeNumberOfCells = 600;
 
     public float SpawnUrgencyScale = 5.0f;
+
+    public int bossSpawnKillCount;
+
+    public int currentKills;
+
+    private bool bossSpawn = false;
+
+    private float bossBirthTime;
 
     void Start()
     {
@@ -56,6 +68,25 @@ public class NPCManager : MonoBehaviour {
         int CellCount = friendlyList.Count + infectedList.Count;
 
         SpawnUrgency = (float)CellCount / LargeNumberOfCells * SpawnUrgencyScale;
+
+        if (currentKills >= bossSpawnKillCount && !bossSpawn)
+        {
+            SpawnBoss();
+        }
+
+        if (bossBirthTime > 0)
+            bossBirthTime -= Time.deltaTime;
+
+        if (bossBirthTime <= 0 && bossBirthTime > -100 && bossSpawn)
+        {
+            //stop enemies from being attracted
+            foreach (CellScript cell in infectedList)
+            {
+                cell.beAbsorbed = false;
+            }
+
+            bossBirthTime = -101.0f;
+        }
     }
 
     void SpawnNeutral()
@@ -80,6 +111,21 @@ public class NPCManager : MonoBehaviour {
         script.SetChromosome(inputChromosome);
 
         friendlyList.Add(script);
+    }
+
+    public void SpawnBoss()
+    {
+        GameObject bossy = (GameObject)Instantiate(boss, new Vector3(0, 0, 0), transform.rotation);
+        endBoss = bossy.GetComponent<BossScript>();
+        bossSpawn = true;
+
+        bossBirthTime = endBoss.birthTime;
+
+        foreach (CellScript cell in infectedList)
+        {
+            cell.targetLocation = bossy.transform;
+            cell.beAbsorbed = true;
+        }
     }
 
     void Awake()
@@ -134,6 +180,7 @@ public class NPCManager : MonoBehaviour {
             }
 
             ui.AddScore(killList[i].scoreWorth);
+            currentKills++;
 
             Destroy(killList[i].gameObject);
             killList.Remove(killList[i]);
