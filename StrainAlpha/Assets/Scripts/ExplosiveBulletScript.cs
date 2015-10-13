@@ -83,6 +83,22 @@ public class ExplosiveBulletScript : MonoBehaviour {
             Instantiate(explosionParticles, transform.position, Quaternion.Euler(90, 0, 0));
 
         }
+        if (other.gameObject.layer == enemyLayer && other.tag == "Boss")
+        {
+            //deal damage to the enemy
+            BossScript script = other.GetComponent<BossScript>();
+
+            script.TakeDamage(initialDamage);
+
+            collided = true;
+
+            colliders[0].enabled = !colliders[0].enabled;
+            colliders[1].enabled = !colliders[1].enabled;
+
+            explosionMesh[0].enabled = false;
+            Instantiate(explosionParticles, transform.position, Quaternion.Euler(90, 0, 0));
+
+        }
         if (other.gameObject.layer != enemyLayer && other.gameObject.layer != shieldLayer)
         {
             collided = true;
@@ -108,6 +124,14 @@ public class ExplosiveBulletScript : MonoBehaviour {
             {
                 script.TakeDamage(explosionDamage * Time.deltaTime);
             }
+        }
+        if (other.gameObject.layer == enemyLayer && other.tag == "Boss")
+        {
+            //deal damage to the enemy
+            BossScript script = other.GetComponent<BossScript>();
+
+            script.TakeDamage(explosionDamage * Time.deltaTime);
+
         }
     }
 
