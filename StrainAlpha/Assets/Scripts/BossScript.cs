@@ -276,4 +276,9 @@ public class BossScript : MonoBehaviour {
         }
     }
 
+    public float GetHealth()
+    {
+        return health;
+    }
+
 }

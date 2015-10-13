@@ -45,6 +45,8 @@ public class NPCManager : MonoBehaviour {
 
     private float bossBirthTime;
 
+    private float endLevelTime = 5.0f;
+
     void Start()
     {
         for (int i = 0; i < InitialNeutralCells; i++)
@@ -91,6 +93,19 @@ public class NPCManager : MonoBehaviour {
 
             bossBirthTime = -101.0f;
         }
+
+        if (bossSpawn && endBoss.GetHealth() <= 0)
+        {
+            endLevelTime -= Time.deltaTime;
+            if (endLevelTime <= 0)
+                EndLevel();
+        }
+    }
+
+    void EndLevel()
+    {
+        //clean up after this scene
+        //switch to the next scene
     }
 
     void SpawnNeutral()

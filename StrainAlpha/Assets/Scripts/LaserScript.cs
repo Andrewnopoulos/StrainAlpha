@@ -58,6 +58,11 @@ public class LaserScript : MonoBehaviour {
             //deal damage to the enemy
             other.GetComponent<CellScript>().TakeDamage(damage * Time.deltaTime);
         }
+        if (other.gameObject.layer == enemyLayer && other.tag == "Boss")
+        {
+            //deal damage to the enemy
+            other.GetComponent<BossScript>().TakeDamage(damage * Time.deltaTime);
+        }
     }
 
     public void SetActive(bool _active)
