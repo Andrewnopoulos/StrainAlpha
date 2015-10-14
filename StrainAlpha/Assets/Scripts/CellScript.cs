@@ -36,6 +36,12 @@ public class CellScript : MonoBehaviour {
 
     public InfectedSpecialType infectedType = InfectedSpecialType.REGULAR;
 
+    public float ScalingHealth = 5.0f;
+    public float ScalingDamage = 1.0f;
+    public float ScalingRanged = 5.0f;
+    public float ScalingMaxSpeed = 3.0f;
+    public float ScalingAcceleration = 5.0f;
+
     private float health = 5.0f;
     private float damage = 0.5f;
     private float speed = 3.5f;
@@ -548,11 +554,11 @@ public class CellScript : MonoBehaviour {
 
     private void SetStats()
     {
-        health += myGenes[0] * 5.0f;
-        damage += myGenes[1] * 1.0f;
-        detectionRange += myGenes[2] * 5.0f;
-        MaxSpeed += myGenes[3] * 3.0f;
-        speed += myGenes[3] * 5.0f;
+        health += myGenes[0] * ScalingHealth;
+        damage += myGenes[1] * ScalingDamage;
+        detectionRange += myGenes[2] * ScalingRanged;
+        MaxSpeed += myGenes[3] * ScalingMaxSpeed;
+        speed += myGenes[3] * ScalingAcceleration;
 
         ModifyScore();
 
