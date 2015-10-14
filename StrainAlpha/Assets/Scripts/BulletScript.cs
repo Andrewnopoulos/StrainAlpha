@@ -90,6 +90,7 @@ public class BulletScript : MonoBehaviour {
             CellScript script = other.GetComponent<CellScript>();
             if (script.infected)
             {
+                script.SetVelocityDelta(transform.forward * 100);
                 script.TakeDamage(damage);
             }
             alive = false;
