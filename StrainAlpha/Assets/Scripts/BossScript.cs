@@ -36,6 +36,8 @@ public class BossScript : MonoBehaviour {
 
     private SkinnedMeshRenderer skinMeshRenderer;
 
+    private GameObject shooter;
+
     private PlayerUI ui;
 
     private bool roaming = false;
@@ -68,6 +70,8 @@ public class BossScript : MonoBehaviour {
         skinMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
 
         skinMeshRenderer.SetBlendShapeWeight(0, 100);
+
+        shooter = GameObject.Find("shooter");
 	}
 	
 	// Update is called once per frame
@@ -95,6 +99,14 @@ public class BossScript : MonoBehaviour {
             {
                 Die();
             }
+
+            Vector3 lookVector = playerLocation.position - transform.position;
+            lookVector.y = 0;
+
+            Vector3 buttstuff = Vector3.zero;
+
+            //transform.LookAt(playerLocation);
+            transform.rotation = Quaternion.LookRotation(Vector3.SmoothDamp(transform.forward, Vector3.Normalize(lookVector), ref buttstuff, 0.1f));
 
             switch (attackType)
             {
@@ -129,11 +141,6 @@ public class BossScript : MonoBehaviour {
 
     void SetBlendShape()
     {
-        //skinMeshRenderer.SetBlendShapeWeight(0, 100);
-        //skinMeshRenderer.SetBlendShapeWeight(1, 0);
-        //skinMeshRenderer.SetBlendShapeWeight(2, 0);
-        //skinMeshRenderer.SetBlendShapeWeight(3, 0);
-
         skinMeshRenderer.SetBlendShapeWeight(0, ((health - baseHealth) / 3) * 5);
         //skinMeshRenderer.SetBlendShapeWeight(1, (damage - basedamage) * 100);
         //skinMeshRenderer.SetBlendShapeWeight(2, (atkSpeed - baseAtkSpeed) * 100);
@@ -149,10 +156,10 @@ public class BossScript : MonoBehaviour {
     private void AttackRadial()
     {
         shootCooldown -= Time.deltaTime;
-        transform.Rotate(new Vector3(0, 1, 0), 360 * Time.deltaTime);
+        shooter.transform.Rotate(new Vector3(0, 1, 0), 360 * Time.deltaTime);
         if (shootCooldown <= 0)
         {
-            GameObject newBullet = (GameObject)Instantiate(bulletPrefab, transform.position, transform.rotation);
+            GameObject newBullet = (GameObject)Instantiate(bulletPrefab, transform.position, shooter.transform.rotation);
             BulletScript script = newBullet.GetComponent<BulletScript>();
             script.damage = damage;
             script.speed = 15.0f;
@@ -176,8 +183,8 @@ public class BossScript : MonoBehaviour {
         {
             for (int i = 0; i < 32; ++i)
             {
-                transform.Rotate(new Vector3(0, 1, 0), (360 / 32));
-                GameObject newBullet = (GameObject)Instantiate(bulletPrefab, transform.position, transform.rotation);
+                shooter.transform.Rotate(new Vector3(0, 1, 0), (360 / 32));
+                GameObject newBullet = (GameObject)Instantiate(bulletPrefab, transform.position, shooter.transform.rotation);
                 BulletScript script = newBullet.GetComponent<BulletScript>();
                 script.damage = damage;
                 script.speed = 15.0f;
@@ -197,10 +204,10 @@ public class BossScript : MonoBehaviour {
     private void AttackTarget()
     {
         shootCooldown -= Time.deltaTime;
-        transform.LookAt(playerLocation);
+        shooter.transform.LookAt(playerLocation);
         if (shootCooldown <= 0)
         {
-            GameObject newBullet = (GameObject)Instantiate(bulletPrefab, transform.position, transform.rotation);
+            GameObject newBullet = (GameObject)Instantiate(bulletPrefab, transform.position, shooter.transform.rotation);
             BulletScript script = newBullet.GetComponent<BulletScript>();
             script.damage = damage;
             script.speed = 15.0f;
@@ -257,10 +264,10 @@ public class BossScript : MonoBehaviour {
     private void SpawnCells()
     {
         shootCooldown -= Time.deltaTime;
-        transform.LookAt(playerLocation);
+        shooter.transform.LookAt(playerLocation);
         if (shootCooldown <= 0)
         {
-            GameObject newBullet = (GameObject)Instantiate(bulletPrefab, transform.position, transform.rotation);
+            GameObject newBullet = (GameObject)Instantiate(bulletPrefab, transform.position, shooter.transform.rotation);
             BulletScript script = newBullet.GetComponent<BulletScript>();
             script.damage = damage;
             script.speed = 15.0f;
