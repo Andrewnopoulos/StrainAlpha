@@ -89,6 +89,7 @@ public class CellScript : MonoBehaviour {
     public Transform cellPosition;
 
     private Transform playerLocation;
+    private Transform futureLocation;
 
     private SkinnedMeshRenderer skinMeshRenderer;
 
@@ -112,6 +113,7 @@ public class CellScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         playerLocation = GameObject.Find("Player").transform;
+        futureLocation = GameObject.Find("Player").GetComponent<PlayerScript>().PlayerFutureTransform();
         targetLocation = transform;
 	}
 
@@ -148,6 +150,7 @@ public class CellScript : MonoBehaviour {
         if (ranged)
         {
             fireCoolDown = Random.Range(0, fireRate);
+            targetLocation = futureLocation;
         }
 
         if (infectedType == InfectedSpecialType.KAMIKAZE)
@@ -323,6 +326,10 @@ public class CellScript : MonoBehaviour {
         if ((playerLocation.position - myPos).magnitude < detectionRange * 2)
         {
             targetLocation = playerLocation;
+            if (ranged)
+            {
+                targetLocation = futureLocation;
+            }
             return true;
         }
         

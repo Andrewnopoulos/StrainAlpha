@@ -63,7 +63,7 @@ public class NucleusScript : MonoBehaviour {
     public void SetChromosome(Chromosome input)
     {
         myGenes = input;
-        GetComponent<Renderer>().material.color = new Color(input[1], input[3], input[2], 1);
+        GetComponent<Renderer>().material.color = new Color(input[1], input[0], input[2], 1);
     }
 
     public Chromosome GetChromosome()

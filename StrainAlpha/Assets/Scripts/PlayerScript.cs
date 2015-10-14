@@ -33,6 +33,8 @@ public class PlayerScript : MonoBehaviour {
 
     private Vector3 velocity;
 
+    private Vector3 futureLocation;
+
     //personal variables
     private float baseHealth = 10.0f;
     private float baseDamage = 2.0f;
@@ -88,6 +90,8 @@ public class PlayerScript : MonoBehaviour {
 
     public bool godMode = false;
 
+    private Transform futurePosition;
+
     Chromosome playerGenes;
     void Awake()
     {
@@ -120,11 +124,23 @@ public class PlayerScript : MonoBehaviour {
     {
         cameraScript = GameObject.Find("Main Camera").GetComponent<CameraFollow>();
 
+        futurePosition = GetComponentInChildren<FuturePositionScript>().transform;
+
         if (Input.GetJoystickNames().Length > 0)
         {
             isControllerConnected = true;
         }
 	}
+
+    public Transform PlayerFutureTransform()
+    {
+        return futurePosition;
+    }
+
+    public Vector3 PlayerFuturePosition()
+    {
+        return futureLocation;
+    }
 	
 	void Update () {
 	
@@ -528,6 +544,8 @@ public class PlayerScript : MonoBehaviour {
                 }
             }
         }
+
+        futureLocation = transform.position + movementVector * 3;
 
         UpdateStats();
 	}
