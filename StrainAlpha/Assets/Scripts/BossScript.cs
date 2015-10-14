@@ -14,8 +14,14 @@ public class BossScript : MonoBehaviour {
 
     private AttackType attackType = AttackType.DORMANT;
 
+    private float baseHealth = 500.0f;
+    private float basedamage = 1.0f;
+    private float baseAtkSpeed = 1.0f;
+    private float basespeed = 3.5f;
+
     private float health = 500.0f;
     private float damage = 1.0f;
+    private float atkSpeed = 1.0f;
     private float speed = 3.5f;
 
     public int scoreWorth = 100000;
@@ -27,6 +33,8 @@ public class BossScript : MonoBehaviour {
 
     public GameObject bulletPrefab;
     public GameObject infectedCell;
+
+    private SkinnedMeshRenderer skinMeshRenderer;
 
     private PlayerUI ui;
 
@@ -56,6 +64,10 @@ public class BossScript : MonoBehaviour {
         playerLocation = GameObject.Find("Player").transform;
         target = new Vector3(0, 0, 0);
         ui = GameObject.Find("PlayerUI").GetComponent<PlayerUI>();
+
+        skinMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
+
+        skinMeshRenderer.SetBlendShapeWeight(0, 100);
 	}
 	
 	// Update is called once per frame
@@ -68,6 +80,8 @@ public class BossScript : MonoBehaviour {
         if (!born)
         {
             birthTime -= Time.deltaTime;
+
+            SetBlendShape();
 
             if (birthTime <= 0)
             {
@@ -112,6 +126,19 @@ public class BossScript : MonoBehaviour {
             }
         }
 	}
+
+    void SetBlendShape()
+    {
+        //skinMeshRenderer.SetBlendShapeWeight(0, 100);
+        //skinMeshRenderer.SetBlendShapeWeight(1, 0);
+        //skinMeshRenderer.SetBlendShapeWeight(2, 0);
+        //skinMeshRenderer.SetBlendShapeWeight(3, 0);
+
+        skinMeshRenderer.SetBlendShapeWeight(0, ((health - baseHealth) / 3) * 5);
+        //skinMeshRenderer.SetBlendShapeWeight(1, (damage - basedamage) * 100);
+        //skinMeshRenderer.SetBlendShapeWeight(2, (atkSpeed - baseAtkSpeed) * 100);
+        skinMeshRenderer.SetBlendShapeWeight(3, (speed - basespeed) * 50);
+    }
 
     void LateUpdate()
     {
@@ -198,28 +225,28 @@ public class BossScript : MonoBehaviour {
             if (rand == 1)
             {
                 attackType = AttackType.ATTACKRADIAL;
-                shootRate = 0.02f;
+                shootRate = 0.02f / atkSpeed;
                 shootCooldown = 0.0f;
                 attackCooldown = attackLength;
             }
             else if (rand == 2)
             {
                 attackType = AttackType.ATTACKCIRCLE;
-                shootRate = 0.5f;
+                shootRate = 0.5f / atkSpeed;
                 shootCooldown = 0.0f;
                 attackCooldown = attackLength;
             }
             else if (rand == 3)
             {
                 attackType = AttackType.ATTACKTARGET;
-                shootRate = 0.05f;
+                shootRate = 0.05f / atkSpeed;
                 shootCooldown = 0.0f;
                 attackCooldown = attackLength;
             }
             else
             {
                 attackType = AttackType.SPAWNCELLS;
-                shootRate = 0.3f;
+                shootRate = 0.3f / atkSpeed;
                 shootCooldown = 0.0f;
                 attackCooldown = attackLength;
             }
@@ -267,12 +294,17 @@ public class BossScript : MonoBehaviour {
         if (other.tag == "Enemy" && other.gameObject.layer == 9)
         {
             //absorb the enemy
-            Destroy(other.gameObject);
+            CellScript cell = other.gameObject.GetComponent<CellScript>();
 
             targetScale += 0.04f;
-            health += 2.0f;
-            damage += 0.01f;
 
+            //these values will need balancing
+            health += cell.GetChromosome()[0] * 3.0f;
+            damage += cell.GetChromosome()[1] / 100.0f;
+            atkSpeed += cell.GetChromosome()[2] / 100.0f;
+            speed += cell.GetChromosome()[3] / 100.0f;
+
+            Destroy(other.gameObject);
         }
     }
 

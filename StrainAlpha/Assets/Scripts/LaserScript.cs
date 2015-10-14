@@ -12,13 +12,13 @@ public class LaserScript : MonoBehaviour {
 
     private int enemyLayer = 9;
 
-    private float baseLength = 25.0f;
+    private float baseLength = 35.0f;
     private float currentLength = 0.0f;
 
     private float baseWidth = 1;
     private float currentWidth = 0.05f;
 
-    private float basePos = 12.5f;
+    private float basePos = 17.5f;
     private float currentPos = 0.0f;
 
 	// Use this for initialization

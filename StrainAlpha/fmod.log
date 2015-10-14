@@ -36,50 +36,49 @@
 [LOG] Thread::initThread                       : Initializing FMOD nonblocking thread (0).  priority 1
 [LOG] Thread::initThread                       : - Stacksize 81920.  Stack pointer 0000000000000000 : usesemaphore = 1 : sleeptime = 0
 [LOG] Thread::callback                         : * FMOD nonblocking thread (0) started
-[LOG] SystemI::createSound                     : setdata soundi = 0000000024627018 : node = 000000000E0BCBA0
-[LOG] SystemI::createSound                     : add node to async list : head = 0000000023F9F030.  list count = 0
-[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 0000000024627018
+[LOG] SystemI::createSound                     : setdata soundi = 00000000003CD478 : node = 0000000024DDECD0
+[LOG] SystemI::createSound                     : add node to async list : head = 0000000024139D50.  list count = 0
 [LOG] SystemI::createSound                     : filename = C:/Users/iain.dowling/Desktop/StrainAlpha/StrainAlpha/Assets/Sounds/StrainAlphaSounds\Build\Desktop/Master Bank.bank : mode 0a010202
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000000003CD478
 [LOG] SystemI::createSoundInternal             :     filename = C:/Users/iain.dowling/Desktop/StrainAlpha/StrainAlpha/Assets/Sounds/StrainAlphaSounds\Build\Desktop/Master Bank.bank : mode 0a010202
 [LOG] SystemI::createSound                     :     FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
 [LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 216
-[LOG] OutputSoftware::createSample             :     lengthpcm 0, lengthbytes 0, channels 0, format 0, freq 0, mode 00000000
 [LOG] SystemI::createSoundInternal             :     exinfo->length             = 945568
-[LOG] SystemI::createSound                     :     setdata soundi = 0000000024625A38 : node = 000000000E0BC920
 [LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 9728
-[LOG] SystemI::createSound                     :     add node to async list : head = 0000000023F9F030.  list count = 0
+[LOG] OutputSoftware::createSample             :     lengthpcm 0, lengthbytes 0, channels 0, format 0, freq 0, mode 00000000
 [LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
-[LOG] SystemI::createSound                     :     filename = C:/Users/iain.dowling/Desktop/StrainAlpha/StrainAlpha/Assets/Sounds/StrainAlphaSounds\Build\Desktop/Master Bank.bank : mode 0a010202
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 000000000E0BCCA8
+[LOG] SystemI::createSound                     :     setdata soundi = 0000000024ADFCA8 : node = 0000000024DDEB90
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 0000000024DDEDD8
+[LOG] SystemI::createSound                     :     add node to async list : head = 0000000024139D50.  list count = 0
 [LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
-[LOG] SystemI::createSound                     :     FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
 [LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
-[LOG] OutputSoftware::createSample             :     lengthpcm 0, lengthbytes 0, channels 0, format 0, freq 0, mode 00000000
-[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
-[LOG] SystemI::createSound                     :     setdata soundi = 0000000024476D18 : node = 000000000E0BC6A0
-[LOG] SystemI::createSound                     :     add node to async list : head = 0000000023F9F030.  list count = 1
-[LOG] SystemI::createSoundInternal             :     Format has 1 subsounds.
-[LOG] SystemI::createSoundInternal             :     Create as FMOD_CREATESAMPLE
-[LOG] SystemI::createSoundInternal             :     Multi-sample sound (1 subsounds), create a sample container.
-[LOG] SystemI::createSound                     :     filename = C:/Users/iain.dowling/Desktop/StrainAlpha/StrainAlpha/Assets/Sounds/StrainAlphaSounds\Build\Desktop/Master Bank.bank : mode 0a010202
+/Desktop/StrainAlpha/StrainAlpha/Assets/Sounds/StrainAlphaSounds\Build\Desktop/Master Bank.bank : mode 0a010202
 [LOG] SystemI::createSound                     :     FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
-[LOG] SystemI::createSample                    :     mode 0a010202 length 36920 samples, lengthbytes 10176
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
 [LOG] OutputSoftware::createSample             :     lengthpcm 0, lengthbytes 0, channels 0, format 0, freq 0, mode 00000000
+[LOG] SystemI::createSoundInternal             :     Format has 1 subsounds.
+[LOG] SystemI::createSound                     :     setdata soundi = 0000000024ADFE38 : node = 0000000024DDF090
+[LOG] SystemI::createSoundInternal             :     Create as FMOD_CREATESAMPLE
+[LOG] SystemI::createSound                     :     add node to async list : head = 0000000024139D50.  list count = 1
+[LOG] SystemI::createSoundInternal             :     creating subsound 0/1
+[LOG] SystemI::createSound                     :     filename = C:/Users/iain.dowling/Desktop/StrainAlpha/StrainAlpha/Assets/Sounds/StrainAlphaSounds\Build\Desktop/Master Bank.bank : mode 0a010202
+[LOG] SystemI::createSample                    :     mode 0a010202 length 36920 samples, lengthbytes 10176
 [LOG] SystemI::createSample                    :     channels = 2
-[LOG] SystemI::createSound                     :     setdata soundi = 000000002470D938 : node = 000000000E0BCA60
-[LOG] SystemI::createSample                    :     output = 0000000021758ED8
-[LOG] SystemI::createSound                     :     add node to async list : head = 0000000023F9F030.  list count = 2
+[LOG] SystemI::createSound                     :     FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] OutputSoftware::createSample             :     lengthpcm 0, lengthbytes 0, channels 0, format 0, freq 0, mode 00000000
+[LOG] SystemI::createSound                     :     setdata soundi = 0000000024ADFFC8 : node = 0000000024DDF1D0
 [LOG] OutputSoftware::createSample             :     lengthpcm 36920, lengthbytes 10176, channels 2, format 2, freq 48000, mode 0a01020a
+[LOG] SystemI::createSound                     :     add node to async list : head = 0000000024139D50.  list count = 2
 [LOG] SystemI::createSoundInternal             :     done.  OpenState now = FMOD_OPENSTATE_READY.
 
-[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 0000000024627018
-[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 0000000024625A38
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000000003CD478
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 0000000024ADFCA8
 [LOG] SystemI::createSoundInternal             :     filename = C:/Users/iain.dowling/Desktop/StrainAlpha/StrainAlpha/Assets/Sounds/StrainAlphaSounds\Build\Desktop/Master Bank.bank : mode 0a010202
 [LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 216
 [LOG] SystemI::createSoundInternal             :     exinfo->length             = 945568
 [LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 9728
 [LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 000000000E0BCA28
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 0000000024DDEC98
 [LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
 [LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
 [LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
@@ -89,18 +88,18 @@
 [LOG] SystemI::createSoundInternal             :     creating subsound 0/1
 [LOG] SystemI::createSample                    :     mode 0a010202 length 39590 samples, lengthbytes 11712
 [LOG] SystemI::createSample                    :     channels = 2
-[LOG] SystemI::createSample                    :     output = 0000000021758ED8
+[LOG] SystemI::createSample                    :     output = 0000000032959EE8
 [LOG] OutputSoftware::createSample             :     lengthpcm 39590, lengthbytes 11712, channels 2, format 2, freq 48000, mode 0a01020a
 [LOG] SystemI::createSoundInternal             :     done.  OpenState now = FMOD_OPENSTATE_READY.
 
-[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 0000000024625A38
-[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 0000000024476D18
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 0000000024ADFCA8
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 0000000024ADFE38
 [LOG] SystemI::createSoundInternal             :     filename = C:/Users/iain.dowling/Desktop/StrainAlpha/StrainAlpha/Assets/Sounds/StrainAlphaSounds\Build\Desktop/Master Bank.bank : mode 0a010202
 [LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 216
 [LOG] SystemI::createSoundInternal             :     exinfo->length             = 945568
 [LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 9728
 [LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 000000000E0BC7A8
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 0000000024DDF198
 [LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
 [LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
 [LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
@@ -110,19 +109,18 @@
 [LOG] SystemI::createSoundInternal             :     creating subsound 0/1
 [LOG] SystemI::createSample                    :     mode 0a010202 length 37129 samples, lengthbytes 10912
 [LOG] SystemI::createSample                    :     channels = 2
-[LOG] SystemI::createSample                    :     output = 0000000021758ED8
+[LOG] SystemI::createSample                    :     output = 0000000032959EE8
 [LOG] OutputSoftware::createSample             :     lengthpcm 37129, lengthbytes 10912, channels 2, format 2, freq 48000, mode 0a01020a
 [LOG] SystemI::createSoundInternal             :     done.  OpenState now = FMOD_OPENSTATE_READY.
 
-[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 0000000024476D18
-[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 000000002470D938
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 0000000024ADFE38
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 0000000024ADFFC8
 [LOG] SystemI::createSoundInternal             :     filename = C:/Users/iain.dowling/Desktop/StrainAlpha/StrainAlpha/Assets/Sounds/StrainAlphaSounds\Build\Desktop/Master Bank.bank : mode 0a010202
 [LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 216
 [LOG] SystemI::createSoundInternal             :     exinfo->length             = 945568
 [LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 9728
 [LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 000000000E0BCB68
-[WRN] SoundSourceInstrumentInstance::startChannelIfReady :     Loading delay exceeded, sound may play at incorrect time
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 0000000024DDF2D8
 [LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
 [LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
 [LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
@@ -132,27 +130,28 @@
 [LOG] SystemI::createSoundInternal             :     creating subsound 0/1
 [LOG] SystemI::createSample                    :     mode 0a010202 length 39673 samples, lengthbytes 11392
 [LOG] SystemI::createSample                    :     channels = 2
-[LOG] SystemI::createSample                    :     output = 0000000021758ED8
+[LOG] SystemI::createSample                    :     output = 0000000032959EE8
 [LOG] OutputSoftware::createSample             :     lengthpcm 39673, lengthbytes 11392, channels 2, format 2, freq 48000, mode 0a01020a
 [LOG] SystemI::createSoundInternal             :     done.  OpenState now = FMOD_OPENSTATE_READY.
 
-[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 000000002470D938
-[LOG] SoundI::release                          : (null) (0000000024627018)
-[LOG] SoundI::release                          : release subsounds. (0000000024627018)
-[LOG] SoundI::release                          :     (null) (00000000217B7998)
-[LOG] SoundI::release                          : release codec. (0000000024627018)
-[LOG] SoundI::release                          : (null) (0000000024625A38)
-[LOG] SoundI::release                          : release subsounds. (0000000024625A38)
-[LOG] SoundI::release                          :     (null) (000000000B3C0718)
-[LOG] SoundI::release                          : release codec. (0000000024625A38)
-[LOG] SoundI::release                          : (null) (0000000024476D18)
-[LOG] SoundI::release                          : release subsounds. (0000000024476D18)
-[LOG] SoundI::release                          :     (null) (0000000024DA1108)
-[LOG] SoundI::release                          : release codec. (0000000024476D18)
-[LOG] SoundI::release                          : (null) (000000002470D938)
-[LOG] SoundI::release                          : release subsounds. (000000002470D938)
-[LOG] SoundI::release                          :     (null) (0000000024625BC8)
-[LOG] SoundI::release                          : release codec. (000000002470D938)
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 0000000024ADFFC8
+[WRN] SoundSourceInstrumentInstance::startChannelIfReady : Loading delay exceeded, sound may play at incorrect time
+[LOG] SoundI::release                          : (null) (00000000003CD478)
+[LOG] SoundI::release                          : release subsounds. (00000000003CD478)
+[LOG] SoundI::release                          :     (null) (0000000032E68C68)
+[LOG] SoundI::release                          : release codec. (00000000003CD478)
+[LOG] SoundI::release                          : (null) (0000000024ADFCA8)
+[LOG] SoundI::release                          : release subsounds. (0000000024ADFCA8)
+[LOG] SoundI::release                          :     (null) (0000000032E6A888)
+[LOG] SoundI::release                          : release codec. (0000000024ADFCA8)
+[LOG] SoundI::release                          : (null) (0000000024ADFE38)
+[LOG] SoundI::release                          : release subsounds. (0000000024ADFE38)
+[LOG] SoundI::release                          :     (null) (0000000032E68628)
+[LOG] SoundI::release                          : release codec. (0000000024ADFE38)
+[LOG] SoundI::release                          : (null) (0000000024ADFFC8)
+[LOG] SoundI::release                          : release subsounds. (0000000024ADFFC8)
+[LOG] SoundI::release                          :     (null) (0000000032E6A3D8)
+[LOG] SoundI::release                          : release codec. (0000000024ADFFC8)
 [LOG] Thread::callback                         : * FMOD Studio update thread finished
 [LOG] Thread::close                            : FMOD Studio update thread thread destroyed
 [LOG] Thread::callback                         : * FMOD Studio load thread finished
