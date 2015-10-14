@@ -681,8 +681,14 @@ public class CellScript : MonoBehaviour {
             }
             else
             {
-                other.GetComponent<PlayerScript>().TakeDamage(damage);
+                PlayerScript script = other.GetComponent<PlayerScript>();
+                script.TakeDamage(damage);
                 currentHitCooldown = hitCooldown;
+                // bounce off
+
+                Vector3 toPlayer = transform.position - script.transform.position;
+
+                ApplyForce(toPlayer.normalized * 30000.0f);
             }
         }
 

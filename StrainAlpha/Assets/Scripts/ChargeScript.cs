@@ -29,8 +29,14 @@ public class ChargeScript : MonoBehaviour {
         if (other.gameObject.layer == enemyLayer && other.tag == "Enemy")
         {
             //deal damage to the enemy
-            BounceEnemy(other);
-            other.GetComponent<CellScript>().TakeDamage(damage);
+            //BounceEnemy(other);
+            CellScript script = other.GetComponent<CellScript>();
+
+            Vector3 toPlayer = script.transform.position - transform.position;
+
+            script.SetVelocityDelta((toPlayer.normalized) * 300000.0f);
+            //script.TakeDamage(damage);
+
         }
     }
     public void SetActive(bool _active)
@@ -45,10 +51,4 @@ public class ChargeScript : MonoBehaviour {
         return active;
     }
 
-    void BounceEnemy(Collider other)
-    {
-        Vector3 delta = gameObject.transform.position - other.transform.position;
-        delta = new Vector3(delta.x * 50.0f, 0, delta.z * 50.0f);
-        other.attachedRigidbody.AddForce(delta);
-    }
 }
