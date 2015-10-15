@@ -42,7 +42,7 @@ public class CellScript : MonoBehaviour {
     public float ScalingMaxSpeed = 3.0f;
     public float ScalingAcceleration = 5.0f;
 
-    private float health = 5.0f;
+    public float health = 5.0f;
     private float damage = 0.5f;
     private float speed = 3.5f;
 
