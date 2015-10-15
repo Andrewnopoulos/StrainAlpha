@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 50306d0b69aa3dd47a01289e0f18fa9a
-timeCreated: 1444879441
+guid: df4b0941849afe34bad97f137f07d8ad
+timeCreated: 1444882238
 licenseType: Free
 ModelImporter:
   serializedVersion: 18
@@ -9,7 +9,7 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: Shield
+    4300000: Artery3
   materials:
     importMaterials: 0
     materialName: 0
