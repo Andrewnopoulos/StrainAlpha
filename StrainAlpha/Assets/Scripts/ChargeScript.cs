@@ -35,9 +35,14 @@ public class ChargeScript : MonoBehaviour {
 
             Vector3 toPlayer = script.transform.position - transform.position;
 
-            script.SetVelocityDelta((toPlayer.normalized) * 300000.0f);
+            script.SetVelocityDelta((toPlayer.normalized) * 3000000000.0f);
             script.TakeDamage(damage);
+            script.SetDisabled();
 
+            foreach (ContactPoint contact in other.contacts)
+            {
+                Debug.DrawRay(contact.point, contact.normal, Color.white);
+            }
         }
     }
 
@@ -53,7 +58,6 @@ public class ChargeScript : MonoBehaviour {
 
             script.SetVelocityDelta((toPlayer.normalized) * 300000.0f);
             script.TakeDamage(damage);
-
         }
     }
     public void SetActive(bool _active)

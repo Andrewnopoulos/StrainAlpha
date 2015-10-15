@@ -110,6 +110,10 @@ public class CellScript : MonoBehaviour {
 
     public bool beAbsorbed = false;
 
+    private bool disabled = false;
+    public float disableDuration = 2.0f;
+    private float disableTimer = 0.0f;
+
 	// Use this for initialization
 	void Start () {
         playerLocation = GameObject.Find("Player").transform;
@@ -142,6 +146,12 @@ public class CellScript : MonoBehaviour {
         {
             cellStateMachine.Advance(InfectedCellState.DORMANT);
         }
+    }
+
+    public void SetDisabled()
+    {
+        disabled = true;
+        disableTimer = disableDuration;
     }
 
     void Chase()
@@ -290,15 +300,27 @@ public class CellScript : MonoBehaviour {
             fireCoolDown -= Time.deltaTime;
         }
 
+        if (disableTimer > 0)
+        {
+            disableTimer -= Time.deltaTime;
+            if (disableTimer < 0)
+            {
+                disabled = false;
+            }
+        }
+
         if (infected)
         {
-            InfectedUpdate();
+            if (!disabled)
+            {
+                InfectedUpdate();
+                UpdateAnimation();
+            }
 
             if (velocity.magnitude >= MaxSpeed && velocity.magnitude != 0.0f && !gravitating)
             {
                 velocity = velocity / velocity.magnitude * MaxSpeed;
             }
-            UpdateAnimation();
         }
 
         // deccelerate moving thingy
