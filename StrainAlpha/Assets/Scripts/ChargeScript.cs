@@ -22,7 +22,6 @@ public class ChargeScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
 	}
 
     void OnCollisionEnter(Collision other)
@@ -35,14 +34,9 @@ public class ChargeScript : MonoBehaviour {
 
             Vector3 toPlayer = script.transform.position - transform.position;
 
-            script.SetVelocityDelta((toPlayer.normalized) * 3000000000.0f);
+        //    script.SetVelocityDelta(other.relativeVelocity * 100.0f);
             script.TakeDamage(damage);
             script.SetDisabled();
-
-            foreach (ContactPoint contact in other.contacts)
-            {
-                Debug.DrawRay(contact.point, contact.normal, Color.white);
-            }
         }
     }
 
