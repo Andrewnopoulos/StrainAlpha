@@ -7,7 +7,11 @@ public enum AttackType
     ATTACKRADIAL = 1,
     ATTACKCIRCLE = 2,
     ATTACKTARGET = 3,
-    SPAWNCELLS = 4,
+    LASER = 4,
+    SHIELD = 5,
+    CHARGE = 6,
+    EXPLOSIVE = 7,
+    SPAWNCELLS = 8,
 }
 
 public class BossScript : MonoBehaviour {
@@ -221,6 +225,26 @@ public class BossScript : MonoBehaviour {
         {
             attackType = AttackType.DORMANT;
         }
+    }
+
+    private void Shield()
+    {
+
+    }
+
+    private void Charge()
+    {
+
+    }
+
+    private void Laser()
+    {
+
+    }
+
+    private void Explosive()
+    {
+
     }
 
     private void Dormant()
