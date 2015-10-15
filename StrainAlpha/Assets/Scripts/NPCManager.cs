@@ -148,7 +148,6 @@ public class NPCManager : MonoBehaviour {
         }
 
         cameraScript.SetPlayerDist(25.0f);
-        cameraScript.SetBossPeriod(bossy.transform);
 
     }
 
