@@ -166,7 +166,7 @@ public class BossScript : MonoBehaviour {
             GameObject newBullet = (GameObject)Instantiate(bulletPrefab, transform.position, shooter.transform.rotation);
             BulletScript script = newBullet.GetComponent<BulletScript>();
             script.damage = damage;
-            script.speed = 15.0f;
+            script.speed = 12.0f;
             script.SetAsEnemyBullet();
             shootCooldown = shootRate;
             script.transform.localScale *= 2;
@@ -191,7 +191,7 @@ public class BossScript : MonoBehaviour {
                 GameObject newBullet = (GameObject)Instantiate(bulletPrefab, transform.position, shooter.transform.rotation);
                 BulletScript script = newBullet.GetComponent<BulletScript>();
                 script.damage = damage;
-                script.speed = 15.0f;
+                script.speed = 12.0f;
                 script.SetAsEnemyBullet();
                 script.transform.localScale *= 2;
                 script.lifeTime = 3.0f;
@@ -214,7 +214,7 @@ public class BossScript : MonoBehaviour {
             GameObject newBullet = (GameObject)Instantiate(bulletPrefab, transform.position, shooter.transform.rotation);
             BulletScript script = newBullet.GetComponent<BulletScript>();
             script.damage = damage;
-            script.speed = 15.0f;
+            script.speed = 12.0f;
             script.SetAsEnemyBullet();
             script.transform.localScale *= 2;
             script.lifeTime = 3.0f;
