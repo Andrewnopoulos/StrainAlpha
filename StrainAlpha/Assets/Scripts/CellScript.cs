@@ -42,7 +42,7 @@ public class CellScript : MonoBehaviour {
     public float ScalingMaxSpeed = 3.0f;
     public float ScalingAcceleration = 5.0f;
 
-    private float health = 5.0f;
+    public float health = 5.0f;
     private float damage = 0.5f;
     private float speed = 3.5f;
 
@@ -57,7 +57,7 @@ public class CellScript : MonoBehaviour {
 
     public float turnDamp = 0.05f;
 
-    public float geneTriggerValue = 0.6f;
+    public float geneTriggerValue = 0.4f;
 
     private float replicationCountdown = 10.0f;
     public float MaxReplicationTime = 10.0f;
@@ -110,6 +110,10 @@ public class CellScript : MonoBehaviour {
 
     public bool beAbsorbed = false;
 
+    private bool disabled = false;
+    public float disableDuration = 2.0f;
+    private float disableTimer = 0.0f;
+
 	// Use this for initialization
 	void Start () {
         playerLocation = GameObject.Find("Player").transform;
@@ -142,6 +146,12 @@ public class CellScript : MonoBehaviour {
         {
             cellStateMachine.Advance(InfectedCellState.DORMANT);
         }
+    }
+
+    public void SetDisabled()
+    {
+        disabled = true;
+        disableTimer = disableDuration;
     }
 
     void Chase()
@@ -290,15 +300,27 @@ public class CellScript : MonoBehaviour {
             fireCoolDown -= Time.deltaTime;
         }
 
+        if (disableTimer > 0)
+        {
+            disableTimer -= Time.deltaTime;
+            if (disableTimer < 0)
+            {
+                disabled = false;
+            }
+        }
+
         if (infected)
         {
-            InfectedUpdate();
+            if (!disabled)
+            {
+                InfectedUpdate();
+                UpdateAnimation();
+            }
 
             if (velocity.magnitude >= MaxSpeed && velocity.magnitude != 0.0f && !gravitating)
             {
                 velocity = velocity / velocity.magnitude * MaxSpeed;
             }
-            UpdateAnimation();
         }
 
         // deccelerate moving thingy

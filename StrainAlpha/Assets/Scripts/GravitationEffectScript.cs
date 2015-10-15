@@ -19,6 +19,10 @@ public class GravitationEffectScript : MonoBehaviour {
         parentScript = GetComponentInParent<BlackHoleScript>();
 
         collider = gameObject.GetComponent<Collider>();
+
+        active = parentScript.IsActive();
+
+        collider.enabled = active;
 	}
 	
 	// Update is called once per frame
@@ -26,6 +30,7 @@ public class GravitationEffectScript : MonoBehaviour {
         active = parentScript.IsActive();
 
         collider.enabled = active;
+        
 	}
 
     void OnTriggerStay(Collider other)
