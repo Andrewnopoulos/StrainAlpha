@@ -55,7 +55,7 @@ public class MainMenuScript : MonoBehaviour {
         }
 
 
-        if (Input.GetButton("A"))
+        if (Input.GetButtonDown("A"))
         {
             if (currentSelection != MenuSelection.NULL)
             {
@@ -75,7 +75,7 @@ public class MainMenuScript : MonoBehaviour {
                 }
             }
         }
-        if (Input.GetButton("B"))
+        if (Input.GetButtonDown("B"))
         {
             manager.Load("TitleScreen");
             gameObject.SetActive(false);
