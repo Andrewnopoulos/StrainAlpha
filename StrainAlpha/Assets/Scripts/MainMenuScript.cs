@@ -3,7 +3,7 @@ using System.Collections;
 
 public enum MenuSelection
 {
-    LEVELSELCT = 0,
+    LEVELSELECT = 0,
     OPTIONS = 1,
     EXIT = 2,
     CREDITS = 3,
@@ -28,7 +28,7 @@ public class MainMenuScript : MonoBehaviour {
     {
         manager = GameObject.Find("CanvasManager").GetComponent<MenuScript>();
 
-        currentSelection = MenuSelection.NULL;
+        currentSelection = MenuSelection.LEVELSELECT;
 
         rotations = new Quaternion[5];
 
@@ -57,7 +57,7 @@ public class MainMenuScript : MonoBehaviour {
         if (stickPos.x > 0.1f && stickPos.y > stickPos.x * 0.5f)
         {
             targetRotation = rotations[0];
-            currentSelection = MenuSelection.LEVELSELCT;
+            currentSelection = MenuSelection.LEVELSELECT;
         }
         else if (stickPos.x > 0.1f && stickPos.y < stickPos.x * 0.5f && stickPos.y > -stickPos.x)
         {
@@ -87,7 +87,7 @@ public class MainMenuScript : MonoBehaviour {
             {
                 switch (currentSelection)
                 {
-                    case MenuSelection.LEVELSELCT:
+                    case MenuSelection.LEVELSELECT:
                         manager.Load("LevelSelect");
                         gameObject.SetActive(false);
                         break;

@@ -45,7 +45,7 @@ public class NPCManager : MonoBehaviour {
 
     private float bossBirthTime;
 
-    private float endLevelTime = 5.0f;
+    private float endLevelTime = 3.0f;
 
     void Start()
     {
@@ -94,7 +94,7 @@ public class NPCManager : MonoBehaviour {
             bossBirthTime = -101.0f;
         }
 
-        if (bossSpawn && endBoss.GetHealth() <= 0)
+        if (bossSpawn && endBoss == null)
         {
             endLevelTime -= Time.deltaTime;
             if (endLevelTime <= 0)
@@ -106,6 +106,7 @@ public class NPCManager : MonoBehaviour {
     {
         //clean up after this scene
         //switch to the next scene
+        Application.LoadLevel("MainMenu");
     }
 
     void SpawnNeutral()
