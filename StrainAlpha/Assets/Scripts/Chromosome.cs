@@ -14,9 +14,9 @@ public class Chromosome {
     private static int length = 4;
     public static float mutationRate = 0.1f;
     public static float mutationStrength = 0.3f;
-    public static float randomInitValue = 0.04f;
+    public static float randomInitValue = 0.1f;
 
-    public static float additionScaling = 0.4f;
+    public static float additionScaling = 0.3f;
 
     private static float MaxValue = 1.0f;
 
@@ -35,7 +35,7 @@ public class Chromosome {
             {
                 if (i == input)
                 {
-                    genes[i] = Random.Range(0.6f, 0.8f);
+                    genes[i] = Random.Range(0.4f, 0.6f);
                 }
                 else
                 {
