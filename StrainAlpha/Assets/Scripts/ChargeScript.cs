@@ -3,7 +3,7 @@ using System.Collections;
 
 public class ChargeScript : MonoBehaviour {
 
-    public float damage = 2.0f;
+    public float damage = 0.01f;
 
     private Renderer renderer;
     private Collider collider;
@@ -24,7 +24,7 @@ public class ChargeScript : MonoBehaviour {
 	void Update () {
 	
 	}
-    void OnTriggerStay(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.layer == enemyLayer && other.tag == "Enemy")
         {
@@ -35,7 +35,7 @@ public class ChargeScript : MonoBehaviour {
             Vector3 toPlayer = script.transform.position - transform.position;
 
             script.SetVelocityDelta((toPlayer.normalized) * 300000.0f);
-            //script.TakeDamage(damage);
+            script.TakeDamage(damage);
 
         }
     }

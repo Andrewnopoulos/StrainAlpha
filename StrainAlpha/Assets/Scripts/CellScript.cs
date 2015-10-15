@@ -57,7 +57,7 @@ public class CellScript : MonoBehaviour {
 
     public float turnDamp = 0.05f;
 
-    public float geneTriggerValue = 0.6f;
+    public float geneTriggerValue = 0.4f;
 
     private float replicationCountdown = 10.0f;
     public float MaxReplicationTime = 10.0f;
