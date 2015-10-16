@@ -35,6 +35,8 @@ public class PlayerScript : MonoBehaviour {
 
     private Vector3 futureLocation;
 
+    private AudioSource laserSound;
+
     //personal variables
     private float baseHealth = 10.0f;
     private float baseDamage = 2.0f;
@@ -112,6 +114,8 @@ public class PlayerScript : MonoBehaviour {
         damage = maxDamage;
         speed = maxSpeed;
         fireRate = maxFireRate;
+
+        laserSound = gameObject.GetComponent<AudioSource>();
 
         ui = GameObject.Find("PlayerUI").GetComponent<PlayerUI>();
 
@@ -586,7 +590,8 @@ public class PlayerScript : MonoBehaviour {
         script.speed = 15.0f;
         script.isEnemyBullet = false;
         fireCooldown = fireRate;
-        SendMessage("Play");
+        //SendMessage("Play");
+        laserSound.PlayOneShot(laserSound.clip);
     }
 
     private void ForwardCyclePower()
