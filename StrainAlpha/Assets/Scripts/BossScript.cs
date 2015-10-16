@@ -32,6 +32,8 @@ public class BossScript : MonoBehaviour {
 
     private float MaxSpeed = 5.0f;
 
+    private GameObject cell;
+
     private Vector3 target;
     private Transform playerLocation;
 
@@ -136,6 +138,11 @@ public class BossScript : MonoBehaviour {
                 case AttackType.ATTACKTARGET:
                     {
                         AttackTarget();
+                        break;
+                    }
+                case AttackType.LASER:
+                    {
+                        AttackLaser();
                         break;
                     }
                 case AttackType.SPAWNCELLS:
@@ -268,8 +275,8 @@ public class BossScript : MonoBehaviour {
         dormantCountdown -= Time.deltaTime;
         if (dormantCountdown <= 0)
         {
-            int rand = (int)Random.Range(1.0f, 4.99f);
-            //int rand = 4;
+            //int rand = (int)Random.Range(1.0f, 4.99f);
+            int rand = 5;
             if (rand == 1)
             {
                 attackType = AttackType.ATTACKRADIAL;
@@ -297,7 +304,7 @@ public class BossScript : MonoBehaviour {
                 laser.SetActive(true);
                 attackCooldown = attackLength;
             }
-            else
+            else if (rand == 5)
             {
                 attackType = AttackType.SPAWNCELLS;
                 shootRate = 0.3f / atkSpeed;
@@ -314,13 +321,10 @@ public class BossScript : MonoBehaviour {
         shooter.transform.LookAt(playerLocation);
         if (shootCooldown <= 0)
         {
-            GameObject newBullet = (GameObject)Instantiate(bulletPrefab, transform.position, shooter.transform.rotation);
-            BulletScript script = newBullet.GetComponent<BulletScript>();
-            script.damage = damage;
-            script.speed = 15.0f;
-            script.SetAsEnemyBullet();
-            script.transform.localScale *= 2;
-            script.lifeTime = 3.0f;
+            GameObject newCell = (GameObject)Instantiate(cell, transform.position, shooter.transform.rotation);
+            CellScript script = newCell.GetComponent<CellScript>();
+            int rand = (int)Random.Range(0, 3.99f);
+            script.CreateInfected(new Chromosome(rand));
             shootCooldown = shootRate;
         }
         attackCooldown -= Time.deltaTime;
