@@ -44,6 +44,8 @@ public class BossScript : MonoBehaviour {
 
     private PlayerUI ui;
 
+    private BossLaser laser;
+
     private bool roaming = false;
 
     private float dormantTime = 1.0f;
@@ -76,6 +78,8 @@ public class BossScript : MonoBehaviour {
         skinMeshRenderer.SetBlendShapeWeight(0, 100);
 
         shooter = GameObject.Find("shooter");
+
+        laser = gameObject.GetComponentInChildren<BossLaser>();
 	}
 	
 	// Update is called once per frame
@@ -227,6 +231,18 @@ public class BossScript : MonoBehaviour {
         }
     }
 
+    private void AttackLaser()
+    {
+        shooter.transform.Rotate(new Vector3(0, 1, 0), 360 * Time.deltaTime);
+
+        attackCooldown -= Time.deltaTime;
+        if (attackCooldown <= 0)
+        {
+            laser.SetActive(false);
+            attackType = AttackType.DORMANT;
+        }
+    }
+
     private void Shield()
     {
 
@@ -252,7 +268,8 @@ public class BossScript : MonoBehaviour {
         dormantCountdown -= Time.deltaTime;
         if (dormantCountdown <= 0)
         {
-            int rand = (int)Random.Range(1.0f, 3.99f);
+            int rand = (int)Random.Range(1.0f, 4.99f);
+            //int rand = 4;
             if (rand == 1)
             {
                 attackType = AttackType.ATTACKRADIAL;
@@ -272,6 +289,12 @@ public class BossScript : MonoBehaviour {
                 attackType = AttackType.ATTACKTARGET;
                 shootRate = 0.05f / atkSpeed;
                 shootCooldown = 0.0f;
+                attackCooldown = attackLength;
+            }
+            else if (rand == 4)
+            {
+                attackType = AttackType.LASER;
+                laser.SetActive(true);
                 attackCooldown = attackLength;
             }
             else
