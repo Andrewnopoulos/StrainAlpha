@@ -137,6 +137,7 @@ public class NPCManager : MonoBehaviour {
     {
         GameObject bossy = (GameObject)Instantiate(boss, new Vector3(0, 0, 0), transform.rotation);
         endBoss = bossy.GetComponent<BossScript>();
+        endBoss.manager = this;
         bossSpawn = true;
 
         bossBirthTime = endBoss.birthTime;
