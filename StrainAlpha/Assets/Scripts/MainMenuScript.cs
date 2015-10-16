@@ -12,6 +12,9 @@ public enum MenuSelection
 }
 
 public class MainMenuScript : MonoBehaviour {
+	public AudioSource acceptSound;
+	public AudioSource backSound;
+	public AudioSource switchSound;
 
     public MenuScript manager;
 
@@ -58,31 +61,38 @@ public class MainMenuScript : MonoBehaviour {
         {
             targetRotation = rotations[0];
             currentSelection = MenuSelection.LEVELSELECT;
+			switchSound.Play();
         }
         else if (stickPos.x > 0.1f && stickPos.y < stickPos.x * 0.5f && stickPos.y > -stickPos.x)
         {
             targetRotation = rotations[1];
             currentSelection = MenuSelection.OPTIONS;
+			switchSound.Play();
         }
         else if (stickPos.y < -0.1f && stickPos.x > stickPos.y && stickPos.x < -stickPos.y)
         {
             targetRotation = rotations[2];
             currentSelection = MenuSelection.EXIT;
+			switchSound.Play();
         }
         else if (stickPos.x < -0.1f && stickPos.y > stickPos.x && stickPos.y < -stickPos.x * 0.5f)
         {
             targetRotation = rotations[3];
             currentSelection = MenuSelection.CREDITS;
+			switchSound.Play();
         }
         else if (stickPos.x < -0.1f && stickPos.y > stickPos.x * 0.5f)
         {
             targetRotation = rotations[4];
             currentSelection = MenuSelection.DATABASE;
+			switchSound.Play();
         }
 
 
         if (Input.GetButtonDown("A"))
         {
+			//Play glossy interface 01
+			acceptSound.Play();
             if (currentSelection != MenuSelection.NULL)
             {
                 switch (currentSelection)
@@ -103,6 +113,7 @@ public class MainMenuScript : MonoBehaviour {
         }
         if (Input.GetButtonDown("B"))
         {
+			backSound.Play();
             manager.Load("TitleScreen");
             gameObject.SetActive(false);
         }
