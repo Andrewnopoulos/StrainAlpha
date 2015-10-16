@@ -19,10 +19,6 @@ public class BossLaser : MonoBehaviour {
     private float baseWidth = 0.15f;
     private float currentWidth = 0.05f;
 
-    private float basePos = 17.5f;
-    private float currentPos = 0.0f;
-
-    // Use this for initialization
     void Start()
     {
         renderer = new Renderer[4];
@@ -34,13 +30,14 @@ public class BossLaser : MonoBehaviour {
         children = gameObject.GetComponentsInChildren<GameObject>();
     }
 
-    // Update is called once per frame
     void Update()
     {
 
-        foreach (GameObject obj in children)
+        transform.Rotate(new Vector3(0, 1, 0), 20 * Time.deltaTime);
+
+        for (int i = 1; i < 5; ++i)
         {
-            obj.transform.localScale = new Vector3(currentWidth, transform.localScale.y, currentLength);
+            children[i].transform.localScale = new Vector3(currentWidth, transform.localScale.y, currentLength);
         }
 
         if (active)
@@ -55,16 +52,6 @@ public class BossLaser : MonoBehaviour {
         {
             currentLength = 0.0f;
             currentWidth = 0.05f;
-            currentPos = 0.0f;
-        }
-    }
-
-    void OnTriggerStay(Collider other)
-    {
-        if (other.gameObject.layer == playerLayer && other.tag == "Player")
-        {
-            //deal damage to the enemy
-            other.GetComponent<PlayerScript>().TakeDamage(damage * Time.deltaTime);
         }
     }
 
