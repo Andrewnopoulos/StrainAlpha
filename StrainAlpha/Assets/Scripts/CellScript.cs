@@ -114,6 +114,11 @@ public class CellScript : MonoBehaviour {
     public float disableDuration = 2.0f;
     private float disableTimer = 0.0f;
 
+    public float healthChromosome = 0.0f;
+    public float damageChromosome = 0.0f;
+    public float rangedChromosome = 0.0f;
+    public float speedChromosome = 0.0f;
+
 	// Use this for initialization
 	void Start () {
         playerLocation = GameObject.Find("Player").transform;
@@ -522,7 +527,6 @@ public class CellScript : MonoBehaviour {
             SetBlendShapes();
         }
         
-        
         if (targetLocation != null)
         {
             velocity += (targetLocation.position - transform.position) * speed * Time.deltaTime;
@@ -624,6 +628,11 @@ public class CellScript : MonoBehaviour {
             ranged = true;
             infectedType = InfectedSpecialType.RANGED;
         }
+
+        healthChromosome = myGenes[0];
+        damageChromosome = myGenes[1];
+        rangedChromosome = myGenes[2];
+        speedChromosome = myGenes[3];
 
         SetBlendShapes();
     }
