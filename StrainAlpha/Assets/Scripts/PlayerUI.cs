@@ -26,6 +26,11 @@ public class PlayerUI : MonoBehaviour {
     private float baseScoreSize = 0.4f;
     private float scoreSize = 0.4f;
 
+    private Vector3 healthGeneInitialRot;
+    private Vector3 rangeGeneInitialRot;
+    private Vector3 damageGeneInitialRot;
+    private Vector3 speedGeneInitialRot;
+
     private float previousHealth;
     private float previousRange;
     private float previousDamage;
@@ -69,6 +74,11 @@ public class PlayerUI : MonoBehaviour {
         anchor = GameObject.Find("PlayerAnchor");
 
         mainCamera = Camera.allCameras[0];
+
+        healthGeneInitialRot = healthGene.transform.rotation.eulerAngles;
+        rangeGeneInitialRot = rangeGene.transform.rotation.eulerAngles;
+        damageGeneInitialRot = damageGene.transform.rotation.eulerAngles;
+        speedGeneInitialRot = speedGene.transform.rotation.eulerAngles;
 
         SetGenes();
 	}

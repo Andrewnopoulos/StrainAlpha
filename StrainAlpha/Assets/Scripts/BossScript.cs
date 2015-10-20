@@ -239,7 +239,7 @@ public class BossScript : MonoBehaviour {
 
     private void AttackLaser()
     {
-        shooter.transform.Rotate(new Vector3(0, 1, 0), 360 * Time.deltaTime);
+        //shooter.transform.Rotate(new Vector3(0, 1, 0), 360 * Time.deltaTime);
 
         attackCooldown -= Time.deltaTime;
         if (attackCooldown <= 0)
@@ -274,7 +274,8 @@ public class BossScript : MonoBehaviour {
         dormantCountdown -= Time.deltaTime;
         if (dormantCountdown <= 0)
         {
-            int rand = (int)Random.Range(1.0f, 4.99f);
+            //int rand = (int)Random.Range(1.0f, 4.99f);
+            int rand = 4;
             if (currentAttackIndicator == 3)
             {
                 rand = 5;
