@@ -7,7 +7,7 @@ public class BossLaser : MonoBehaviour {
 
     private Renderer[] renderer;
     private Collider[] collider;
-    private GameObject[] children;
+    private Transform[] children;
 
     private bool active = false;
 
@@ -23,11 +23,11 @@ public class BossLaser : MonoBehaviour {
     {
         renderer = new Renderer[4];
         collider = new Collider[4];
-        children = new GameObject[5];
+        children = new Transform[5];
 
         renderer = gameObject.GetComponentsInChildren<Renderer>();
         collider = gameObject.GetComponentsInChildren<Collider>();
-        children = gameObject.GetComponentsInChildren<GameObject>();
+        children = gameObject.GetComponentsInChildren<Transform>();
     }
 
     void Update()
@@ -37,7 +37,7 @@ public class BossLaser : MonoBehaviour {
 
         for (int i = 1; i < 5; ++i)
         {
-            children[i].transform.localScale = new Vector3(currentWidth, transform.localScale.y, currentLength);
+            children[i].localScale = new Vector3(currentWidth, 0.01f, currentLength);
         }
 
         if (active)

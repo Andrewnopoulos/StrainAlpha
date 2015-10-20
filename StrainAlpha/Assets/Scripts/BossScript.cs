@@ -32,6 +32,7 @@ public class BossScript : MonoBehaviour {
 
     private float MaxSpeed = 5.0f;
 
+    public NPCManager manager;
     private Vector3 target;
     private Transform playerLocation;
 
@@ -61,7 +62,7 @@ public class BossScript : MonoBehaviour {
 
     public float birthTime = 30.0f;
 
-    public float gravitationForce = 1.0f;
+    private float currentAttackIndicator = 0.0f;
 
     private float scale = 0.0f;
 
@@ -136,6 +137,11 @@ public class BossScript : MonoBehaviour {
                 case AttackType.ATTACKTARGET:
                     {
                         AttackTarget();
+                        break;
+                    }
+                case AttackType.LASER:
+                    {
+                        AttackLaser();
                         break;
                     }
                 case AttackType.SPAWNCELLS:
@@ -233,7 +239,7 @@ public class BossScript : MonoBehaviour {
 
     private void AttackLaser()
     {
-        shooter.transform.Rotate(new Vector3(0, 1, 0), 360 * Time.deltaTime);
+        //shooter.transform.Rotate(new Vector3(0, 1, 0), 360 * Time.deltaTime);
 
         attackCooldown -= Time.deltaTime;
         if (attackCooldown <= 0)
@@ -268,8 +274,14 @@ public class BossScript : MonoBehaviour {
         dormantCountdown -= Time.deltaTime;
         if (dormantCountdown <= 0)
         {
-            int rand = (int)Random.Range(1.0f, 4.99f);
-            //int rand = 4;
+            //int rand = (int)Random.Range(1.0f, 4.99f);
+            int rand = 4;
+            if (currentAttackIndicator == 3)
+            {
+                rand = 5;
+                currentAttackIndicator = 0;
+            }
+            //int rand = 5;
             if (rand == 1)
             {
                 attackType = AttackType.ATTACKRADIAL;
@@ -305,6 +317,7 @@ public class BossScript : MonoBehaviour {
                 attackCooldown = attackLength;
             }
             dormantCountdown = dormantTime;
+            currentAttackIndicator++;
         }
     }
 
@@ -314,13 +327,8 @@ public class BossScript : MonoBehaviour {
         shooter.transform.LookAt(playerLocation);
         if (shootCooldown <= 0)
         {
-            GameObject newBullet = (GameObject)Instantiate(bulletPrefab, transform.position, shooter.transform.rotation);
-            BulletScript script = newBullet.GetComponent<BulletScript>();
-            script.damage = damage;
-            script.speed = 15.0f;
-            script.SetAsEnemyBullet();
-            script.transform.localScale *= 2;
-            script.lifeTime = 3.0f;
+            int rand = (int)Random.Range(0.0f, 3.99f);
+            manager.CreateInfectedCell(new Chromosome(rand), transform.position + (transform.forward * transform.localScale.x / 2));
             shootCooldown = shootRate;
         }
         attackCooldown -= Time.deltaTime;
