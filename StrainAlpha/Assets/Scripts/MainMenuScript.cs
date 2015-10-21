@@ -89,7 +89,7 @@ public class MainMenuScript : MonoBehaviour {
         }
 
 
-        if (Input.GetButtonDown("A"))
+        if (Input.GetButtonDown("A") || Input.GetKeyDown(KeyCode.Space))
         {
 			//Play glossy interface 01
 			acceptSound.Play();
@@ -111,7 +111,7 @@ public class MainMenuScript : MonoBehaviour {
                 }
             }
         }
-        if (Input.GetButtonDown("B"))
+		if (Input.GetButtonDown("B") || Input.GetKeyDown(KeyCode.Backspace))
         {
 			backSound.Play();
             manager.Load("TitleScreen");
