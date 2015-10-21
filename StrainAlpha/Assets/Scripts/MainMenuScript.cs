@@ -12,9 +12,10 @@ public enum MenuSelection
 }
 
 public class MainMenuScript : MonoBehaviour {
-	public AudioSource acceptSound;
-	public AudioSource backSound;
-	public AudioSource switchSound;
+	public GameObject acceptSound;
+	public GameObject backSound;
+	public GameObject switchSound;
+	private bool selectionSwitched;
 
     public MenuScript manager;
 
@@ -61,38 +62,43 @@ public class MainMenuScript : MonoBehaviour {
         {
             targetRotation = rotations[0];
             currentSelection = MenuSelection.LEVELSELECT;
-			switchSound.Play();
+			selectionSwitched = true;
         }
         else if (stickPos.x > 0.1f && stickPos.y < stickPos.x * 0.5f && stickPos.y > -stickPos.x)
         {
             targetRotation = rotations[1];
             currentSelection = MenuSelection.OPTIONS;
-			switchSound.Play();
-        }
+			selectionSwitched = true;
+		}
         else if (stickPos.y < -0.1f && stickPos.x > stickPos.y && stickPos.x < -stickPos.y)
         {
             targetRotation = rotations[2];
             currentSelection = MenuSelection.EXIT;
-			switchSound.Play();
-        }
+			selectionSwitched = true;
+		}
         else if (stickPos.x < -0.1f && stickPos.y > stickPos.x && stickPos.y < -stickPos.x * 0.5f)
         {
             targetRotation = rotations[3];
             currentSelection = MenuSelection.CREDITS;
-			switchSound.Play();
-        }
+			selectionSwitched = true;
+		}
         else if (stickPos.x < -0.1f && stickPos.y > stickPos.x * 0.5f)
         {
             targetRotation = rotations[4];
             currentSelection = MenuSelection.DATABASE;
-			switchSound.Play();
-        }
+			selectionSwitched = true;
+		}
 
+		if (selectionSwitched) 
+		{
+			Instantiate(switchSound);//this probably works?
+			selectionSwitched = false;
+		}
 
         if (Input.GetButtonDown("A") || Input.GetKeyDown(KeyCode.Space))
         {
 			//Play glossy interface 01
-			acceptSound.Play();
+			Instantiate(acceptSound, transform.position, Quaternion.identity);
             if (currentSelection != MenuSelection.NULL)
             {
                 switch (currentSelection)
@@ -113,7 +119,7 @@ public class MainMenuScript : MonoBehaviour {
         }
 		if (Input.GetButtonDown("B") || Input.GetKeyDown(KeyCode.Backspace))
         {
-			backSound.Play();
+			Instantiate(backSound, transform.position, Quaternion.identity);
             manager.Load("TitleScreen");
             gameObject.SetActive(false);
         }
