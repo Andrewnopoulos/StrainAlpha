@@ -14,6 +14,15 @@ public enum AttackType
     SPAWNCELLS = 8,
 }
 
+public enum BossType
+{
+    HEALTH,
+    SPEED,
+    RANGE,
+    DAMAGE,
+    NULL,
+}
+
 public class BossScript : MonoBehaviour {
 
     private AttackType attackType = AttackType.DORMANT;
@@ -32,6 +41,8 @@ public class BossScript : MonoBehaviour {
 
     private float MaxSpeed = 5.0f;
 
+    private BossType bossType;
+
     public NPCManager manager;
     private Vector3 target;
     private Transform playerLocation;
@@ -40,6 +51,9 @@ public class BossScript : MonoBehaviour {
     public GameObject infectedCell;
 
     private SkinnedMeshRenderer skinMeshRenderer;
+
+    private Collider cocoonCollider;
+    private MeshRenderer cocoonRenderer;
 
     private GameObject shooter;
 
@@ -76,11 +90,14 @@ public class BossScript : MonoBehaviour {
 
         skinMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
 
-        skinMeshRenderer.SetBlendShapeWeight(0, 100);
-
         shooter = GameObject.Find("shooter");
 
         laser = gameObject.GetComponentInChildren<BossLaser>();
+
+        cocoonCollider = gameObject.GetComponentsInChildren<Collider>()[1];
+        cocoonRenderer = gameObject.GetComponentInChildren<MeshRenderer>();
+
+        bossType = BossType.NULL;
 	}
 	
 	// Update is called once per frame
@@ -92,15 +109,7 @@ public class BossScript : MonoBehaviour {
 
         if (!born)
         {
-            birthTime -= Time.deltaTime;
-
-            SetBlendShape();
-
-            if (birthTime <= 0)
-            {
-                born = true;
-                gameObject.GetComponentsInChildren<Collider>()[0].enabled = true;
-            }
+            CocoonUpdate();
         }
         else
         {
@@ -108,14 +117,6 @@ public class BossScript : MonoBehaviour {
             {
                 Die();
             }
-
-            Vector3 lookVector = playerLocation.position - transform.position;
-            lookVector.y = 0;
-
-            Vector3 buttstuff = Vector3.zero;
-
-            //transform.LookAt(playerLocation);
-            transform.rotation = Quaternion.LookRotation(Vector3.SmoothDamp(transform.forward, Vector3.Normalize(lookVector), ref buttstuff, 0.1f));
 
             switch (attackType)
             {
@@ -155,16 +156,47 @@ public class BossScript : MonoBehaviour {
 
     void SetBlendShape()
     {
-        skinMeshRenderer.SetBlendShapeWeight(0, ((health - baseHealth) / 3) * 5);
-        //skinMeshRenderer.SetBlendShapeWeight(1, (damage - basedamage) * 100);
-        //skinMeshRenderer.SetBlendShapeWeight(2, (atkSpeed - baseAtkSpeed) * 100);
-        skinMeshRenderer.SetBlendShapeWeight(3, (speed - basespeed) * 50);
+        float _health = health / baseHealth / 3.0f;
+        float _speed = speed / basespeed * 100.0f;
+        float _atkspeed = atkSpeed / baseAtkSpeed * 100.0f;
+        float _damage = damage / basedamage * 100.0f;
+        if (_health > _speed && _health > _damage && _health > _atkspeed)
+        {
+            skinMeshRenderer.SetBlendShapeWeight(3, 100);
+        }
+        else if (_speed > _atkspeed && _speed > _damage && _speed > _health)
+        {
+            skinMeshRenderer.SetBlendShapeWeight(2, 100);
+        }
+        else if (_atkspeed > _damage && _atkspeed > _speed && _atkspeed > _health)
+        {
+            skinMeshRenderer.SetBlendShapeWeight(1, 100);
+        }
+        else
+        {
+            skinMeshRenderer.SetBlendShapeWeight(0, 100);
+        }
     }
 
     void LateUpdate()
     {
         transform.position = new Vector3(transform.position.x, 0, transform.position.z);
         transform.localRotation = Quaternion.Euler(0, transform.localEulerAngles.y, 0);
+    }
+
+    void CocoonUpdate()
+    {
+        birthTime -= Time.deltaTime;
+
+        if (birthTime <= 0)
+        {
+            born = true;
+            gameObject.GetComponentsInChildren<Collider>()[0].enabled = true;
+            cocoonCollider.enabled = false;
+            cocoonRenderer.enabled = false;
+
+            SetBlendShape();
+        }
     }
 
     private void AttackRadial()
@@ -255,11 +287,6 @@ public class BossScript : MonoBehaviour {
     }
 
     private void Charge()
-    {
-
-    }
-
-    private void Laser()
     {
 
     }
