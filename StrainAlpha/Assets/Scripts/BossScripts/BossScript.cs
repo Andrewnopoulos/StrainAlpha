@@ -163,18 +163,22 @@ public class BossScript : MonoBehaviour {
         if (_health > _speed && _health > _damage && _health > _atkspeed)
         {
             skinMeshRenderer.SetBlendShapeWeight(3, 100);
+            bossType = BossType.HEALTH;
         }
         else if (_speed > _atkspeed && _speed > _damage && _speed > _health)
         {
             skinMeshRenderer.SetBlendShapeWeight(2, 100);
+            bossType = BossType.SPEED;
         }
         else if (_atkspeed > _damage && _atkspeed > _speed && _atkspeed > _health)
         {
             skinMeshRenderer.SetBlendShapeWeight(1, 100);
+            bossType = BossType.RANGE;
         }
         else
         {
             skinMeshRenderer.SetBlendShapeWeight(0, 100);
+            bossType = BossType.DAMAGE;
         }
     }
 
@@ -301,14 +305,38 @@ public class BossScript : MonoBehaviour {
         dormantCountdown -= Time.deltaTime;
         if (dormantCountdown <= 0)
         {
-            //int rand = (int)Random.Range(1.0f, 4.99f);
-            int rand = 4;
+            AttackType specialAttack = AttackType.DORMANT;
+            switch (bossType)
+            {
+                case BossType.HEALTH:
+                    specialAttack = AttackType.LASER;
+                    break;
+
+                case BossType.SPEED:
+                    specialAttack = AttackType.LASER;
+                    break;
+
+                case BossType.DAMAGE:
+                    specialAttack = AttackType.LASER;
+                    break;
+
+                case BossType.RANGE:
+                    specialAttack = AttackType.LASER;
+                    break;
+            }
+
+            int rand = 0;
+            if (currentAttackIndicator < 2)
+                rand = (int)Random.Range(1.0f, 3.99f);
+            else if (currentAttackIndicator == 2)
+                rand = 4;
+
             if (currentAttackIndicator == 3)
             {
                 rand = 5;
                 currentAttackIndicator = 0;
             }
-            //int rand = 5;
+
             if (rand == 1)
             {
                 attackType = AttackType.ATTACKRADIAL;
@@ -332,8 +360,8 @@ public class BossScript : MonoBehaviour {
             }
             else if (rand == 4)
             {
-                attackType = AttackType.LASER;
-                laser.SetActive(true);
+                attackType = specialAttack;
+                //laser.SetActive(true);
                 attackCooldown = attackLength;
             }
             else
@@ -345,6 +373,23 @@ public class BossScript : MonoBehaviour {
             }
             dormantCountdown = dormantTime;
             currentAttackIndicator++;
+
+            if (attackType == AttackType.LASER)
+            {
+                laser.SetActive(true);
+            }
+            else if (attackType == AttackType.SHIELD)
+            {
+
+            }
+            else if (attackType == AttackType.EXPLOSIVE)
+            {
+
+            }
+            else if (attackType == AttackType.CHARGE)
+            {
+
+            }
         }
     }
 
