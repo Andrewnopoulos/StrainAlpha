@@ -686,7 +686,10 @@ public class PlayerScript : MonoBehaviour {
 
             if (boidSpawnValues[i] > boidSpawnThreshold)
             {
-                boidControllers[i].Spawn();
+                if (playerGenes[i] < 1.0f)
+                {
+                    boidControllers[i].Spawn();
+                }
                 boidSpawnValues[i] -= boidSpawnThreshold;
             }
         }

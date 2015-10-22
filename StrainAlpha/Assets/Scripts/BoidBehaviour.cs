@@ -53,8 +53,34 @@ public class BoidBehaviour : MonoBehaviour
             animator.speed = Random.Range(-1.0f, 1.0f) * animationSpeedVariation + 1.0f;
     }
 
+    void LaserBehaviour()
+    {
+
+    }
+
+    void ChargeBehaviour()
+    {
+
+    }
+
+    void ShieldBehaviour()
+    {
+        var rotationVector = controller.transform.up;
+
+        transform.position = controller.transform.position + new Vector3(Mathf.Cos(Time.time), 0, Mathf.Sin(Time.time)) * 2;
+
+    }
+
+    void BombBehaviour()
+    {
+
+    }
+
     void Update()
     {
+        ShieldBehaviour();
+        return;
+
         var currentPosition = transform.position;
         var currentRotation = transform.rotation;
 
@@ -64,7 +90,7 @@ public class BoidBehaviour : MonoBehaviour
 
         // Initializes the vectors.
         var separation = Vector3.zero;
-        var alignment = controller.transform.forward;
+        var alignment = controller.transform.forward * 0.5f;
         var cohesion = controller.transform.position;
 
         // Looks up nearby boids.
