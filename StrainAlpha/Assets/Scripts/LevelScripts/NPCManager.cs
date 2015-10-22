@@ -5,6 +5,8 @@ using System.Collections.Generic;
 
 public class NPCManager : MonoBehaviour {
 
+    private float preGameCounter = 4.0f;
+
     public GameObject cell;
 
     public GameObject nucleus;
@@ -47,6 +49,8 @@ public class NPCManager : MonoBehaviour {
 
     private float endLevelTime = 3.0f;
 
+    private GameObject syringe;
+
     void Start()
     {
         for (int i = 0; i < InitialNeutralCells; i++)
@@ -54,23 +58,51 @@ public class NPCManager : MonoBehaviour {
             SpawnNeutral();
         }
 
-        for (int i = 0; i < InitialInfectedCells; i++)
-        {
-            Vector2 randomSpawn = Random.insideUnitCircle * 50;
-           CreateInfectedCell(new Chromosome(4), new Vector3(randomSpawn.x, 0, randomSpawn.y));
-        }
+        //for (int i = 0; i < InitialInfectedCells; i++)
+        //{
+        //    Vector2 randomSpawn = Random.insideUnitCircle * 50;
+        //   CreateInfectedCell(new Chromosome(4), new Vector3(randomSpawn.x, 0, randomSpawn.y));
+        //}
 
-        playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>();
+        playerScript = GameObject.Find("Player").GetComponent<PlayerScript>();
 
         ui = GameObject.Find("PlayerUI").GetComponent<PlayerUI>();
 
         cameraScript = GameObject.Find("Main Camera").GetComponent<CameraFollow>();
 
         SpawnUrgency = 5.0f;
+
+        syringe = GameObject.Find("syringe");
     }
 
     void Update()
     {
+        if (preGameCounter > 0)
+            preGameCounter -= Time.deltaTime;
+        else if (preGameCounter < 0)
+        {
+            preGameCounter = 0;
+
+            //spawn enemy cells now
+            for (int i = 0; i < InitialInfectedCells; i++)
+            {
+                Vector2 randomSpawn = Random.insideUnitCircle * 50;
+                CreateInfectedCell(new Chromosome(4), new Vector3(randomSpawn.x, 0, randomSpawn.y));
+            }
+
+            //enable player movement
+            playerScript.spawning = false;
+
+            //change camera position
+            cameraScript.SetPlayerDist(1);
+            cameraScript.smoothTime = 0.05f;
+
+            //hide the syringe
+            syringe.SetActive(false);
+
+            return;
+        }
+
         int CellCount = friendlyList.Count + infectedList.Count;
 
         SpawnUrgency = (float)CellCount / LargeNumberOfCells * SpawnUrgencyScale;
@@ -148,7 +180,7 @@ public class NPCManager : MonoBehaviour {
             cell.beAbsorbed = true;
         }
 
-        cameraScript.SetPlayerDist(25.0f);
+        cameraScript.SetPlayerDist(2);
 
     }
 

@@ -102,18 +102,15 @@ public class PlayerScript : MonoBehaviour {
     public float boidSpawnThreshold = 0.1f;
 
     Chromosome playerGenes;
+
+    private Vector3 spawnPoint;
+    private Vector3 targetPoint;
+
+    public bool spawning = true;
     void Awake()
     {
-        characterController = GetComponent<CharacterController>();
-        //weaponText = canvas.GetComponentInChildren<Text>();
-
-        shield = gameObject.GetComponentInChildren<ShieldScript>();
-        laser = gameObject.GetComponentInChildren<LaserScript>();
-        charge = gameObject.GetComponentInChildren<ChargeScript>();
-        bomb = gameObject.GetComponentInChildren<BombScript>();
-
-     //   shieldBoidController = gameObject.GetComponentInChildren<BoidController>();
-        boidControllers = GameObject.FindObjectsOfType<BoidController>();
+        spawnPoint = new Vector3(0.0f, 183.4f, -191.3f);
+        targetPoint = Vector3.zero;
 
         maxHealth = baseHealth;
         maxDamage = baseDamage;
@@ -127,10 +124,6 @@ public class PlayerScript : MonoBehaviour {
 
         boidSpawnValues = new float[4] { 0, 0, 0, 0 };
 
-        laserSound = gameObject.GetComponent<AudioSource>();
-
-        ui = GameObject.Find("PlayerUI").GetComponent<PlayerUI>();
-
         energy = maxEnergy;
 
         playerGenes = new Chromosome();
@@ -138,6 +131,21 @@ public class PlayerScript : MonoBehaviour {
 
 	void Start () 
     {
+        characterController = GetComponent<CharacterController>();
+        //weaponText = canvas.GetComponentInChildren<Text>();
+
+        shield = gameObject.GetComponentInChildren<ShieldScript>();
+        laser = gameObject.GetComponentInChildren<LaserScript>();
+        charge = gameObject.GetComponentInChildren<ChargeScript>();
+        bomb = gameObject.GetComponentInChildren<BombScript>();
+
+        //   shieldBoidController = gameObject.GetComponentInChildren<BoidController>();
+        boidControllers = GameObject.FindObjectsOfType<BoidController>();
+
+        laserSound = gameObject.GetComponent<AudioSource>();
+
+        ui = GameObject.Find("PlayerUI").GetComponent<PlayerUI>();
+
         cameraScript = GameObject.Find("Main Camera").GetComponent<CameraFollow>();
 
         futurePosition = GetComponentInChildren<FuturePositionScript>().transform;
@@ -146,6 +154,8 @@ public class PlayerScript : MonoBehaviour {
         {
             isControllerConnected = true;
         }
+
+        transform.position = spawnPoint;
 	}
 
     public Transform PlayerFutureTransform()
@@ -160,6 +170,12 @@ public class PlayerScript : MonoBehaviour {
 	
 	void Update () {
 	
+        if (spawning)
+        {
+            transform.position = Vector3.Lerp(transform.position, targetPoint, 0.025f);
+            return;
+        }
+
         if (fireCooldown > 0)
             fireCooldown -= Time.deltaTime;
 
