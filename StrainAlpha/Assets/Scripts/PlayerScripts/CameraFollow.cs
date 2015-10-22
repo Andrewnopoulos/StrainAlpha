@@ -34,7 +34,7 @@ public class CameraFollow : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-        gamePos = new Vector3(0, 17.6f, 0);
+        gamePos = new Vector3(0, 20.5f, 0);
         gameRot = Quaternion.Euler(90.0f, 0, 0);
 
         bossPos = new Vector3(0, 25.0f, 0);
