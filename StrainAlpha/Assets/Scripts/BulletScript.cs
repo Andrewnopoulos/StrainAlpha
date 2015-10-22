@@ -53,6 +53,8 @@ public class BulletScript : MonoBehaviour {
             
         }
 
+        velocity = transform.forward;
+
         transform.position += velocity * speed * Time.deltaTime;
 
         lifeTime -= Time.deltaTime;
@@ -117,6 +119,18 @@ public class BulletScript : MonoBehaviour {
         {
             GameObject.Instantiate(particles, transform.position, transform.localRotation);
             SetAsFriendlyBullet();
+
+            Vector3 delta = other.transform.position - transform.position;
+            delta.Normalize();
+            transform.forward -= 2 * delta;
+            transform.forward.Normalize();
+            lifeTime = 1.5f;
+            alive = true;
+        }
+        
+        if (other.tag == "Bouncy")
+        {
+            GameObject.Instantiate(particles, transform.position, transform.localRotation);
 
             Vector3 delta = other.transform.position - transform.position;
             delta.Normalize();
