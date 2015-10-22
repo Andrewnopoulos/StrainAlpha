@@ -73,6 +73,8 @@ public class NPCManager : MonoBehaviour {
         SpawnUrgency = 5.0f;
 
         syringe = GameObject.Find("syringe");
+
+        ui.gameObject.SetActive(false);
     }
 
     void Update()
@@ -99,6 +101,8 @@ public class NPCManager : MonoBehaviour {
 
             //hide the syringe
             syringe.SetActive(false);
+
+            ui.gameObject.SetActive(true);
 
             return;
         }
