@@ -94,6 +94,13 @@ public class PlayerScript : MonoBehaviour {
 
     private Transform futurePosition;
 
+    public BoidController[] boidControllers;
+
+    private float[] boidSpawnValues;
+
+    [Range(0.001f, 0.5f)]
+    public float boidSpawnThreshold = 0.1f;
+
     Chromosome playerGenes;
     void Awake()
     {
@@ -105,6 +112,9 @@ public class PlayerScript : MonoBehaviour {
         charge = gameObject.GetComponentInChildren<ChargeScript>();
         bomb = gameObject.GetComponentInChildren<BombScript>();
 
+     //   shieldBoidController = gameObject.GetComponentInChildren<BoidController>();
+        boidControllers = GameObject.FindObjectsOfType<BoidController>();
+
         maxHealth = baseHealth;
         maxDamage = baseDamage;
         maxSpeed = baseSpeed;
@@ -114,6 +124,8 @@ public class PlayerScript : MonoBehaviour {
         damage = maxDamage;
         speed = maxSpeed;
         fireRate = maxFireRate;
+
+        boidSpawnValues = new float[4] { 0, 0, 0, 0 };
 
         laserSound = gameObject.GetComponent<AudioSource>();
 
@@ -657,10 +669,26 @@ public class PlayerScript : MonoBehaviour {
     {
         if (other.gameObject.layer == nucleusLayer)
         {
-            playerGenes.AddChromosome(other.GetComponent<NucleusScript>().GetChromosome());
+            float[] geneDeltas = playerGenes.AddChromosome(other.GetComponent<NucleusScript>().GetChromosome());
+            SpawnNanos(geneDeltas);
             Destroy(other.gameObject);
+            
             UpdateStats();
             return;
+        }
+    }
+
+    void SpawnNanos(float[] geneChanges)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            boidSpawnValues[i] += geneChanges[i];
+
+            if (boidSpawnValues[i] > boidSpawnThreshold)
+            {
+                boidControllers[i].Spawn();
+                boidSpawnValues[i] -= boidSpawnThreshold;
+            }
         }
     }
 
