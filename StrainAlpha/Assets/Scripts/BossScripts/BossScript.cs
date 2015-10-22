@@ -400,7 +400,7 @@ public class BossScript : MonoBehaviour {
         if (shootCooldown <= 0)
         {
             int rand = (int)Random.Range(0.0f, 3.99f);
-            manager.CreateInfectedCell(new Chromosome(rand), transform.position + (transform.forward * transform.localScale.x / 2));
+            manager.CreateInfectedCell(new Chromosome(rand), transform.position + (shooter.transform.forward * transform.localScale.x / 2));
             shootCooldown = shootRate;
         }
         attackCooldown -= Time.deltaTime;
