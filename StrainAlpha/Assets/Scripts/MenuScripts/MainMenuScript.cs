@@ -20,6 +20,9 @@ public class MainMenuScript : MonoBehaviour {
     public MenuScript manager;
 
     private MenuSelection currentSelection;
+	private MenuSelection oldSelection;
+
+	private string previousSelection;
 
     private Quaternion[] rotations;
 
@@ -32,6 +35,7 @@ public class MainMenuScript : MonoBehaviour {
     {
         manager = GameObject.Find("CanvasManager").GetComponent<MenuScript>();
 
+		oldSelection = MenuSelection.NULL;
         currentSelection = MenuSelection.LEVELSELECT;
 
         rotations = new Quaternion[5];
@@ -61,44 +65,50 @@ public class MainMenuScript : MonoBehaviour {
         if (stickPos.x > 0.1f && stickPos.y > stickPos.x * 0.5f)
         {
             targetRotation = rotations[0];
+			oldSelection = currentSelection;
             currentSelection = MenuSelection.LEVELSELECT;
 			selectionSwitched = true;
         }
         else if (stickPos.x > 0.1f && stickPos.y < stickPos.x * 0.5f && stickPos.y > -stickPos.x)
         {
             targetRotation = rotations[1];
+			oldSelection = currentSelection;
             currentSelection = MenuSelection.OPTIONS;
 			selectionSwitched = true;
 		}
         else if (stickPos.y < -0.1f && stickPos.x > stickPos.y && stickPos.x < -stickPos.y)
         {
             targetRotation = rotations[2];
+			oldSelection = currentSelection;
             currentSelection = MenuSelection.EXIT;
 			selectionSwitched = true;
 		}
         else if (stickPos.x < -0.1f && stickPos.y > stickPos.x && stickPos.y < -stickPos.x * 0.5f)
         {
             targetRotation = rotations[3];
+			oldSelection = currentSelection;
             currentSelection = MenuSelection.CREDITS;
 			selectionSwitched = true;
 		}
         else if (stickPos.x < -0.1f && stickPos.y > stickPos.x * 0.5f)
         {
             targetRotation = rotations[4];
+			oldSelection = currentSelection;
             currentSelection = MenuSelection.DATABASE;
 			selectionSwitched = true;
 		}
 
-		if (selectionSwitched) 
+		if (currentSelection != oldSelection && selectionSwitched == true) 
 		{
 			Instantiate(switchSound);//this probably works?
 			selectionSwitched = false;
 		}
 
+
         if (Input.GetButtonDown("A") || Input.GetKeyDown(KeyCode.Space))
         {
 			//Play glossy interface 01
-			Instantiate(acceptSound, transform.position, Quaternion.identity);
+			Instantiate(acceptSound);
             if (currentSelection != MenuSelection.NULL)
             {
                 switch (currentSelection)
@@ -119,7 +129,7 @@ public class MainMenuScript : MonoBehaviour {
         }
 		if (Input.GetButtonDown("B") || Input.GetKeyDown(KeyCode.Backspace))
         {
-			Instantiate(backSound, transform.position, Quaternion.identity);
+			Instantiate(backSound);
             manager.Load("TitleScreen");
             gameObject.SetActive(false);
         }

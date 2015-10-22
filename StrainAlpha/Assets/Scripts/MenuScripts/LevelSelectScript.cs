@@ -17,7 +17,7 @@ public enum LevelSelection
 }
 
 public class LevelSelectScript : MonoBehaviour {
-
+	public GameObject backSound;
     public MenuScript manager;
 
     private LevelSelection currentSelectedLevel;
@@ -113,6 +113,8 @@ public class LevelSelectScript : MonoBehaviour {
 
         if (Input.GetButtonDown("B"))
         {
+			Instantiate(backSound);
+
             if (currentSelectedLevel == LevelSelection.NULL)
             {
                 manager.Load("MainMenu");
