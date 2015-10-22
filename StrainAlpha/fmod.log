@@ -26,8 +26,13 @@
 [LOG] Thread::initThread                       : Initializing FMOD Studio load thread.  priority 0
 [LOG] Thread::initThread                       : - Stacksize 65536.  Stack pointer 0000000000000000 : usesemaphore = 0 : sleeptime = 1
 [LOG] Thread::callback                         : * FMOD Studio load thread started
+<<<<<<< HEAD
 [LOG] Manager::readBank                        : fileversion = 67, compatVersion = 67 (oldest = 44, newest = 68)
 [LOG] Manager::readBank                        : fileversion = 67, compatVersion = 67 (oldest = 44, newest = 68)
+=======
+[LOG] Profile::init                            : Profiler listening on port: 9265
+[ERR] BankLoader::openBankFile                 : Failed to open file 'Desktop/.bank'
+>>>>>>> e6d4e8fce6f71a953f5b89ad2006703bb883ff3d
 [LOG] Thread::callback                         : * FMOD Studio update thread finished
 [LOG] Thread::close                            : FMOD Studio update thread thread destroyed
 [LOG] Thread::callback                         : * FMOD Studio load thread finished
