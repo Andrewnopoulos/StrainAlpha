@@ -160,11 +160,14 @@ public class Chromosome {
         return output;
     }
 
-    public void AddChromosome(Chromosome inputChromosome)
+    public float[] AddChromosome(Chromosome inputChromosome)
     {
+        float[] outputs = new float[length];
+
         for (int i = 0; i < length; i++)
         {
-            genes[i] += inputChromosome[i] * additionScaling;
+            outputs[i] = inputChromosome[i] * additionScaling;
+            genes[i] += outputs[i];
 
             if (genes[i] > MaxValue)
             {
@@ -175,6 +178,8 @@ public class Chromosome {
                 genes[i] = 0;
             }
         }
+
+        return outputs;
     }
 
     public float[] GetGenes()
