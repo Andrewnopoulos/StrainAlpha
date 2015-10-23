@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class NPCManager : MonoBehaviour {
 
-    private float preGameCounter = 4.0f;
+    private float preGameCounter;
 
     public GameObject cell;
 
@@ -73,6 +73,10 @@ public class NPCManager : MonoBehaviour {
         SpawnUrgency = 5.0f;
 
         syringe = GameObject.Find("syringe");
+
+        ui.gameObject.SetActive(false);
+
+        preGameCounter = 4.0f;
     }
 
     void Update()
@@ -99,6 +103,8 @@ public class NPCManager : MonoBehaviour {
 
             //hide the syringe
             syringe.SetActive(false);
+
+            ui.gameObject.SetActive(true);
 
             return;
         }

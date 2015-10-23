@@ -144,8 +144,6 @@ public class PlayerScript : MonoBehaviour {
 
         laserSound = gameObject.GetComponent<AudioSource>();
 
-        ui = GameObject.Find("PlayerUI").GetComponent<PlayerUI>();
-
         cameraScript = GameObject.Find("Main Camera").GetComponent<CameraFollow>();
 
         futurePosition = GetComponentInChildren<FuturePositionScript>().transform;
@@ -156,6 +154,11 @@ public class PlayerScript : MonoBehaviour {
         }
 
         transform.position = spawnPoint;
+
+        if (GameObject.Find("PlayerUI"))
+        {
+            ui = GameObject.Find("PlayerUI").GetComponent<PlayerUI>();
+        }
 	}
 
     public Transform PlayerFutureTransform()
@@ -646,6 +649,12 @@ public class PlayerScript : MonoBehaviour {
                 break;
         }
         weaponSelectCooldown = 0.3f;
+
+        if (ui == null)
+        {
+            ui = GameObject.Find("PlayerUI").GetComponent<PlayerUI>();
+        }
+
         ui.RotateRight();
     }
 
@@ -673,6 +682,12 @@ public class PlayerScript : MonoBehaviour {
                 break;
         }
         weaponSelectCooldown = 0.3f;
+
+        if (ui == null)
+        {
+            ui = GameObject.Find("PlayerUI").GetComponent<PlayerUI>();
+        }
+
         ui.RotateLeft();
     }
 
@@ -702,7 +717,10 @@ public class PlayerScript : MonoBehaviour {
 
             if (boidSpawnValues[i] > boidSpawnThreshold)
             {
-                boidControllers[i].Spawn();
+                if (playerGenes[i] < 1.0f)
+                {
+                    boidControllers[i].Spawn();
+                }
                 boidSpawnValues[i] -= boidSpawnThreshold;
             }
         }

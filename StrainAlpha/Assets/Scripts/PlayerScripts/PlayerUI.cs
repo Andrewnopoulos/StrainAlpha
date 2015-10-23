@@ -40,9 +40,9 @@ public class PlayerUI : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-        allImages = new Image[16];
+        //allImages = new Image[17];
 
-        healthImages = new Image[8];
+        healthImages = new Image[16];
         targetPos = new Vector3[12];
 
         allImages = gameObject.GetComponentsInChildren<Image>();
@@ -61,6 +61,15 @@ public class PlayerUI : MonoBehaviour {
         rangeGene = allImages[12];
         damageGene = allImages[14];
         speedGene = allImages[16];
+
+        healthImages[8] = allImages[17];
+        healthImages[9] = allImages[18];
+        healthImages[10] = allImages[19];
+        healthImages[11] = allImages[20];
+        healthImages[12] = allImages[21];
+        healthImages[13] = allImages[22];
+        healthImages[14] = allImages[23];
+        healthImages[15] = allImages[24];
 
         scoreText = gameObject.GetComponentInChildren<Text>();
 
@@ -106,6 +115,7 @@ public class PlayerUI : MonoBehaviour {
             {
                 Vector3 vel = Vector3.zero;
                 healthImages[i].transform.localPosition = Vector3.SmoothDamp(healthImages[i].transform.localPosition, targetPos[i], ref vel, 0.05f);
+                healthImages[i + 8].transform.localPosition = healthImages[i].transform.localPosition;
             }
 
             //---------------------- expand genes
