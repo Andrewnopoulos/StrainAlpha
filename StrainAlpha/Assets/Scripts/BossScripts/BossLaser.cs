@@ -33,7 +33,7 @@ public class BossLaser : MonoBehaviour {
     void Update()
     {
 
-        transform.Rotate(new Vector3(0, 1, 0), 20 * Time.deltaTime);
+        transform.Rotate(new Vector3(0, 1, 0), 30 * Time.deltaTime);
 
         for (int i = 1; i < 5; ++i)
         {

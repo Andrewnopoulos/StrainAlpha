@@ -334,7 +334,7 @@ public class BossScript : MonoBehaviour {
             if (currentAttackIndicator == 3)
             {
                 rand = 5;
-                currentAttackIndicator = 0;
+                currentAttackIndicator = -1;
             }
 
             if (rand == 1)
