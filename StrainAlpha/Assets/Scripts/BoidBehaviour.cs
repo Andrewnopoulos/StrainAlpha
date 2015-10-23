@@ -32,6 +32,18 @@ public class BoidBehaviour : MonoBehaviour
     // Options for animation playback.
     public float animationSpeedVariation = 0.2f;
 
+    private float rotationOffset = 0.0f;
+
+    private bool dying = false;
+
+    private Vector3 deathVelocity;
+    private Vector3 deathRotation;
+    private float deathSpeed;
+    private float deathAngularVelocity;
+    private float deathTimer;
+
+    private Renderer renderer;
+
     // Random seed.
     float noiseOffset;
 
@@ -51,6 +63,10 @@ public class BoidBehaviour : MonoBehaviour
         var animator = GetComponent<Animator>();
         if (animator)
             animator.speed = Random.Range(-1.0f, 1.0f) * animationSpeedVariation + 1.0f;
+
+        rotationOffset = Random.Range(0.0f, 360.0f);
+
+        renderer = GetComponent<Renderer>();
     }
 
     void LaserBehaviour()
@@ -67,7 +83,7 @@ public class BoidBehaviour : MonoBehaviour
     {
         var rotationVector = controller.transform.up;
 
-        transform.position = controller.transform.position + new Vector3(Mathf.Cos(Time.time), 0, Mathf.Sin(Time.time)) * 2;
+        transform.position = controller.transform.position + new Vector3(Mathf.Cos(Time.time + rotationOffset), 0, Mathf.Sin(Time.time + rotationOffset)) * 2;
 
     }
 
@@ -76,8 +92,39 @@ public class BoidBehaviour : MonoBehaviour
 
     }
 
+    public void Kill()
+    {
+        dying = true;
+        deathRotation = new Vector3(Random.Range(0.0f, 180.0f), Random.Range(0.0f, 180.0f), Random.Range(0.0f, 180.0f));
+        deathVelocity = (transform.position - controller.transform.position).normalized;
+        deathSpeed = Random.Range(1.0f, 5.0f);
+        deathAngularVelocity = Random.Range(1.0f, 5.0f);
+        deathTimer = Random.Range(2.0f, 3.0f);
+    }
+
+    void DyingBehaviour()
+    {
+        transform.position += deathVelocity * deathSpeed * Time.deltaTime;
+        transform.Rotate(deathRotation, deathAngularVelocity * Time.deltaTime);
+
+        deathTimer -= Time.deltaTime;
+
+        renderer.material.color = new Color(renderer.material.color.r, renderer.material.color.g, renderer.material.color.b, deathTimer);
+
+        if (deathTimer < 0)
+        {
+            Destroy(gameObject);
+        }
+    }
+
     void Update()
     {
+        if (dying)
+        {
+            DyingBehaviour();
+            return;
+        }
+
         ShieldBehaviour();
         return;
 
