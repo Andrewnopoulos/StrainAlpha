@@ -24,6 +24,7 @@ public class NPCManager : MonoBehaviour {
     private BossScript endBoss;
 
     private PlayerUI ui;
+    private CountDown countdownUI;
 
     private CameraFollow cameraScript;
 
@@ -67,6 +68,7 @@ public class NPCManager : MonoBehaviour {
         playerScript = GameObject.Find("Player").GetComponent<PlayerScript>();
 
         ui = GameObject.Find("PlayerUI").GetComponent<PlayerUI>();
+        countdownUI = GameObject.Find("countdownCanvas").GetComponent<CountDown>();
 
         cameraScript = GameObject.Find("Main Camera").GetComponent<CameraFollow>();
 
@@ -82,9 +84,34 @@ public class NPCManager : MonoBehaviour {
     void Update()
     {
         if (preGameCounter > 0)
+        {
             preGameCounter -= Time.deltaTime;
+            if (preGameCounter > 3.0f)
+            {
+                if (countdownUI.GetCountdown() != "")
+                    countdownUI.SetCountdown("");
+            }
+            else if (preGameCounter > 2.0f)
+            {
+                if (countdownUI.GetCountdown() != "3")
+                    countdownUI.SetCountdown("3");
+            }
+            else if (preGameCounter > 1.0f)
+            {
+                if (countdownUI.GetCountdown() != "2")
+                    countdownUI.SetCountdown("2");
+            }
+            else if (preGameCounter > 0.0f)
+            {
+                if (countdownUI.GetCountdown() != "1")
+                    countdownUI.SetCountdown("1");
+            }
+
+        }
         else if (preGameCounter < 0)
         {
+            countdownUI.SetCountdown("");
+
             preGameCounter = 0;
 
             //spawn enemy cells now
