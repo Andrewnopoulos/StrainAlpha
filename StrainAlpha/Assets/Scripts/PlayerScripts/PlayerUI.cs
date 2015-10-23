@@ -71,7 +71,7 @@ public class PlayerUI : MonoBehaviour {
         healthImages[14] = allImages[23];
         healthImages[15] = allImages[24];
 
-        scoreText = gameObject.GetComponentInChildren<Text>();
+        scoreText = gameObject.GetComponentsInChildren<Text>()[0];
 
         player = GameObject.Find("Player").GetComponent<PlayerScript>();
 
