@@ -66,4 +66,14 @@ public class BoidController : MonoBehaviour
         boid.GetComponent<BoidBehaviour>().controller = this;
         return boid;
     }
+
+    public void KillBoids()
+    {
+        var nearbyBoids = Physics.OverlapSphere(transform.position, 100.0f, searchLayer);
+
+        foreach (var boid in nearbyBoids)
+        {
+            boid.gameObject.GetComponent<BoidBehaviour>().Kill();
+        }
+    }
 }

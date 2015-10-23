@@ -251,6 +251,8 @@ public class PlayerScript : MonoBehaviour {
             shieldActive = false;
             playerGenes[0] = 0.0f;
             shield.SetActive(false);
+
+            boidControllers[0].KillBoids();
         }
 
         if (bombActive && playerGenes[1] > 0)
