@@ -17,7 +17,9 @@ public class SoundDeleteAfterPlay : MonoBehaviour {
 	void Update () 
 	{
 		timer -= Time.deltaTime;
-		Debug.Log (timer);
+		//commented out this code because debug logs slow everything down
+		//it's not like we use fmod anyway
+		//Debug.Log (timer);
 		if (timer <= -0.5f) 
 		{
 			Destroy(gameObject);
