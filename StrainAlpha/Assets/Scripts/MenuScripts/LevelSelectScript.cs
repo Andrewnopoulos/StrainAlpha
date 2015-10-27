@@ -26,6 +26,12 @@ public class LevelSelectScript : MonoBehaviour {
     private LevelSelection hoveredOverLevel;
     private DifficultySelection hoveredOverDifficulty;
 
+	private Vector3[] levelPanelPositions;
+
+	private GameObject LevelBackLight;
+
+	private float selectionCooldown = 0.0f;
+
     // Use this for initialization
     void Start()
     {
@@ -36,23 +42,37 @@ public class LevelSelectScript : MonoBehaviour {
 
         currentSelectedLevel = LevelSelection.NULL;
         currentSelectedDifficulty = DifficultySelection.NULL;
+
+		levelPanelPositions = new Vector3[6];
+
+		levelPanelPositions[0] = new Vector3(-270, 250, 0);
+		levelPanelPositions[1] = new Vector3(270, 250, 0);
+		levelPanelPositions[2] = new Vector3(-430, 0, 0);
+		levelPanelPositions[3] = new Vector3(430, 0, 0);
+		levelPanelPositions[4] = new Vector3(-270, -250, 0);
+		levelPanelPositions[5] = new Vector3(270, -250, 0);
+
+		LevelBackLight = GameObject.Find ("LevelBackLight");
     }
 
     // Update is called once per frame
     void Update()
     {
+		selectionCooldown -= Time.deltaTime;
 
         Vector2 stickPos;
         stickPos.x = Input.GetAxis("LeftStickX");
         stickPos.y = -Input.GetAxis("LeftStickY");
 
-        if (stickPos.y > 0.1f)
+		if (stickPos.y > 0.1f && selectionCooldown <= 0.0f)
         {
             FlickUp();
+			selectionCooldown = 0.2f;
         }
-        if (stickPos.y < -0.1f)
+		if (stickPos.y < -0.1f && selectionCooldown <= 0.0f)
         {
             FlickDown();
+			selectionCooldown = 0.2f;
         }
 
         if (Input.GetButtonDown("A"))
@@ -79,6 +99,18 @@ public class LevelSelectScript : MonoBehaviour {
                     default:
                         break;
                 }
+				if (hoveredOverDifficulty == DifficultySelection.EASY)
+				{
+					LevelBackLight.transform.localPosition = levelPanelPositions[1];
+				}
+				else if (hoveredOverDifficulty == DifficultySelection.MEDIUM)
+				{
+					LevelBackLight.transform.localPosition = levelPanelPositions[3];
+				}
+				else
+				{
+					LevelBackLight.transform.localPosition = levelPanelPositions[5];
+				}
             }
             else if (currentSelectedLevel != LevelSelection.NULL)
             {
@@ -123,6 +155,18 @@ public class LevelSelectScript : MonoBehaviour {
             else
             {
                 currentSelectedLevel = LevelSelection.NULL;
+				if (hoveredOverLevel == LevelSelection.LEVEL1)
+				{
+					LevelBackLight.transform.localPosition = levelPanelPositions[0];
+				}
+				else if (hoveredOverLevel == LevelSelection.LEVEL2)
+				{
+					LevelBackLight.transform.localPosition = levelPanelPositions[2];
+				}
+				else
+				{
+					LevelBackLight.transform.localPosition = levelPanelPositions[4];
+				}
             }
         }
     }
@@ -134,14 +178,17 @@ public class LevelSelectScript : MonoBehaviour {
             if (hoveredOverLevel == LevelSelection.LEVEL1)
             {
                 hoveredOverLevel = LevelSelection.LEVEL3;
+				LevelBackLight.transform.localPosition = levelPanelPositions[4];
             }
             else if (hoveredOverLevel == LevelSelection.LEVEL2)
             {
                 hoveredOverLevel = LevelSelection.LEVEL1;
+				LevelBackLight.transform.localPosition = levelPanelPositions[0];
             }
             else if (hoveredOverLevel == LevelSelection.LEVEL3)
             {
                 hoveredOverLevel = LevelSelection.LEVEL2;
+				LevelBackLight.transform.localPosition = levelPanelPositions[2];
             }
         }
         else
@@ -149,14 +196,17 @@ public class LevelSelectScript : MonoBehaviour {
             if (hoveredOverDifficulty == DifficultySelection.EASY)
             {
                 hoveredOverDifficulty = DifficultySelection.HARD;
+				LevelBackLight.transform.localPosition = levelPanelPositions[5];
             }
             else if (hoveredOverDifficulty == DifficultySelection.MEDIUM)
             {
                 hoveredOverDifficulty = DifficultySelection.EASY;
+				LevelBackLight.transform.localPosition = levelPanelPositions[1];
             }
             else if (hoveredOverDifficulty == DifficultySelection.HARD)
             {
                 hoveredOverDifficulty = DifficultySelection.MEDIUM;
+				LevelBackLight.transform.localPosition = levelPanelPositions[3];
             }
         }
     }
@@ -168,14 +218,17 @@ public class LevelSelectScript : MonoBehaviour {
             if (hoveredOverLevel == LevelSelection.LEVEL1)
             {
                 hoveredOverLevel = LevelSelection.LEVEL2;
+				LevelBackLight.transform.localPosition = levelPanelPositions[2];
             }
             else if (hoveredOverLevel == LevelSelection.LEVEL2)
             {
                 hoveredOverLevel = LevelSelection.LEVEL3;
+				LevelBackLight.transform.localPosition = levelPanelPositions[4];
             }
             else if (hoveredOverLevel == LevelSelection.LEVEL3)
             {
                 hoveredOverLevel = LevelSelection.LEVEL1;
+				LevelBackLight.transform.localPosition = levelPanelPositions[0];
             }
         }
         else
@@ -183,14 +236,17 @@ public class LevelSelectScript : MonoBehaviour {
             if (hoveredOverDifficulty == DifficultySelection.EASY)
             {
                 hoveredOverDifficulty = DifficultySelection.MEDIUM;
+				LevelBackLight.transform.localPosition = levelPanelPositions[3];
             }
             else if (hoveredOverDifficulty == DifficultySelection.MEDIUM)
             {
                 hoveredOverDifficulty = DifficultySelection.HARD;
+				LevelBackLight.transform.localPosition = levelPanelPositions[5];
             }
             else if (hoveredOverDifficulty == DifficultySelection.HARD)
             {
                 hoveredOverDifficulty = DifficultySelection.EASY;
+				LevelBackLight.transform.localPosition = levelPanelPositions[1];
             }
         }
     }
