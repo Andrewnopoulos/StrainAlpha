@@ -18,6 +18,8 @@ public enum LevelSelection
 
 public class LevelSelectScript : MonoBehaviour {
 	public GameObject backSound;
+    public GameObject acceptSound;
+    public GameObject switchSound;
     public MenuScript manager;
 
     private LevelSelection currentSelectedLevel;
@@ -64,19 +66,23 @@ public class LevelSelectScript : MonoBehaviour {
         stickPos.x = Input.GetAxis("LeftStickX");
         stickPos.y = -Input.GetAxis("LeftStickY");
 
-		if (stickPos.y > 0.1f && selectionCooldown <= 0.0f)
+		if ((stickPos.y > 0.1f || Input.GetKey(KeyCode.W)) && selectionCooldown <= 0.0f)
         {
+            Instantiate(switchSound);
             FlickUp();
 			selectionCooldown = 0.2f;
         }
-		if (stickPos.y < -0.1f && selectionCooldown <= 0.0f)
+		if ((stickPos.y < -0.1f || Input.GetKey(KeyCode.S)) && selectionCooldown <= 0.0f)
         {
+            Instantiate(switchSound);
             FlickDown();
 			selectionCooldown = 0.2f;
         }
 
-        if (Input.GetButtonDown("A"))
+        if (Input.GetButtonDown("A") || Input.GetKeyDown(KeyCode.Space))
         {
+            Instantiate(acceptSound);
+
             if (currentSelectedLevel == LevelSelection.NULL)
             {
                 switch (hoveredOverLevel)
@@ -143,7 +149,7 @@ public class LevelSelectScript : MonoBehaviour {
             }
         }
 
-        if (Input.GetButtonDown("B"))
+        if (Input.GetButtonDown("B") || Input.GetKeyDown(KeyCode.Backspace))
         {
 			Instantiate(backSound);
 
