@@ -82,9 +82,11 @@ public class NPCManager : MonoBehaviour {
 
         preGameCounter = 4.0f;
 
-        difficulty = GameObject.Find("PersistentObject").GetComponent<PersistentData>().difficulty;
-
-        Destroy(GameObject.Find("PersistentObject"));
+        if (GameObject.Find("PersistentObject(Clone)"))
+        {
+            difficulty = GameObject.Find("PersistentObject(Clone)").GetComponent<PersistentData>().difficulty;
+            Destroy(GameObject.Find("PersistentObject(Clone)"));
+        }
     }
 
     void Update()
