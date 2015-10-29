@@ -26,6 +26,11 @@ public class PlayerUI : MonoBehaviour {
     private float baseScoreSize = 0.4f;
     private float scoreSize = 0.4f;
 
+    private Text timeTextMinute;
+    private Text timeTextSecond;
+    private Text timeTextMilli;
+    private float time = 0.0f;
+
     private float previousHealth;
     private float previousRange;
     private float previousDamage;
@@ -72,6 +77,9 @@ public class PlayerUI : MonoBehaviour {
         healthImages[15] = allImages[24];
 
         scoreText = gameObject.GetComponentsInChildren<Text>()[0];
+        timeTextMinute = gameObject.GetComponentsInChildren<Text>()[1];
+        timeTextSecond = gameObject.GetComponentsInChildren<Text>()[2];
+        timeTextMilli = gameObject.GetComponentsInChildren<Text>()[3];
 
         player = GameObject.Find("Player").GetComponent<PlayerScript>();
 
@@ -84,6 +92,11 @@ public class PlayerUI : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+        //cast heaven
+        timeTextMinute.text = ((int)(time / 60.0f)).ToString();
+        timeTextSecond.text = ((int)(time - (60.0f * (float)((int)(time / 60.0f))))).ToString();
+        timeTextMilli.text = ((int)(100 * ((time - ((60.0f * (float)((int)(time / 60.0f))))) - ((float)((int)(time - (60.0f * (float)((int)(time / 60.0f))))))))).ToString();
 
         scoreText.text = score.ToString();
 
@@ -282,5 +295,9 @@ public class PlayerUI : MonoBehaviour {
     {
         score += _score;
         scoreSize = 0.6f;
+    }
+    public void SetTime(float _time)
+    {
+        time = _time;
     }
 }

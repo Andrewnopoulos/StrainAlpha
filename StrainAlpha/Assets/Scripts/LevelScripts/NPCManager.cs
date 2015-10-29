@@ -5,6 +5,8 @@ using System.Collections.Generic;
 
 public class NPCManager : MonoBehaviour {
 
+    public float levelTimer;
+
     private float preGameCounter;
 
     public GameObject cell;
@@ -61,12 +63,6 @@ public class NPCManager : MonoBehaviour {
             SpawnNeutral();
         }
 
-        //for (int i = 0; i < InitialInfectedCells; i++)
-        //{
-        //    Vector2 randomSpawn = Random.insideUnitCircle * 50;
-        //   CreateInfectedCell(new Chromosome(4), new Vector3(randomSpawn.x, 0, randomSpawn.y));
-        //}
-
         playerScript = GameObject.Find("Player").GetComponent<PlayerScript>();
 
         ui = GameObject.Find("PlayerUI").GetComponent<PlayerUI>();
@@ -82,10 +78,25 @@ public class NPCManager : MonoBehaviour {
 
         preGameCounter = 4.0f;
 
+        difficulty = DifficultySelection.EASY;
+
         if (GameObject.Find("PersistentObject(Clone)"))
         {
             difficulty = GameObject.Find("PersistentObject(Clone)").GetComponent<PersistentData>().difficulty;
             Destroy(GameObject.Find("PersistentObject(Clone)"));
+        }
+
+        if (difficulty == DifficultySelection.EASY)
+        {
+            levelTimer = 300.0f;
+        }
+        else if (difficulty == DifficultySelection.MEDIUM)
+        {
+            levelTimer = 240.0f;
+        }
+        else
+        {
+            levelTimer = 180.0f;
         }
     }
 
@@ -115,6 +126,8 @@ public class NPCManager : MonoBehaviour {
                     countdownUI.SetCountdown("1");
             }
 
+            return;
+
         }
         else if (preGameCounter < 0)
         {
@@ -143,6 +156,12 @@ public class NPCManager : MonoBehaviour {
 
             return;
         }
+
+        if (levelTimer > 0)
+            levelTimer -= Time.deltaTime;
+        else
+            EndLevel();
+        ui.SetTime(levelTimer);
 
         int CellCount = friendlyList.Count + infectedList.Count;
 
