@@ -17,10 +17,22 @@ public class NucleusScript : MonoBehaviour {
 
     public bool attachedToCell = true;
 
+    private Renderer[] renderers;
+
+    public Color healthColour;
+    public Color damageColour;
+    public Color rangedColour;
+    public Color speedyColour;
+
 	// Use this for initialization
 	void Start () {
         playerLocation = GameObject.Find("Player").GetComponent<Transform>();
 	}
+
+    void Awake()
+    {
+        renderers = GetComponentsInChildren<Renderer>();
+    }
 	
     public void SetVelocity(Vector3 _inputVel)
     {
@@ -67,9 +79,52 @@ public class NucleusScript : MonoBehaviour {
     public void SetChromosome(Chromosome input)
     {
         myGenes = input;
-        Vector3 colour = new Vector3(input[1], input[0], input[2]);
-        colour.Normalize();
-        //GetComponent<Renderer>().material.color = new Color(colour.x, colour.y, colour.z, 1);
+
+        int[] best = {-1, -1};
+        float[] vals = { 0.0f, 0.0f };
+
+        // do for each gene
+        for (int i = 0; i < myGenes.Length(); i++)
+        {
+            // if there's a new best
+            if (myGenes[i] > vals[0])
+            {
+                // change best to second best
+                best[1] = best[0];
+                vals[1] = vals[0];
+
+                // update best
+                vals[0] = myGenes[i];
+                best[0] = i;
+            } else if (myGenes[i] > vals[1])
+            {
+                // update second best
+                vals[1] = myGenes[i];
+                best[1] = i;
+            }
+        }
+
+        for (int i = 0; i < 2; i++)
+        {
+            switch(best[i])
+            {
+                case 0:
+                    renderers[i].material.color = healthColour;
+                    break;
+
+                case 1:
+                    renderers[i].material.color = damageColour;
+                    break;
+
+                case 2:
+                    renderers[i].material.color = rangedColour;
+                    break;
+
+                case 3:
+                    renderers[i].material.color = speedyColour;
+                    break;
+            }
+        }
     }
 
     public Chromosome GetChromosome()
