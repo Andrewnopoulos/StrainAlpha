@@ -2,7 +2,15 @@
 using System.Collections;
 using System.Collections.Generic;
 
+public enum ObstacleType
+{
+    BOTTOM_UP,
+    RANDOM_MOVEMENT,
+}
+
 public class ObstacleManager : MonoBehaviour {
+
+    public ObstacleType type = ObstacleType.BOTTOM_UP;
 
     public float radius;
     public float spawnDelay;
@@ -27,13 +35,26 @@ public class ObstacleManager : MonoBehaviour {
 
 	void Start () 
     {
-        //spawn all initial obstacles
-        for (float i = transform.position.y; i < upperLimit; i += speed * spawnDelay)
+        if (type == ObstacleType.BOTTOM_UP)
         {
-            Vector3 randomPos = Random.insideUnitSphere * radius;
-            randomPos.y = i;
-            GameObject newObject = (GameObject)Instantiate(obstacle, randomPos, Quaternion.Euler(Random.Range(0.0f, 360.0f), Random.Range(0.0f, 360.0f), Random.Range(0.0f, 360.0f)));
-            objects.Add(newObject);
+            //spawn all initial obstacles
+            for (float i = transform.position.y; i < upperLimit; i += speed * spawnDelay)
+            {
+                Vector3 randomPos = Random.insideUnitSphere * radius;
+                randomPos.y = i;
+                GameObject newObject = (GameObject)Instantiate(obstacle, randomPos, Quaternion.Euler(Random.Range(0.0f, 360.0f), Random.Range(0.0f, 360.0f), Random.Range(0.0f, 360.0f)));
+                objects.Add(newObject);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < upperLimit; i++)
+            {
+                Vector3 randomPos = Random.insideUnitSphere * radius;
+                randomPos.y = 0;
+                GameObject newObject = (GameObject)Instantiate(obstacle, randomPos, Quaternion.Euler(Random.Range(0.0f, 360.0f), Random.Range(0.0f, 360.0f), Random.Range(0.0f, 360.0f)));
+                objects.Add(newObject);
+            }
         }
 	}
 	
@@ -41,25 +62,41 @@ public class ObstacleManager : MonoBehaviour {
     {
         spawnCooldown -= Time.deltaTime;
 
-        //update the current obstacles
-	    for (int i = objects.Count - 1; i >= 0; --i)
+        if (type == ObstacleType.BOTTOM_UP)
         {
-            objects[i].transform.position += velocity * Time.deltaTime;
-            objects[i].transform.Rotate(velocity * Time.deltaTime);
-            if (objects[i].transform.position.y > upperLimit)
+            //update the current obstacles
+            for (int i = objects.Count - 1; i >= 0; --i)
             {
-                Destroy(objects[i]);
-                objects.RemoveAt(i);
+                objects[i].transform.position += velocity * Time.deltaTime;
+                objects[i].transform.Rotate(velocity * Time.deltaTime);
+                if (objects[i].transform.position.y > upperLimit)
+                {
+                    Destroy(objects[i]);
+                    objects.RemoveAt(i);
+                }
+            }
+        }
+        else
+        {
+            //update the current obstacles
+            for (int i = objects.Count - 1; i >= 0; --i)
+            {
+                //objects[i].transform.position += velocity * Time.deltaTime;
+                objects[i].transform.Rotate(velocity * Time.deltaTime);
+                objects[i].transform.position = new Vector3(objects[i].transform.position.x, 0, objects[i].transform.position.z);
             }
         }
 
-        //spawn new obstacles
-        if (spawnCooldown <= 0)
+        if (type == ObstacleType.BOTTOM_UP)
         {
-            Vector3 randomPos = Random.insideUnitSphere * radius;
-            randomPos.y = transform.position.y;
-            GameObject newObject = (GameObject)Instantiate(obstacle, randomPos, Quaternion.Euler(Random.Range(0.0f, 360.0f), Random.Range(0.0f, 360.0f), Random.Range(0.0f, 360.0f)));
-            objects.Add(newObject);
+            //spawn new obstacles
+            if (spawnCooldown <= 0)
+            {
+                Vector3 randomPos = Random.insideUnitSphere * radius;
+                randomPos.y = transform.position.y;
+                GameObject newObject = (GameObject)Instantiate(obstacle, randomPos, Quaternion.Euler(Random.Range(0.0f, 360.0f), Random.Range(0.0f, 360.0f), Random.Range(0.0f, 360.0f)));
+                objects.Add(newObject);
+            }
         }
 
         if (spawnCooldown <= 0)
