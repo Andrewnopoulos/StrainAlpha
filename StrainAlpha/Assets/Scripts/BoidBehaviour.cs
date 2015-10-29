@@ -71,7 +71,9 @@ public class BoidBehaviour : MonoBehaviour
 
     void LaserBehaviour()
     {
+        var rotationVector = controller.transform.forward;
 
+        transform.position = controller.transform.position + new Vector3(Mathf.Cos(Time.time + rotationOffset), 0, Mathf.Sin(Time.time + rotationOffset)) * 2;
     }
 
     void ChargeBehaviour()
@@ -117,17 +119,8 @@ public class BoidBehaviour : MonoBehaviour
         }
     }
 
-    void Update()
+    void BoidUpdate()
     {
-        if (dying)
-        {
-            DyingBehaviour();
-            return;
-        }
-
-        ShieldBehaviour();
-        return;
-
         var currentPosition = transform.position;
         var currentRotation = transform.rotation;
 
@@ -171,5 +164,20 @@ public class BoidBehaviour : MonoBehaviour
 
         // Moves forawrd.
         transform.position = currentPosition + transform.forward * (velocity * Time.deltaTime);
+    }
+
+    void Update()
+    {
+        if (dying)
+        {
+            DyingBehaviour();
+            return;
+        }
+
+        ShieldBehaviour();
+        return;
+
+        BoidUpdate();
+
     }
 }

@@ -55,6 +55,11 @@ public class Chromosome {
         initGenes(0);
     }
 
+    public int Length()
+    {
+        return length;
+    }
+
     public Chromosome(float[] initValues)
     {
         if (initValues.Length == length)
