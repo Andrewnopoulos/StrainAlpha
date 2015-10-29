@@ -52,6 +52,8 @@ public class NPCManager : MonoBehaviour {
 
     private GameObject syringe;
 
+    private DifficultySelection difficulty;
+
     void Start()
     {
         for (int i = 0; i < InitialNeutralCells; i++)
@@ -79,6 +81,12 @@ public class NPCManager : MonoBehaviour {
         ui.gameObject.SetActive(false);
 
         preGameCounter = 4.0f;
+
+        if (GameObject.Find("PersistentObject(Clone)"))
+        {
+            difficulty = GameObject.Find("PersistentObject(Clone)").GetComponent<PersistentData>().difficulty;
+            Destroy(GameObject.Find("PersistentObject(Clone)"));
+        }
     }
 
     void Update()
@@ -241,6 +249,7 @@ public class NPCManager : MonoBehaviour {
         NucleusScript script = newNucleus.GetComponent<NucleusScript>();
         script.SetChromosome(inputCell.GetChromosome());
         script.SetVelocity(inputCell.velocity);
+        script.attachedToCell = false;
     }
 
     public void AddToKillList(CellScript npc)
