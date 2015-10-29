@@ -60,6 +60,8 @@ public class BossScript : MonoBehaviour {
     private PlayerUI ui;
 
     private BossLaser laser;
+    private Renderer chargerRenderer;
+    private Collider chargerCollider;
 
     private bool roaming = false;
 
@@ -82,6 +84,11 @@ public class BossScript : MonoBehaviour {
 
     private float targetScale = 1.0f;
 
+    private bool followingPlayer;
+
+    private float chargeTime;
+    private Vector3 chargeDir;
+
 	// Use this for initialization
 	void Start () {
         playerLocation = GameObject.Find("Player").transform;
@@ -94,14 +101,27 @@ public class BossScript : MonoBehaviour {
 
         laser = gameObject.GetComponentInChildren<BossLaser>();
 
+        chargerRenderer = GameObject.Find("Charger").GetComponent<Renderer>();
+        chargerCollider = GameObject.Find("Charger").GetComponent<Collider>();
+
         cocoonCollider = gameObject.GetComponentsInChildren<Collider>()[1];
         cocoonRenderer = gameObject.GetComponentInChildren<MeshRenderer>();
 
         bossType = BossType.NULL;
+
+        followingPlayer = false;
+
+        chargerRenderer.enabled = false;
+        chargerCollider.enabled = false;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+
+        if (followingPlayer)
+        {
+            FollowPlayer();
+        }
 
         scale += (targetScale - scale) * (Time.deltaTime);
 
@@ -145,6 +165,21 @@ public class BossScript : MonoBehaviour {
                         AttackLaser();
                         break;
                     }
+                case AttackType.SHIELD:
+                    {
+                        Shield();
+                        break;
+                    }
+                case AttackType.CHARGE:
+                    {
+                        Charge();
+                        break;
+                    }
+                case AttackType.EXPLOSIVE:
+                    {
+                        Explosive();
+                        break;
+                    }
                 case AttackType.SPAWNCELLS:
                     {
                         SpawnCells();
@@ -180,6 +215,12 @@ public class BossScript : MonoBehaviour {
             skinMeshRenderer.SetBlendShapeWeight(0, 100);
             bossType = BossType.DAMAGE;
         }
+    }
+
+    void FollowPlayer()
+    {
+        Vector3 delta = Vector3.Normalize(playerLocation.position - transform.position);
+        transform.position += (delta * speed) * Time.deltaTime;
     }
 
     void LateUpdate()
@@ -275,8 +316,6 @@ public class BossScript : MonoBehaviour {
 
     private void AttackLaser()
     {
-        //shooter.transform.Rotate(new Vector3(0, 1, 0), 360 * Time.deltaTime);
-
         attackCooldown -= Time.deltaTime;
         if (attackCooldown <= 0)
         {
@@ -287,21 +326,53 @@ public class BossScript : MonoBehaviour {
 
     private void Shield()
     {
-
+        attackCooldown -= Time.deltaTime;
+        if (attackCooldown <= 0)
+        {
+            attackType = AttackType.DORMANT;
+        }
     }
 
     private void Charge()
     {
+        followingPlayer = false;
 
+        chargeTime -= Time.deltaTime;
+        if (chargeTime > 0)
+        {
+            //choose direction to charge in
+            //chargeDir = Vector3.Normalize(playerLocation.position - transform.position);
+            shooter.transform.LookAt(playerLocation.position);
+        }
+        else
+        {
+            //charge in direction
+            transform.position += (shooter.transform.forward * speed * 4.0f) * Time.deltaTime;
+        }
+
+        attackCooldown -= Time.deltaTime;
+        if (attackCooldown <= 0)
+        {
+            attackType = AttackType.DORMANT;
+
+            chargerCollider.enabled = false;
+            chargerRenderer.enabled = false;
+        }
     }
 
     private void Explosive()
     {
-
+        attackCooldown -= Time.deltaTime;
+        if (attackCooldown <= 0)
+        {
+            attackType = AttackType.DORMANT;
+        }
     }
 
     private void Dormant()
     {
+        followingPlayer = false;
+
         dormantCountdown -= Time.deltaTime;
         if (dormantCountdown <= 0)
         {
@@ -309,11 +380,11 @@ public class BossScript : MonoBehaviour {
             switch (bossType)
             {
                 case BossType.HEALTH:
-                    specialAttack = AttackType.LASER;
+                    specialAttack = AttackType.CHARGE;
                     break;
 
                 case BossType.SPEED:
-                    specialAttack = AttackType.LASER;
+                    specialAttack = AttackType.CHARGE;
                     break;
 
                 case BossType.DAMAGE:
@@ -361,7 +432,6 @@ public class BossScript : MonoBehaviour {
             else if (rand == 4)
             {
                 attackType = specialAttack;
-                //laser.SetActive(true);
                 attackCooldown = attackLength;
             }
             else
@@ -388,8 +458,13 @@ public class BossScript : MonoBehaviour {
             }
             else if (attackType == AttackType.CHARGE)
             {
+                chargeTime = 1.0f;
 
+                chargerCollider.enabled = true;
+                chargerRenderer.enabled = true;
             }
+
+            followingPlayer = true;
         }
     }
 

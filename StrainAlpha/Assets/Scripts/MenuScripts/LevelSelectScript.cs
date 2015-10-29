@@ -22,6 +22,8 @@ public class LevelSelectScript : MonoBehaviour {
     public GameObject switchSound;
     public MenuScript manager;
 
+    public GameObject levelData;
+
     private LevelSelection currentSelectedLevel;
     private DifficultySelection currentSelectedDifficulty;
 
@@ -145,6 +147,11 @@ public class LevelSelectScript : MonoBehaviour {
             if (currentSelectedDifficulty != DifficultySelection.NULL)
             {
                 //start level with chosen attributes
+                GameObject persistentObject = (GameObject)Instantiate(levelData);
+                PersistentData data = persistentObject.GetComponent<PersistentData>();
+                data.level = currentSelectedLevel;
+                data.difficulty = currentSelectedDifficulty;
+
                 Application.LoadLevel("TestScene");
             }
         }
