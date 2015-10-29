@@ -45,6 +45,8 @@ public class NPCManager : MonoBehaviour {
     public int bossSpawnKillCount;
 
     public int currentKills;
+    private float killDecayRate = 2.0f;
+    private float currentKillDecayRate = 0.0f;
 
     private bool bossSpawn = false;
 
@@ -92,11 +94,11 @@ public class NPCManager : MonoBehaviour {
         }
         else if (difficulty == DifficultySelection.MEDIUM)
         {
-            levelTimer = 240.0f;
+            levelTimer = 210.0f;
         }
         else
         {
-            levelTimer = 180.0f;
+            levelTimer = 150.0f;
         }
     }
 
@@ -162,6 +164,17 @@ public class NPCManager : MonoBehaviour {
         else
             EndLevel();
         ui.SetTime(levelTimer);
+
+        if (currentKills > 0 && currentKillDecayRate <= 0)
+        {
+            currentKillDecayRate = killDecayRate;
+            currentKills--;
+        }
+
+        if (currentKillDecayRate > 0)
+            currentKillDecayRate -= Time.deltaTime;
+        else
+            currentKillDecayRate = killDecayRate;
 
         int CellCount = friendlyList.Count + infectedList.Count;
 

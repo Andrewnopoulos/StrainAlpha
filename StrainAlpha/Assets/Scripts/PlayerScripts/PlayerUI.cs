@@ -98,6 +98,8 @@ public class PlayerUI : MonoBehaviour {
         timeTextSecond.text = ((int)(time - (60.0f * (float)((int)(time / 60.0f))))).ToString();
         timeTextMilli.text = ((int)(100 * ((time - ((60.0f * (float)((int)(time / 60.0f))))) - ((float)((int)(time - (60.0f * (float)((int)(time / 60.0f))))))))).ToString();
 
+        NeatenScore();
+
         scoreText.text = score.ToString();
 
         scoreSize -= (scoreSize - baseScoreSize) * Time.deltaTime * 2.0f;
@@ -146,6 +148,18 @@ public class PlayerUI : MonoBehaviour {
     void LateUpdate()
     {
         anchor.transform.position = mainCamera.WorldToScreenPoint(player.transform.position);
+    }
+
+    void NeatenScore()
+    {
+        if (timeTextSecond.text.Length == 1)
+        {
+            timeTextSecond.text = "0" + timeTextSecond.text;
+        }
+        if (timeTextMilli.text.Length == 1)
+        {
+            timeTextMilli.text = "0" + timeTextMilli.text;
+        }
     }
 
     void SetHealth()
