@@ -4,10 +4,8 @@ using System.Collections;
 public class PersistentData : MonoBehaviour {
 
     //public variables to exist through scenes
-    public float levelTime;
-    public float totalTime;
-    public float levelKills;
-    public float totalKills;
+    public LevelSelection level;
+    public DifficultySelection difficulty;
 
 	// Use this for initialization
 	void Awake () {
