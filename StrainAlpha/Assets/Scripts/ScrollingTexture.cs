@@ -3,7 +3,7 @@ using System.Collections;
 
 public class ScrollingTexture : MonoBehaviour {
 		public float scrollSpeed = 0.5F;
-		public Renderer rend;
+		private Renderer rend;
 		void Start() {
 			rend = GetComponent<Renderer>();
 		}
