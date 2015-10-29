@@ -21,6 +21,9 @@ public class PlayerUI : MonoBehaviour {
     private Image damageGene;
     private Image speedGene;
 
+    private Image threatBar;
+    private float threat;
+
     private int score = 0;
     private Text scoreText;
     private float baseScoreSize = 0.4f;
@@ -76,6 +79,9 @@ public class PlayerUI : MonoBehaviour {
         healthImages[14] = allImages[23];
         healthImages[15] = allImages[24];
 
+        threatBar = allImages[26];
+        threat = 0.0f;
+
         scoreText = gameObject.GetComponentsInChildren<Text>()[0];
         timeTextMinute = gameObject.GetComponentsInChildren<Text>()[1];
         timeTextSecond = gameObject.GetComponentsInChildren<Text>()[2];
@@ -99,6 +105,8 @@ public class PlayerUI : MonoBehaviour {
         timeTextMilli.text = ((int)(100 * ((time - ((60.0f * (float)((int)(time / 60.0f))))) - ((float)((int)(time - (60.0f * (float)((int)(time / 60.0f))))))))).ToString();
 
         NeatenScore();
+
+        threatBar.transform.localScale = new Vector3(threat, 1, 1);
 
         scoreText.text = score.ToString();
 
@@ -313,5 +321,10 @@ public class PlayerUI : MonoBehaviour {
     public void SetTime(float _time)
     {
         time = _time;
+    }
+
+    public void SetThreat(float _threat)
+    {
+        threat = _threat;
     }
 }
