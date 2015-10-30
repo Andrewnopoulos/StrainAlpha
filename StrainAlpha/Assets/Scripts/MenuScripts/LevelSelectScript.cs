@@ -152,7 +152,12 @@ public class LevelSelectScript : MonoBehaviour {
                 data.level = currentSelectedLevel;
                 data.difficulty = currentSelectedDifficulty;
 
-                Application.LoadLevel("TestScene");
+                if (currentSelectedLevel == LevelSelection.LEVEL1)
+                    Application.LoadLevel("TestScene");
+                else if (currentSelectedLevel == LevelSelection.LEVEL2)
+                    Application.LoadLevel("Level 1");
+                else if (currentSelectedLevel == LevelSelection.LEVEL3)
+                    Application.LoadLevel("Level 2");
             }
         }
 
