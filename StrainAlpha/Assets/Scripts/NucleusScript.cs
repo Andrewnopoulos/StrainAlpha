@@ -42,7 +42,10 @@ public class NucleusScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        if (!attachedToCell)
+        if (attachedToCell)
+        {
+            transform.position = GetComponentInParent<Transform>().position;
+        }else
         {
             if (Vector3.Distance(playerLocation.position, transform.position) < magnetismRadius || attracted)
             {
