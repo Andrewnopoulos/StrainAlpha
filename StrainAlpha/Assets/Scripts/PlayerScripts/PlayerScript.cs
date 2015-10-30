@@ -702,12 +702,15 @@ public class PlayerScript : MonoBehaviour {
     {
         if (other.gameObject.layer == nucleusLayer)
         {
-            float[] geneDeltas = playerGenes.AddChromosome(other.GetComponent<NucleusScript>().GetChromosome());
-            SpawnNanos(geneDeltas);
-            Destroy(other.gameObject);
-            
-            UpdateStats();
-            return;
+            if (!other.gameObject.GetComponent<NucleusScript>().attachedToCell)
+            {
+                float[] geneDeltas = playerGenes.AddChromosome(other.GetComponent<NucleusScript>().GetChromosome());
+                SpawnNanos(geneDeltas);
+                Destroy(other.gameObject);
+
+                UpdateStats();
+                return;
+            }
         }
     }
 
