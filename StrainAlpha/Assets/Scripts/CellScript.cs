@@ -34,6 +34,8 @@ public class CellScript : MonoBehaviour {
 
     private BlendColourScript blendShapeChild;
 
+    private NucleusScript childNucleus;
+
     public InfectedSpecialType infectedType = InfectedSpecialType.REGULAR;
 
     public float ScalingHealth = 5.0f;
@@ -123,6 +125,7 @@ public class CellScript : MonoBehaviour {
 	void Start () {
         playerLocation = GameObject.Find("Player").transform;
         futureLocation = GameObject.Find("Player").GetComponent<PlayerScript>().PlayerFutureTransform();
+        
         targetLocation = transform;
 	}
 
@@ -273,6 +276,8 @@ public class CellScript : MonoBehaviour {
         cellStateMachine.AddTransition(InfectedCellState.SEARCHING, InfectedCellState.DORMANT, GoDormant);
 
         blendShapeChild = GetComponentInChildren<BlendColourScript>();
+
+        childNucleus = GetComponentInChildren<NucleusScript>();
 
     }
 
@@ -633,6 +638,8 @@ public class CellScript : MonoBehaviour {
         damageChromosome = myGenes[1];
         rangedChromosome = myGenes[2];
         speedChromosome = myGenes[3];
+
+        childNucleus.SetChromosome(myGenes);
 
         SetBlendShapes();
     }
