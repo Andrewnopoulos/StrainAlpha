@@ -176,6 +176,8 @@ public class NPCManager : MonoBehaviour {
         else
             currentKillDecayRate = killDecayRate;
 
+        ui.SetThreat((float)currentKills / (float)bossSpawnKillCount);
+
         int CellCount = friendlyList.Count + infectedList.Count;
 
         SpawnUrgency = (float)CellCount / LargeNumberOfCells * SpawnUrgencyScale;
