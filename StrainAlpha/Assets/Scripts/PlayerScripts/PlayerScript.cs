@@ -107,6 +107,8 @@ public class PlayerScript : MonoBehaviour {
     private Vector3 targetPoint;
 
     public bool spawning = true;
+
+    private Vector3 tiltAxis = Vector3.zero;
     void Awake()
     {
         spawnPoint = new Vector3(0.0f, 183.4f, -191.3f);
@@ -335,6 +337,13 @@ public class PlayerScript : MonoBehaviour {
         characterController.Move(movementVector * speed * moveDamp * Time.deltaTime);
         characterController.transform.position = new Vector3(characterController.transform.position.x, 0, characterController.transform.position.z);
 
+        if (tiltAxis != Vector3.zero)
+        {
+            transform.Rotate(tiltAxis, -20.0f);
+        }
+
+        tiltAxis = Vector3.Cross(movementVector, new Vector3(0, 1, 0));
+
         if (isControllerConnected)
         {
             lookVector.z = -Input.GetAxis("RightStickY");
@@ -363,6 +372,7 @@ public class PlayerScript : MonoBehaviour {
             {
                 bombDrainSpeed = 0.05f;
             }
+            transform.Rotate(tiltAxis, 20.0f);
         }
         else
         {
@@ -393,6 +403,7 @@ public class PlayerScript : MonoBehaviour {
             {
                 bombDrainSpeed = 0.05f;
             }
+            transform.Rotate(tiltAxis, 20.0f);
         }
 
         if (isControllerConnected)
