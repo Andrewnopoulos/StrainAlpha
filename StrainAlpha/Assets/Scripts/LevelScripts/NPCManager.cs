@@ -9,6 +9,8 @@ public class NPCManager : MonoBehaviour {
 
     private float preGameCounter;
 
+    public GameObject levelData;
+
     public GameObject cell;
 
     public GameObject nucleus;
@@ -90,15 +92,15 @@ public class NPCManager : MonoBehaviour {
 
         if (difficulty == DifficultySelection.EASY)
         {
-            levelTimer = 300.0f;
+            levelTimer = 240.0f;
         }
         else if (difficulty == DifficultySelection.MEDIUM)
         {
-            levelTimer = 210.0f;
+            levelTimer = 180.0f;
         }
         else
         {
-            levelTimer = 150.0f;
+            levelTimer = 120.0f;
         }
     }
 
@@ -207,6 +209,16 @@ public class NPCManager : MonoBehaviour {
             if (endLevelTime <= 0)
                 EndLevel();
         }
+    }
+
+    public void ReloadLevel()
+    {
+        //save off DifficultySelection
+        GameObject persistentObject = (GameObject)Instantiate(levelData);
+        PersistentData data = persistentObject.GetComponent<PersistentData>();
+        data.difficulty = difficulty;
+
+        Application.LoadLevel(Application.loadedLevel);
     }
 
     void EndLevel()

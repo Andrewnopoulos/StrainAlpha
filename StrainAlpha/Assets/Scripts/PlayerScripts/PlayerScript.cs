@@ -14,6 +14,10 @@ public class PlayerScript : MonoBehaviour {
 
     private bool isControllerConnected = false;
 
+    private NPCManager manager;
+
+    public GameObject levelData;
+
     public GameObject bulletPrefab;
 
     private PlayerUI ui;
@@ -94,19 +98,14 @@ public class PlayerScript : MonoBehaviour {
 
     private Transform futurePosition;
 
-    public BoidController[] boidControllers;
-
-    private float[] boidSpawnValues;
-
-    [Range(0.001f, 0.5f)]
-    public float boidSpawnThreshold = 0.1f;
-
     Chromosome playerGenes;
 
     private Vector3 spawnPoint;
     private Vector3 targetPoint;
 
     public bool spawning = true;
+
+    private Vector3 tiltAxis = Vector3.zero;
     void Awake()
     {
         spawnPoint = new Vector3(0.0f, 183.4f, -191.3f);
@@ -122,7 +121,6 @@ public class PlayerScript : MonoBehaviour {
         speed = maxSpeed;
         fireRate = maxFireRate;
 
-        boidSpawnValues = new float[4] { 0, 0, 0, 0 };
 
         energy = maxEnergy;
 
@@ -131,6 +129,8 @@ public class PlayerScript : MonoBehaviour {
 
 	void Start () 
     {
+        manager = GameObject.Find("Main Camera").GetComponent<NPCManager>();
+
         characterController = GetComponent<CharacterController>();
         //weaponText = canvas.GetComponentInChildren<Text>();
 
@@ -138,9 +138,6 @@ public class PlayerScript : MonoBehaviour {
         laser = gameObject.GetComponentInChildren<LaserScript>();
         charge = gameObject.GetComponentInChildren<ChargeScript>();
         bomb = gameObject.GetComponentInChildren<BombScript>();
-
-        //   shieldBoidController = gameObject.GetComponentInChildren<BoidController>();
-        boidControllers = GameObject.FindObjectsOfType<BoidController>();
 
         laserSound = gameObject.GetComponent<AudioSource>();
 
@@ -251,8 +248,6 @@ public class PlayerScript : MonoBehaviour {
             shieldActive = false;
             playerGenes[0] = 0.0f;
             shield.SetActive(false);
-
-            boidControllers[0].KillBoids();
         }
 
         if (bombActive && playerGenes[1] > 0)
@@ -335,6 +330,13 @@ public class PlayerScript : MonoBehaviour {
         characterController.Move(movementVector * speed * moveDamp * Time.deltaTime);
         characterController.transform.position = new Vector3(characterController.transform.position.x, 0, characterController.transform.position.z);
 
+        if (tiltAxis != Vector3.zero)
+        {
+            transform.Rotate(tiltAxis, -20.0f);
+        }
+
+        tiltAxis = Vector3.Cross(movementVector, new Vector3(0, 1, 0));
+
         if (isControllerConnected)
         {
             lookVector.z = -Input.GetAxis("RightStickY");
@@ -363,6 +365,7 @@ public class PlayerScript : MonoBehaviour {
             {
                 bombDrainSpeed = 0.05f;
             }
+            transform.Rotate(tiltAxis, 20.0f);
         }
         else
         {
@@ -393,6 +396,7 @@ public class PlayerScript : MonoBehaviour {
             {
                 bombDrainSpeed = 0.05f;
             }
+            transform.Rotate(tiltAxis, 20.0f);
         }
 
         if (isControllerConnected)
@@ -589,7 +593,7 @@ public class PlayerScript : MonoBehaviour {
 
     void Die()
     {
-        Application.LoadLevel(Application.loadedLevel);
+        manager.ReloadLevel();
     }
 
     /// <summary>
@@ -705,28 +709,10 @@ public class PlayerScript : MonoBehaviour {
             if (!other.gameObject.GetComponent<NucleusScript>().attachedToCell)
             {
                 float[] geneDeltas = playerGenes.AddChromosome(other.GetComponent<NucleusScript>().GetChromosome());
-                SpawnNanos(geneDeltas);
                 Destroy(other.gameObject);
 
                 UpdateStats();
                 return;
-            }
-        }
-    }
-
-    void SpawnNanos(float[] geneChanges)
-    {
-        for (int i = 0; i < 4; i++)
-        {
-            boidSpawnValues[i] += geneChanges[i];
-
-            if (boidSpawnValues[i] > boidSpawnThreshold)
-            {
-                if (playerGenes[i] < 1.0f)
-                {
-                    boidControllers[i].Spawn();
-                }
-                boidSpawnValues[i] -= boidSpawnThreshold;
             }
         }
     }
