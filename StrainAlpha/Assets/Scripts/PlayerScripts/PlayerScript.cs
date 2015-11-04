@@ -14,6 +14,10 @@ public class PlayerScript : MonoBehaviour {
 
     private bool isControllerConnected = false;
 
+    private NPCManager manager;
+
+    public GameObject levelData;
+
     public GameObject bulletPrefab;
 
     private PlayerUI ui;
@@ -125,6 +129,8 @@ public class PlayerScript : MonoBehaviour {
 
 	void Start () 
     {
+        manager = GameObject.Find("Main Camera").GetComponent<NPCManager>();
+
         characterController = GetComponent<CharacterController>();
         //weaponText = canvas.GetComponentInChildren<Text>();
 
@@ -587,7 +593,7 @@ public class PlayerScript : MonoBehaviour {
 
     void Die()
     {
-        Application.LoadLevel(Application.loadedLevel);
+        manager.ReloadLevel();
     }
 
     /// <summary>
