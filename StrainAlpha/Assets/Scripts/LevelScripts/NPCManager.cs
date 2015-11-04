@@ -90,15 +90,15 @@ public class NPCManager : MonoBehaviour {
 
         if (difficulty == DifficultySelection.EASY)
         {
-            levelTimer = 300.0f;
+            levelTimer = 240.0f;
         }
         else if (difficulty == DifficultySelection.MEDIUM)
         {
-            levelTimer = 210.0f;
+            levelTimer = 180.0f;
         }
         else
         {
-            levelTimer = 150.0f;
+            levelTimer = 120.0f;
         }
     }
 
