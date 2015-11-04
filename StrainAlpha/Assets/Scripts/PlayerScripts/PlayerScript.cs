@@ -94,13 +94,6 @@ public class PlayerScript : MonoBehaviour {
 
     private Transform futurePosition;
 
-    public BoidController[] boidControllers;
-
-    private float[] boidSpawnValues;
-
-    [Range(0.001f, 0.5f)]
-    public float boidSpawnThreshold = 0.1f;
-
     Chromosome playerGenes;
 
     private Vector3 spawnPoint;
@@ -122,7 +115,6 @@ public class PlayerScript : MonoBehaviour {
         speed = maxSpeed;
         fireRate = maxFireRate;
 
-        boidSpawnValues = new float[4] { 0, 0, 0, 0 };
 
         energy = maxEnergy;
 
@@ -138,9 +130,6 @@ public class PlayerScript : MonoBehaviour {
         laser = gameObject.GetComponentInChildren<LaserScript>();
         charge = gameObject.GetComponentInChildren<ChargeScript>();
         bomb = gameObject.GetComponentInChildren<BombScript>();
-
-        //   shieldBoidController = gameObject.GetComponentInChildren<BoidController>();
-        boidControllers = GameObject.FindObjectsOfType<BoidController>();
 
         laserSound = gameObject.GetComponent<AudioSource>();
 
@@ -251,8 +240,6 @@ public class PlayerScript : MonoBehaviour {
             shieldActive = false;
             playerGenes[0] = 0.0f;
             shield.SetActive(false);
-
-            boidControllers[0].KillBoids();
         }
 
         if (bombActive && playerGenes[1] > 0)
@@ -705,28 +692,10 @@ public class PlayerScript : MonoBehaviour {
             if (!other.gameObject.GetComponent<NucleusScript>().attachedToCell)
             {
                 float[] geneDeltas = playerGenes.AddChromosome(other.GetComponent<NucleusScript>().GetChromosome());
-                SpawnNanos(geneDeltas);
                 Destroy(other.gameObject);
 
                 UpdateStats();
                 return;
-            }
-        }
-    }
-
-    void SpawnNanos(float[] geneChanges)
-    {
-        for (int i = 0; i < 4; i++)
-        {
-            boidSpawnValues[i] += geneChanges[i];
-
-            if (boidSpawnValues[i] > boidSpawnThreshold)
-            {
-                if (playerGenes[i] < 1.0f)
-                {
-                    boidControllers[i].Spawn();
-                }
-                boidSpawnValues[i] -= boidSpawnThreshold;
             }
         }
     }

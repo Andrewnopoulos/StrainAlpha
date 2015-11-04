@@ -332,6 +332,10 @@ public class CellScript : MonoBehaviour {
                 velocity = velocity / velocity.magnitude * MaxSpeed;
             }
         }
+        else
+        {
+
+        }
 
         // deccelerate moving thingy
         if (cellStateMachine.GetState() == InfectedCellState.DORMANT)
