@@ -106,6 +106,11 @@ public class NPCManager : MonoBehaviour {
 
     void Update()
     {
+        if (Input.GetButtonDown("Start"))
+        {
+            Application.LoadLevel("MainMenu");
+        }
+
         if (preGameCounter > 0)
         {
             preGameCounter -= Time.deltaTime;

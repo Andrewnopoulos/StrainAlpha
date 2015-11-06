@@ -1,0 +1,230 @@
+fileFormatVersion: 2
+guid: 2cd9c8deea3a7974ab50ba87c174f2cb
+timeCreated: 1446767323
+licenseType: Free
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: Body
+    100002: Body2
+    100004: //RootNode
+    100006: L_Arm
+    100008: L_Arm1
+    100010: L_ArmBone
+    100012: L_ArmBone 1
+    100014: L_Claw
+    100016: L_Hand
+    100018: L_Hand 1
+    100020: L_JointBone
+    100022: L_JointBone2
+    100024: L_LeftPlate
+    100026: L_MiddleBone
+    100028: L_Plate
+    100030: L_Plate 1
+    100032: L_RightPlate
+    100034: L_Screw
+    100036: L_Screw 1
+    100038: L_ShieldAttachment
+    100040: L_Shoulder
+    100042: L_Wrist
+    100044: Lens
+    100046: R_Arm
+    100048: R_Arm1
+    100050: R_ArmBone
+    100052: R_ArmBone 1
+    100054: R_Claw
+    100056: R_Hand
+    100058: R_Hand 1
+    100060: R_JointBone
+    100062: R_JointBone2
+    100064: R_LeftPlate
+    100066: R_MiddleBone
+    100068: R_Plate
+    100070: R_Plate 1
+    100072: R_Screw
+    100074: R_Screw 1
+    100076: R_ShieldAttachment
+    100078: R_Shoulder
+    100080: R_Wrist
+    100082: RRightPlate
+    100084: Top_Shell15
+    100086: Top_Shell26
+    100088: Top_Shell27
+    100090: Top_Shell28
+    100092: Top_Shell29
+    400000: Body
+    400002: Body2
+    400004: //RootNode
+    400006: L_Arm
+    400008: L_Arm1
+    400010: L_ArmBone
+    400012: L_ArmBone 1
+    400014: L_Claw
+    400016: L_Hand
+    400018: L_Hand 1
+    400020: L_JointBone
+    400022: L_JointBone2
+    400024: L_LeftPlate
+    400026: L_MiddleBone
+    400028: L_Plate
+    400030: L_Plate 1
+    400032: L_RightPlate
+    400034: L_Screw
+    400036: L_Screw 1
+    400038: L_ShieldAttachment
+    400040: L_Shoulder
+    400042: L_Wrist
+    400044: Lens
+    400046: R_Arm
+    400048: R_Arm1
+    400050: R_ArmBone
+    400052: R_ArmBone 1
+    400054: R_Claw
+    400056: R_Hand
+    400058: R_Hand 1
+    400060: R_JointBone
+    400062: R_JointBone2
+    400064: R_LeftPlate
+    400066: R_MiddleBone
+    400068: R_Plate
+    400070: R_Plate 1
+    400072: R_Screw
+    400074: R_Screw 1
+    400076: R_ShieldAttachment
+    400078: R_Shoulder
+    400080: R_Wrist
+    400082: RRightPlate
+    400084: Top_Shell15
+    400086: Top_Shell26
+    400088: Top_Shell27
+    400090: Top_Shell28
+    400092: Top_Shell29
+    4300000: Body
+    4300002: Top_Shell15
+    4300004: Top_Shell26
+    4300006: Top_Shell27
+    4300008: Top_Shell28
+    4300010: Top_Shell29
+    4300012: Lens
+    4300014: R_Shoulder
+    4300016: R_ArmBone
+    4300018: R_JointBone
+    4300020: R_JointBone2
+    4300022: R_MiddleBone
+    4300024: R_Wrist
+    4300026: R_Screw
+    4300028: R_Plate
+    4300030: R_Plate
+    4300032: R_Screw
+    4300034: R_Hand
+    4300036: R_ShieldAttachment
+    4300038: R_Claw
+    4300040: L_Shoulder
+    4300042: L_ArmBone
+    4300044: L_JointBone
+    4300046: L_JointBone2
+    4300048: L_MiddleBone
+    4300050: L_Wrist
+    4300052: L_Screw
+    4300054: L_Plate
+    4300056: L_Plate
+    4300058: L_Screw
+    4300060: L_Hand
+    4300062: L_ShieldAttachment
+    4300064: L_Claw
+    9500000: //RootNode
+    13700000: Body
+    13700002: L_ArmBone
+    13700004: L_Claw
+    13700006: L_Hand 1
+    13700008: L_JointBone
+    13700010: L_JointBone2
+    13700012: L_MiddleBone
+    13700014: L_Plate
+    13700016: L_Plate 1
+    13700018: L_Screw
+    13700020: L_Screw 1
+    13700022: L_ShieldAttachment
+    13700024: L_Shoulder
+    13700026: L_Wrist
+    13700028: Lens
+    13700030: R_ArmBone
+    13700032: R_Claw
+    13700034: R_Hand 1
+    13700036: R_JointBone
+    13700038: R_JointBone2
+    13700040: R_MiddleBone
+    13700042: R_Plate
+    13700044: R_Plate 1
+    13700046: R_Screw
+    13700048: R_Screw 1
+    13700050: R_ShieldAttachment
+    13700052: R_Shoulder
+    13700054: R_Wrist
+    13700056: Top_Shell15
+    13700058: Top_Shell26
+    13700060: Top_Shell27
+    13700062: Top_Shell28
+    13700064: Top_Shell29
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

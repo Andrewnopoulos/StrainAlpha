@@ -195,26 +195,30 @@ public class BossScript : MonoBehaviour {
         float _speed = speed / basespeed * 100.0f;
         float _atkspeed = atkSpeed / baseAtkSpeed * 100.0f;
         float _damage = damage / basedamage * 100.0f;
-        if (_health > _speed && _health > _damage && _health > _atkspeed)
-        {
-            skinMeshRenderer.SetBlendShapeWeight(3, 100);
-            bossType = BossType.HEALTH;
-        }
-        else if (_speed > _atkspeed && _speed > _damage && _speed > _health)
-        {
-            skinMeshRenderer.SetBlendShapeWeight(2, 100);
-            bossType = BossType.SPEED;
-        }
-        else if (_atkspeed > _damage && _atkspeed > _speed && _atkspeed > _health)
-        {
-            skinMeshRenderer.SetBlendShapeWeight(1, 100);
-            bossType = BossType.RANGE;
-        }
-        else
-        {
-            skinMeshRenderer.SetBlendShapeWeight(0, 100);
-            bossType = BossType.DAMAGE;
-        }
+        //if (_health > _speed && _health > _damage && _health > _atkspeed)
+        //{
+        //    skinMeshRenderer.SetBlendShapeWeight(3, 100);
+        //    bossType = BossType.HEALTH;
+        //}
+        //else if (_speed > _atkspeed && _speed > _damage && _speed > _health)
+        //{
+        //    skinMeshRenderer.SetBlendShapeWeight(2, 100);
+        //    bossType = BossType.SPEED;
+        //}
+        //else if (_atkspeed > _damage && _atkspeed > _speed && _atkspeed > _health)
+        //{
+        //    skinMeshRenderer.SetBlendShapeWeight(1, 100);
+        //    bossType = BossType.RANGE;
+        //}
+        //else
+        //{
+        //    skinMeshRenderer.SetBlendShapeWeight(0, 100);
+        //    bossType = BossType.DAMAGE;
+        //}
+
+        //cos damage looks best
+        skinMeshRenderer.SetBlendShapeWeight(0, 100);
+        bossType = BossType.DAMAGE;
     }
 
     void FollowPlayer()
