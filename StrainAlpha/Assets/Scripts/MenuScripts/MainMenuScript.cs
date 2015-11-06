@@ -117,6 +117,10 @@ public class MainMenuScript : MonoBehaviour {
                         manager.Load("LevelSelect");
                         gameObject.SetActive(false);
                         break;
+
+                    case MenuSelection.CREDITS:
+                        Application.LoadLevel("toplel");
+                        break;
                         
                     case MenuSelection.EXIT:
                         Application.Quit();

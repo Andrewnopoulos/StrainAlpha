@@ -34,6 +34,10 @@ public class PlayerUI : MonoBehaviour {
     private Text timeTextMilli;
     private float time = 0.0f;
 
+    private Text warning;
+    private float warningTime = 0.0f;
+    private bool bossSpawned = false;
+
     private float previousHealth;
     private float previousRange;
     private float previousDamage;
@@ -87,6 +91,8 @@ public class PlayerUI : MonoBehaviour {
         timeTextSecond = gameObject.GetComponentsInChildren<Text>()[2];
         timeTextMilli = gameObject.GetComponentsInChildren<Text>()[3];
 
+        warning = gameObject.GetComponentsInChildren<Text>()[6];
+
         player = GameObject.Find("Player").GetComponent<PlayerScript>();
 
         anchor = GameObject.Find("PlayerAnchor");
@@ -99,6 +105,17 @@ public class PlayerUI : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+        if (warningTime > 0.0f)
+        {
+            warningTime -= Time.deltaTime;
+
+            warning.color = new Color(1, 0, 0, Mathf.Sin(warningTime * 8.0f));
+        }
+        else if (warningTime < 0.0f)
+        {
+            warning.text = "";
+            warningTime = 0.0f;
+        }
         //cast heaven
         timeTextMinute.text = ((int)(time / 60.0f)).ToString();
         timeTextSecond.text = ((int)(time - (60.0f * (float)((int)(time / 60.0f))))).ToString();
@@ -326,5 +343,15 @@ public class PlayerUI : MonoBehaviour {
     public void SetThreat(float _threat)
     {
         threat = _threat;
+
+        if (threat >= 1.0f && !bossSpawned)
+        {
+            threatBar.enabled = false;
+
+            warningTime = 2.0f;
+            warning.text = "BOSS INCOMING";
+
+            bossSpawned = true;
+        }
     }
 }
