@@ -38,6 +38,8 @@ public class PlayerUI : MonoBehaviour {
     private float warningTime = 0.0f;
     private bool bossSpawned = false;
 
+    private Image warningBG;
+
     private float previousHealth;
     private float previousRange;
     private float previousDamage;
@@ -86,6 +88,9 @@ public class PlayerUI : MonoBehaviour {
         threatBar = allImages[26];
         threat = 0.0f;
 
+        warningBG = allImages[27];
+        warningBG.enabled = false;
+
         scoreText = gameObject.GetComponentsInChildren<Text>()[0];
         timeTextMinute = gameObject.GetComponentsInChildren<Text>()[1];
         timeTextSecond = gameObject.GetComponentsInChildren<Text>()[2];
@@ -109,12 +114,13 @@ public class PlayerUI : MonoBehaviour {
         {
             warningTime -= Time.deltaTime;
 
-            warning.color = new Color(1, 0, 0, Mathf.Sin(warningTime * 8.0f));
+            warning.color = new Color(1, 0, 0, Mathf.Sin(warningTime * 3.2f));
         }
         else if (warningTime < 0.0f)
         {
             warning.text = "";
             warningTime = 0.0f;
+            warningBG.enabled = false;
         }
         //cast heaven
         timeTextMinute.text = ((int)(time / 60.0f)).ToString();
@@ -348,8 +354,10 @@ public class PlayerUI : MonoBehaviour {
         {
             threatBar.enabled = false;
 
-            warningTime = 2.0f;
+            warningTime = 5.0f;
             warning.text = "BOSS INCOMING";
+
+            warningBG.enabled = true;
 
             bossSpawned = true;
         }
