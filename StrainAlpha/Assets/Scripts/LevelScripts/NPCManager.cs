@@ -32,6 +32,10 @@ public class NPCManager : MonoBehaviour {
 
     private CameraFollow cameraScript;
 
+    public AudioClip regularBGM;
+    public AudioClip bossBGM;
+    private AudioSource audioSource;
+
     public int InitialNeutralCells = 40;
 
     public int InitialInfectedCells = 10;
@@ -102,6 +106,11 @@ public class NPCManager : MonoBehaviour {
         {
             levelTimer = 120.0f;
         }
+
+        audioSource = transform.GetComponent<AudioSource>();
+
+        audioSource.clip = regularBGM;
+        audioSource.Play();
     }
 
     void Update()
@@ -274,6 +283,8 @@ public class NPCManager : MonoBehaviour {
 
         cameraScript.SetPlayerDist(2);
 
+        audioSource.clip = bossBGM;
+        audioSource.Play();
     }
 
     void Awake()
