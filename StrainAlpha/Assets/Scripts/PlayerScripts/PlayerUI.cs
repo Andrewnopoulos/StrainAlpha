@@ -349,7 +349,18 @@ public class PlayerUI : MonoBehaviour {
     public void SetThreat(float _threat)
     {
         threat = _threat;
-
+        if (threat < 0.75f)
+        {
+            threatBar.color = Color.cyan;
+        }
+        if (threat >= 0.75f && threat < 0.93 && !bossSpawned)
+        {
+            threatBar.color = Color.yellow;
+        }
+        if (threat >= 0.93f && !bossSpawned)
+        {
+            threatBar.color = Color.red;
+        }
         if (threat >= 1.0f && !bossSpawned)
         {
             threatBar.enabled = false;
